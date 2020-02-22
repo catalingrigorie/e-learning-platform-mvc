@@ -83,10 +83,10 @@ export default {
             email: this.email,
             password: this.password
           })
-          .then(function(response) {
-            console.log(response);
+          .then(response => {
+            this.$store.dispatch("setToken", response.data.token);
           })
-          .catch(function(error) {
+          .catch(error => {
             console.error(error);
           });
       }

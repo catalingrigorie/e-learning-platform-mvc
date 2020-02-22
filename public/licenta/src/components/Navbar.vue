@@ -6,8 +6,12 @@
 
     <v-spacer></v-spacer>
 
-    <v-btn to="login" text small>Login</v-btn>
-    <v-btn to="register" text small>Register</v-btn>
+    <v-btn v-if="!$store.state.isUserLoggedIn" to="login" text small
+      >Login</v-btn
+    >
+    <v-btn v-if="!$store.state.isUserLoggedIn" to="register" text small
+      >Register</v-btn
+    >
   </v-app-bar>
 </template>
 
