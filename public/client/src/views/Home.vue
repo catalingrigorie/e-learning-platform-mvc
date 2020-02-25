@@ -1,18 +1,37 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Navigation />
+    <Parallax imgSrc="http://localhost:5000/images/hero.jpeg" />
+    <Cards />
+    <Parallax height="250" imgSrc="http://localhost:5000/images/hero.jpeg" />
+    <Footer />
+
+    <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+// import HelloWorld from "@/components/HelloWorld.vue";
+import Navigation from "@/components/Navigation.vue";
+import Parallax from "@/components/Paralax.vue";
+import Cards from "@/components/Cards.vue";
+import Footer from "@/components/Footer.vue";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    HelloWorld
+    Navigation,
+    Parallax,
+    Cards,
+    Footer
+  },
+
+  data() {
+    return {};
+  },
+  created() {
+    this.$emit("update:layout", "div");
   }
-}
+};
 </script>
