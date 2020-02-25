@@ -35,12 +35,12 @@ const CourseSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "Camp",
     required: true
+  },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
+    required: true
   }
-  //   user: {
-  //     type: mongoose.Schema.ObjectId,
-  //     ref: "User",
-  //     required: true
-  //   }
 });
 
 CourseSchema.statics.getAverageCost = async function(campId) {

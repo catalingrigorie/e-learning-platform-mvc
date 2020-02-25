@@ -87,11 +87,11 @@ exports.updateCamp = async (req, res, next) => {
       });
     }
     // TODO - create a middleware for this
-    if (camp.user.toString() !== req.user.id || req.user.role === "admin") {
-      return res.status(401).json({
-        message: "You do not have access to do this"
-      });
-    }
+    // if (camp.user.toString() !== req.user.id || req.user.role === "admin") {
+    //   return res.status(401).json({
+    //     message: "You do not have access to do this"
+    //   });
+    // }
 
     camp = await Camp.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -144,7 +144,7 @@ exports.deleteCamp = async (req, res, next) => {
  */
 exports.uploadImage = async (req, res, next) => {
   try {
-    const camp = await Camp.findById(req.params.id);
+    const camp = await Camp.findById(req.params.campId);
 
     if (!camp) {
       return res.status(404).json({

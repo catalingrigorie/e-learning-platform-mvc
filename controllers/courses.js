@@ -63,6 +63,7 @@ exports.getCourse = async (req, res, next) => {
 exports.createCourse = async (req, res, next) => {
   try {
     req.body.camp = req.params.campId;
+    req.body.user = req.user.id;
     const camp = await Camp.findById(req.params.campId);
 
     if (!camp) {

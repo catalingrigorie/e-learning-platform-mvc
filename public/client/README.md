@@ -1,4 +1,4 @@
-# licenta
+# client
 
 ## Project setup
 ```

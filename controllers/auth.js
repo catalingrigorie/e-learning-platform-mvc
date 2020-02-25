@@ -79,6 +79,22 @@ exports.getLoggedInUser = async (req, res, next) => {
   }
 };
 
+exports.logout = async (req, res, next) => {
+  try {
+    res.cookie("token", "none", {
+      expires: new Date(Date.now() + 1 * 1000)
+    });
+
+    res.status(200).json({
+      data: {}
+    });
+  } catch (error) {
+    res.status(404).json({
+      error: error.message
+    });
+  }
+};
+
 exports.forgotPassword = async (req, res, next) => {
   try {
     const user = await User.findOne({
