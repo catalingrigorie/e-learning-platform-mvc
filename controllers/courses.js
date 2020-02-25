@@ -10,16 +10,15 @@ const Camp = require("../models/Camp");
 exports.getCourses = async (req, res, next) => {
   try {
     if (req.params.campId) {
-      let query;
-      query = Course.find({ camp: req.params.campId });
-    } else {
-      query = Course.find().populate("camp");
-    }
+      const courses = await Course.find({ camp: req.params.campId });
 
-    const courses = await query;
-    res.status(200).json({
-      data: courses
-    });
+      return res.status(200).json({
+        data: courses,
+        count: courses.length
+      });
+    } else {
+      res.status(200).json(res.customResults);
+    }
   } catch (error) {
     res.status(404).json({
       error: error.message

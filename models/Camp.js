@@ -73,7 +73,7 @@ const CampSchema = new mongoose.Schema(
       max: [10, "Rating must can not be more than 10"]
     },
     averageCost: Number,
-    photo: {
+    image: {
       type: String,
       default: "no-photo.jpg"
     },
@@ -92,12 +92,12 @@ const CampSchema = new mongoose.Schema(
     createdAt: {
       type: Date,
       default: Date.now
+    },
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+      required: true
     }
-    // user: {
-    //   type: mongoose.Schema.ObjectId,
-    //   ref: "User",
-    //   required: true
-    // }
   },
   {
     toJSON: { virtuals: true },

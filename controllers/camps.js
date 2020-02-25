@@ -1,4 +1,5 @@
 const Camp = require("../models/Camp");
+const path = require("path");
 
 /**
  * @description Creates a camp
@@ -7,6 +8,7 @@ const Camp = require("../models/Camp");
  */
 exports.createCamp = async (req, res, next) => {
   try {
+    req.body.user = req.user.id;
     const camp = await Camp.create(req.body);
 
     res.status(201).json({
@@ -25,7 +27,7 @@ exports.createCamp = async (req, res, next) => {
     }
 
     res.status(400).json({
-      error: error
+      error: error.message
     });
   }
 };
@@ -37,21 +39,7 @@ exports.createCamp = async (req, res, next) => {
  */
 exports.getCamps = async (req, res, next) => {
   try {
-    let query;
-    let queryString = JSON.stringify(req.query);
-    queryString = queryString.replace(
-      /\b(gt|gte|lt|lte|in)\b/g,
-      match => `$${match}`
-    );
-
-    query = Camp.find(JSON.parse(queryString)).populate("courses");
-
-    const camps = await query;
-
-    res.status(200).json({
-      success: true,
-      data: camps
-    });
+    res.status(200).json(res.customResults);
   } catch (error) {
     res.status(400).json({
       error: error.message
@@ -66,7 +54,7 @@ exports.getCamps = async (req, res, next) => {
  */
 exports.getCamp = async (req, res, next) => {
   try {
-    const camp = await Camp.findById(req.params.id).populate("courses");
+    const camp = await Camp.findById(req.params.id);
 
     if (!camp) {
       return res.status(404).json({
@@ -91,16 +79,24 @@ exports.getCamp = async (req, res, next) => {
  */
 exports.updateCamp = async (req, res, next) => {
   try {
-    const camp = await Camp.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true
-    });
+    let camp = await Camp.findById(req.params.id);
 
     if (!camp) {
       return res.status(404).json({
         message: "Not found"
       });
     }
+    // TODO - create a middleware for this
+    if (camp.user.toString() !== req.user.id || req.user.role === "admin") {
+      return res.status(401).json({
+        message: "You do not have access to do this"
+      });
+    }
+
+    camp = await Camp.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
 
     res.status(200).json({
       data: camp
@@ -136,6 +132,76 @@ exports.deleteCamp = async (req, res, next) => {
   } catch (error) {
     res.status(404).json({
       error: "Not found"
+    });
+  }
+};
+
+/**
+ *
+ * @description Uploads a image for a camp,
+ * @route api/v1/camps/:id/photo
+ * @method PUT
+ */
+exports.uploadImage = async (req, res, next) => {
+  try {
+    const camp = await Camp.findById(req.params.id);
+
+    if (!camp) {
+      return res.status(404).json({
+        message: "Not found"
+      });
+    }
+
+    if (!req.files) {
+      return next(
+        res.status(400).json({
+          message: "Please upload an image"
+        })
+      );
+    }
+
+    const file = req.files.file;
+
+    if (!file.mimetype.startsWith("image")) {
+      return next(
+        res.status(400).json({
+          message: "That doesn't look like an image file"
+        })
+      );
+    }
+
+    // 1000000 = 1MB
+    if (file.size > 1000000) {
+      return next(
+        res.status(400).json({
+          message: "Please upload with a size less than 1MB"
+        })
+      );
+    }
+
+    file.name = `image_${camp._id}${path.parse(file.name).ext}`;
+
+    file.mv(`${process.env.UPLOAD_PATH}/${file.name}`, async error => {
+      if (error) {
+        console.error(error.message);
+        return next(
+          res.status(500).json({
+            error: "Something went wrong"
+          })
+        );
+      }
+
+      await Camp.findByIdAndUpdate(req.params.id, {
+        image: file.name
+      });
+
+      res.status(200).json({
+        data: file.name
+      });
+    });
+  } catch (error) {
+    res.status(404).json({
+      error: error.message
     });
   }
 };

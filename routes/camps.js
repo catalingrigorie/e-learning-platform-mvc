@@ -4,19 +4,28 @@ const {
   getCamp,
   getCamps,
   updateCamp,
-  deleteCamp
+  deleteCamp,
+  uploadImage
 } = require("../controllers/camps");
+
+const { protect, access } = require("../middleware/auth");
+const Camp = require("../models/Camp");
+const customResults = require("../middleware/customResults");
 const courseRouter = require("./courses");
 const router = express.Router();
-router.use("/camps/:campId/courses", courseRouter);
+router.use("/:campId/courses", courseRouter);
 router
-  .route("/camps")
-  .post(createCamp)
-  .get(getCamps);
+  .route("/")
+  .post(protect, access("publisher", "admin"), createCamp)
+  .get(customResults(Camp, "courses"), getCamps);
 router
-  .route("/camps/:id")
+  .route("/:id")
   .get(getCamp)
-  .put(updateCamp)
-  .delete(deleteCamp);
+  .put(protect, access("publisher", "admin"), updateCamp)
+  .delete(protect, access("publisher", "admin"), deleteCamp);
+
+router
+  .route("/:id/image")
+  .put(protect, access("publisher", "admin"), uploadImage);
 
 module.exports = router;
