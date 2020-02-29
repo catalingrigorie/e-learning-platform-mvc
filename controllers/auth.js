@@ -18,11 +18,9 @@ exports.register = async (req, res, next) => {
 
     const token = user.getSignedJwtToken();
 
-    res.status(200).json({ success: true, token });
+    res.status(200).json({ success: true, token, user });
   } catch (error) {
-    res.status(400).json({
-      error: error.message
-    });
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -42,7 +40,7 @@ exports.login = async (req, res, next) => {
     if (!user) {
       return next(
         res.status(401).json({
-          error: "Invalid email or passowrd"
+          error: "Invalid email or password"
         })
       );
     }
@@ -232,6 +230,7 @@ const sendToken = (user, statusCode, res) => {
     .cookie("token", token, options)
     .json({
       success: true,
-      token
+      token,
+      user
     });
 };

@@ -44,7 +44,7 @@ const CourseSchema = new mongoose.Schema({
 });
 
 CourseSchema.statics.getAverageCost = async function(campId) {
-  const obj = await this.aggregate([
+  const arr = await this.aggregate([
     {
       $match: { camp: campId }
     },
@@ -58,7 +58,7 @@ CourseSchema.statics.getAverageCost = async function(campId) {
 
   try {
     await this.model("Camp").findByIdAndUpdate(campId, {
-      averageCost: Math.ceil(obj[0].averageCost / 10) * 10
+      averageCost: Math.ceil(arr[0].averageCost / 10) * 10
     });
   } catch (err) {
     console.error(err.message);

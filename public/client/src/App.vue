@@ -15,6 +15,9 @@ export default {
     return {
       layout: `div`
     };
+  },
+  created() {
+    this.$store.dispatch("tryLogin");
   }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <v-content>
-    <v-layout align-center justify-center>
+    <v-layout>
       <slot />
     </v-layout>
   </v-content>
@@ -10,4 +10,4 @@
 export default {};
 </script>
 
-<style lang="stylus"></style>
+<style lang="css"></style>

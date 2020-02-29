@@ -1,8 +1,8 @@
 <template>
   <v-content>
     <Navigation />
-    <v-container fluid class="fill-height height bg-color">
-      <LoginForm />
+    <v-container fluid fill-height class="height bg-color">
+      <RegisterForm />
     </v-container>
     <Footer />
   </v-content>
@@ -10,7 +10,7 @@
 
 <script>
 import Navigation from "../components/Navigation";
-import LoginForm from "../components/LoginForm";
+import RegisterForm from "../components/RegisterForm";
 import Footer from "../components/Footer";
 
 export default {
@@ -20,16 +20,16 @@ export default {
   },
   methods: {},
   components: {
-    LoginForm,
     Navigation,
+    RegisterForm,
     Footer
   }
 };
 </script>
 
-<style lang="css" scoped>
+<style lang="css">
 .height {
-  height: 75% !important;
+  height: 70% !important;
 }
 
 .bg-color {

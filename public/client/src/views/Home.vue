@@ -1,13 +1,12 @@
 <template>
-  <div class="home">
+  <v-content class="">
     <Navigation />
     <Parallax imgSrc="http://localhost:5000/images/hero.jpeg" />
     <Cards />
     <Parallax height="250" imgSrc="http://localhost:5000/images/hero.jpeg" />
     <Footer />
-
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
-  </div>
+  </v-content>
 </template>
 
 <script>

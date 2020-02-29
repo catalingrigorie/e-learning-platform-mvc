@@ -1,44 +1,60 @@
 <template>
-  <v-footer dark padless>
-    <v-card flat tile class="#033 lighten-1 white--text text-center">
-      <v-card-text>
-        <v-btn v-for="icon in icons" :key="icon" class="mx-4 white--text" icon>
-          <v-icon size="24px">{{ icon }}</v-icon>
-        </v-btn>
-      </v-card-text>
+  <v-container>
+    <v-footer padless>
+      <v-container fluid class="pa-0">
+        <v-card elevation="0" class="#033 lighten-1 white--text pa-7">
+          <div class="d-flex" v-for="(column, index) in columns" :key="index">
+            <v-list-item dense v-for="(item, index) in column" :key="index">
+              <v-list-item-content class="d-flex pa-0">
+                <v-list-item-title>
+                  <p class="body-2 ma-0">{{ item }}</p>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </div>
+        </v-card>
 
-      <v-card-text class="white--text pt-0">
-        Phasellus feugiat arcu sapien, et iaculis ipsum elementum sit amet.
-        Mauris cursus commodo interdum. Praesent ut risus eget metus luctus
-        accumsan id ultrices nunc. Sed at orci sed massa consectetur dignissim a
-        sit amet dui. Duis commodo vitae velit et faucibus. Morbi vehicula
-        lacinia malesuada. Nulla placerat augue vel ipsum ultrices, cursus
-        iaculis dui sollicitudin. Vestibulum eu ipsum vel diam elementum tempor
-        vel ut orci. Orci varius natoque penatibus et magnis dis parturient
-        montes, nascetur ridiculus mus.
-      </v-card-text>
-
-      <v-divider></v-divider>
-
-      <v-card-text class="white--text">
-        {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
-      </v-card-text>
-    </v-card>
-  </v-footer>
+        <v-card elevation="0" class="#033 lighten-1 white--text pa-3">
+          <v-card-text class="body-2 ma-3 text-center">
+            {{ new Date().getFullYear() }} —
+            <strong>E-Learning Platform</strong>
+          </v-card-text>
+        </v-card>
+      </v-container>
+    </v-footer>
+  </v-container>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      icons: [
-        "fab fa-facebook",
-        "fab fa-twitter",
-        "fab fa-google-plus",
-        "fab fa-linkedin",
-        "fab fa-instagram"
-      ]
+      links: [
+        "Sitename for Business",
+        "Teach on Sitename",
+        "Get the app",
+        "About us",
+        "Careers",
+        "Blog",
+        "Help and support",
+        "Affiliate program",
+        "Terms",
+        "Privacy policy and cookie policy",
+        "Sitemap",
+        "Featured camps"
+      ],
+      items: 4
     };
+  },
+  computed: {
+    columns() {
+      let columns = [];
+      let mid = Math.ceil(this.links.length / this.items);
+      for (let col = 0; col < this.items; col++) {
+        columns.push(this.links.slice(col * mid, col * mid + mid));
+      }
+      return columns;
+    }
   }
 };
 </script>
