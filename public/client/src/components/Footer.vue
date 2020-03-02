@@ -1,25 +1,57 @@
 <template>
   <v-container>
     <v-footer padless>
-      <v-container fluid class="pa-0">
-        <v-card elevation="0" class="#033 lighten-1 white--text pa-7">
-          <div class="d-flex" v-for="(column, index) in columns" :key="index">
-            <v-list-item dense v-for="(item, index) in column" :key="index">
-              <v-list-item-content class="d-flex pa-0">
-                <v-list-item-title>
-                  <p class="body-2 ma-0">{{ item }}</p>
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </div>
-        </v-card>
+      <v-container style="background-color: white;" fluid>
+        <v-row dense justify="center">
+          <v-col :cols="12" sm="8" class="mt-auto">
+            <v-card elevation="0">
+              <v-card-title class="">
+                <v-btn v-for="icon in icons" :key="icon" class="mx-4" icon>
+                  <v-icon size="24px">{{ icon }}</v-icon>
+                </v-btn>
+              </v-card-title>
+            </v-card>
+          </v-col>
+          <v-col :cols="12" sm="4">
+            <v-card class="pa-6 mb-9" flat outlined>
+              <v-card-text class="text-center">
+                <h2 class="headline mb-5">
+                  Enter your email to receive our newsletter
+                </h2>
+                <v-form>
+                  <v-text-field
+                    outlined
+                    label="Email"
+                    name="email"
+                    type="email"
+                  />
+                  <v-btn color="success">Send</v-btn>
+                </v-form>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
 
-        <v-card elevation="0" class="#033 lighten-1 white--text pa-3">
-          <v-card-text class="body-2 ma-3 text-center">
-            {{ new Date().getFullYear() }} —
-            <strong>E-Learning Platform</strong>
-          </v-card-text>
-        </v-card>
+        <v-divider class="ma-3"></v-divider>
+
+        <v-row dense>
+          <v-col v-for="(link, index) in links" :key="index" cols="3">
+            <p class="font-weight-light ma-0">{{ link }}</p>
+          </v-col>
+        </v-row>
+
+        <v-divider class="ma-3"></v-divider>
+
+        <v-row dense justify="center">
+          <v-col cols="12" sm="4">
+            <v-card elevation="0" dense>
+              <p>
+                {{ new Date().getFullYear() }} —
+                <strong>E-Learning Platform</strong>
+              </p>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-container>
     </v-footer>
   </v-container>
@@ -41,21 +73,38 @@ export default {
         "Terms",
         "Privacy policy and cookie policy",
         "Sitemap",
+        "Featured camps",
+        "Featured camps",
+        "Featured camps",
+        "Featured camps",
         "Featured camps"
       ],
-      items: 4
+      items: 4,
+      icons: [
+        "mdi-facebook",
+        "mdi-twitter",
+        "mdi-google-plus",
+        "mdi-linkedin",
+        "mdi-instagram"
+      ]
     };
   },
   computed: {
-    columns() {
-      let columns = [];
-      let mid = Math.ceil(this.links.length / this.items);
-      for (let col = 0; col < this.items; col++) {
-        columns.push(this.links.slice(col * mid, col * mid + mid));
-      }
-      return columns;
+    cols() {
+      const { lg, sm } = this.$vuetify.breakpoint;
+      return lg ? [3, 9] : sm ? [9, 3] : [6, 6];
     }
   }
+  // computed: {
+  //   columns() {
+  //     let columns = [];
+  //     let mid = Math.ceil(this.links.length / this.items);
+  //     for (let col = 0; col < this.items; col++) {
+  //       columns.push(this.links.slice(col * mid, col * mid + mid));
+  //     }
+  //     return columns;
+  //   }
+  // }
 };
 </script>
 

@@ -2,8 +2,8 @@
   <v-row align="center" justify="center">
     <v-col cols="12" sm="12" md="8" lg="4" xl="3">
       <v-card tile>
-        <v-toolbar color="light-blue darken-3" dark flat>
-          <v-toolbar-title>Login</v-toolbar-title>
+        <v-toolbar color="primary" dark flat>
+          <v-toolbar-title>Log in to your account</v-toolbar-title>
         </v-toolbar>
         <v-card-text>
           <v-form ref="form" v-model="valid">

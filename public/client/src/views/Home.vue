@@ -1,21 +1,33 @@
 <template>
   <v-content class="">
     <Navigation />
-    <Parallax imgSrc="http://localhost:5000/images/hero.jpeg" />
+    <Parallax
+      height="650"
+      imgSrc="http://localhost:5000/images/business-computer-connection-contemporary-450035.jpg"
+    />
     <Cards />
-    <Parallax height="250" imgSrc="http://localhost:5000/images/hero.jpeg" />
+    <v-container
+      style="background: linear-gradient(-45deg,#EC5252 0%,#6E1A52 100%)"
+      fluid
+    >
+      <Categories />
+    </v-container>
     <Footer />
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
+    <v-snackbar top="true" v-model="accountCreated">
+      {{ message }}
+      <v-btn color="pink" text @click="closeSnackbar">
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-content>
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from "@/components/HelloWorld.vue";
 import Navigation from "@/components/Navigation.vue";
 import Parallax from "@/components/Paralax.vue";
 import Cards from "@/components/Cards.vue";
 import Footer from "@/components/Footer.vue";
+import Categories from "@/components/Categories.vue";
 
 export default {
   name: "Home",
@@ -23,14 +35,27 @@ export default {
     Navigation,
     Parallax,
     Cards,
-    Footer
+    Footer,
+    Categories
   },
 
   data() {
-    return {};
+    return {
+      message: "You registered your account successfully and are now logged in!"
+    };
   },
   created() {
     this.$emit("update:layout", "div");
+  },
+  methods: {
+    closeSnackbar() {
+      this.$store.dispatch("closeSnackbar");
+    }
+  },
+  computed: {
+    accountCreated() {
+      return this.$store.getters.accountCreated;
+    }
   }
 };
 </script>

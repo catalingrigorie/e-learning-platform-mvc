@@ -1,13 +1,59 @@
 <template>
   <v-content>
     <v-parallax dark :src="imgSrc" :height="height">
-      <v-row align="center" justify="center">
-        <v-col class="text-center" cols="12">
-          <h1 class="display-1 font-weight-thin mb-4">Vuetify.js</h1>
-          <h4 class="subheading">Build your application today!</h4>
-        </v-col>
-      </v-row>
+      <v-container>
+        <v-row align="center" justify="start">
+          <v-col class="text-center" cols="12" sm="4">
+            <v-card class="" elevation="0" color="transparent">
+              <h1
+                class="display-1 text-left white--text font-weight-medium mb-4"
+              >
+                Start learning today!
+              </h1>
+              <h2
+                class="subheading white--text font-weight-medium text-left mb-4"
+              >
+                Study any topic, anytime. Choose from thousands of expert-led
+                courses now.
+              </h2>
+              <v-text-field
+                solo
+                label="What do you wanna learn?"
+                name="email"
+                color="red"
+                backgroundColor="white"
+                type="email"
+              />
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-parallax>
+    <v-card
+      style="background: linear-gradient(-45deg,#EC5252 0%,#6E1A52 100%)"
+      flat
+    >
+      <v-container>
+        <v-row color="transparent" align="center" justify="center">
+          <v-col
+            v-for="message in messages"
+            :key="message.title"
+            :cols="12"
+            sm="3"
+          >
+            <v-card width="250" color="transparent" flat>
+              <v-card-text class="text-center pa-2">
+                <v-icon class="mb-1" size="40" color="white">
+                  mdi-checkbox-marked-circle
+                </v-icon>
+                <p class="headline white--text ma-0">{{ message.title }}</p>
+                <p class="subheading white--text ma-0">{{ message.desc }}</p>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card>
   </v-content>
 </template>
 
@@ -15,7 +61,22 @@
 export default {
   props: ["imgSrc", "height"],
   data() {
-    return {};
+    return {
+      messages: [
+        {
+          title: "50,000 Courses",
+          desc: "Explore a variety of topics"
+        },
+        {
+          title: "Trusted Publishers",
+          desc: "Over 20,000 Camps rated 9+"
+        },
+        {
+          title: "Quality Courses",
+          desc: "Over 10,000 satisfied students"
+        }
+      ]
+    };
   }
 };
 </script>

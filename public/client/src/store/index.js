@@ -9,7 +9,8 @@ export default new Vuex.Store({
   state: {
     token: null,
     user: null,
-    errors: null
+    errors: null,
+    registered: false
   },
   mutations: {
     authUser(state, userData) {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     clearAuthState(state) {
       state.token = null;
       state.user = null;
+    },
+    closeSnackbar(state) {
+      state.registered = !state.registered;
     }
   },
   actions: {
@@ -53,6 +57,7 @@ export default new Vuex.Store({
         })
         .catch(error => {
           this.state.errors = error.response.data.error;
+          console.error(error.data.error);
         });
     },
     tryLogin({ commit }) {
@@ -78,16 +83,23 @@ export default new Vuex.Store({
             token: response.data.token,
             user: response.data.user
           });
+          router.replace("/");
+          this.state.registered = true;
         })
         .catch(error => {
-          this.state.errors = error.response.data.error;
-          console.error(error);
+          console.error(error.data.error);
         });
+    },
+    closeSnackbar({ commit }) {
+      commit("closeSnackbar");
     }
   },
   getters: {
     isUserLoggedIn(state) {
       return state.token !== null;
+    },
+    accountCreated(state) {
+      return state.registered;
     },
     checkErorrs(state) {
       if (state.error !== null) {

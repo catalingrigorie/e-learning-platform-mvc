@@ -1,16 +1,14 @@
 <template>
   <v-content>
     <v-container>
-      <v-card elevation="0">
-        <v-toolbar color="white" elevation="0" class="pl-5">
-          <v-toolbar-title class="pa-0 ma-0">
-            <router-link to="/">
-              <v-img
-                width="130"
-                src="http://localhost:5000/images/logo.png"
-              ></v-img>
-            </router-link>
-          </v-toolbar-title>
+      <v-card class="hidden-sm-and-down" elevation="0">
+        <v-toolbar color="white" elevation="0">
+          <router-link to="/">
+            <v-img
+              width="100"
+              src="http://localhost:5000/images/loho.png"
+            ></v-img>
+          </router-link>
 
           <v-divider class="mx-4" vertical></v-divider>
 
@@ -53,13 +51,14 @@
           <v-divider class="mx-4" vertical></v-divider>
 
           <v-text-field
-            class="ml-10 d-none d-sm-flex"
+            class="ml-10 hidden-md-and-down"
             hide-details
             single-line
             outlined
             dense
             label="Search for anything"
             v-model="query"
+            style="width: 50px"
           ></v-text-field>
 
           <!-- <v-autocomplete
@@ -80,10 +79,15 @@
 
           <v-spacer></v-spacer>
 
-          <v-btn v-if="!isAuthenticated" outlined color="primary" to="/login">
+          <v-btn
+            v-if="!isAuthenticated"
+            class="mr-5"
+            outlined
+            color="primary"
+            to="/login"
+          >
             Login
           </v-btn>
-          <v-divider v-if="!isAuthenticated" class="mx-4" vertical></v-divider>
           <v-btn
             outlined
             color="primary"
@@ -93,20 +97,141 @@
             Register
           </v-btn>
 
-          <v-btn outlined color="primary" v-if="isAuthenticated" to="/browse">
+          <v-btn
+            class="mr-5"
+            outlined
+            color="primary"
+            v-if="isAuthenticated"
+            to="/browse"
+          >
             Browse Camps
           </v-btn>
-          <v-divider v-if="isAuthenticated" class="mx-4" vertical></v-divider>
-          <v-btn
+          <!-- <v-btn
             outlined
+            class=""
             color="primary"
             v-if="isAuthenticated"
             @click="logout"
           >
             Logout
-          </v-btn>
+          </v-btn> -->
+          <v-menu
+            v-model="menu"
+            v-if="isAuthenticated"
+            :close-on-content-click="false"
+            :nudge-width="200"
+          >
+            <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on">
+                <v-icon color="#792a5d" size="50">mdi-account-circle</v-icon>
+              </v-btn>
+            </template>
+
+            <v-card>
+              <v-list>
+                <v-list-item>
+                  <v-list-item-avatar>
+                    <img
+                      src="http://localhost:5000/images/profile-image-icon-25.jpg"
+                      alt="user"
+                    />
+                  </v-list-item-avatar>
+
+                  <v-list-item-content>
+                    <v-list-item-title>{{ user }}</v-list-item-title>
+                    <!-- <v-list-item-subtitle
+                      >Founder of Vuetify.js</v-list-item-subtitle
+                    > -->
+                  </v-list-item-content>
+
+                  <v-list-item-action>
+                    <v-btn
+                      :class="fav ? 'red--text' : ''"
+                      icon
+                      @click="fav = !fav"
+                    >
+                      <v-icon>mdi-heart</v-icon>
+                    </v-btn>
+                  </v-list-item-action>
+                </v-list-item>
+              </v-list>
+
+              <v-divider></v-divider>
+
+              <v-list>
+                <v-list-item>
+                  <v-btn block text>
+                    Account
+                  </v-btn>
+                </v-list-item>
+
+                <v-list-item>
+                  <v-btn block text @click="logout">
+                    Logout
+                  </v-btn>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-menu>
         </v-toolbar>
       </v-card>
+      <v-toolbar elevation="0" class="hidden-md-and-up">
+        <router-link to="/">
+          <v-img
+            width="100"
+            src="http://localhost:5000/images/loho.png"
+          ></v-img>
+        </router-link>
+        <v-spacer></v-spacer>
+        <template v-slot:activator> </template>
+        <v-btn icon @click="dialog = true">
+          <v-icon>mdi mdi-menu</v-icon>
+        </v-btn>
+        <v-dialog
+          fullscreen
+          hide-overlay
+          v-model="dialog"
+          transition="dialog-bottom-transition"
+        >
+          <v-card elevation="0">
+            <v-toolbar flat color="">
+              <router-link to="/">
+                <v-img
+                  width="70"
+                  src="http://localhost:5000/images/loho.png"
+                ></v-img>
+              </router-link>
+              <v-spacer></v-spacer>
+              <v-btn icon @click.native="dialog = false">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-toolbar>
+
+            <v-list>
+              <v-list-group v-for="(item, index) in items" :key="index">
+                <template v-slot:activator>
+                  <v-list-item-icon>
+                    <v-icon>mdi-laptop-windows</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      {{ item.title }}
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </template>
+                <v-list-item v-for="(subItem, idx) in item.items" :key="idx">
+                  <v-list-item-icon>
+                    <v-icon>mdi-arrow-right</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-title>
+                    {{ subItem }}
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list-group>
+            </v-list>
+          </v-card>
+        </v-dialog>
+      </v-toolbar>
     </v-container>
   </v-content>
 </template>
@@ -116,6 +241,9 @@ export default {
   computed: {
     isAuthenticated() {
       return this.$store.getters.isUserLoggedIn;
+    },
+    user() {
+      return this.$store.state.user;
     }
   },
   data() {
@@ -138,7 +266,12 @@ export default {
       links: [
         { title: "Home", icon: "dashboard" },
         { title: "About", icon: "question_answer" }
-      ]
+      ],
+      dialog: false,
+      fav: true,
+      menu: false,
+      message: false,
+      hints: true
     };
   },
   methods: {

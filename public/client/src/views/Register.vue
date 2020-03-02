@@ -1,6 +1,6 @@
 <template>
   <v-content>
-    <Navigation />
+    <Bar />
     <v-container fluid fill-height class="height bg-color">
       <RegisterForm />
     </v-container>
@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import Navigation from "../components/Navigation";
 import RegisterForm from "../components/RegisterForm";
 import Footer from "../components/Footer";
+import Bar from "../components/Bar";
 
 export default {
   name: "Login",
@@ -20,9 +20,9 @@ export default {
   },
   methods: {},
   components: {
-    Navigation,
     RegisterForm,
-    Footer
+    Footer,
+    Bar
   }
 };
 </script>
