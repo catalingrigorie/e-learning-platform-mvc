@@ -54,7 +54,7 @@ exports.getCamps = async (req, res, next) => {
  */
 exports.getCamp = async (req, res, next) => {
   try {
-    const camp = await Camp.findById(req.params.id);
+    const camp = await Camp.findById(req.params.campId).populate("courses");
 
     if (!camp) {
       return res.status(404).json({

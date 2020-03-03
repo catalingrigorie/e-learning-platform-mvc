@@ -13,7 +13,7 @@
       <Categories />
     </v-container>
     <Footer />
-    <v-snackbar top="true" v-model="accountCreated">
+    <v-snackbar v-model="accountCreated">
       {{ message }}
       <v-btn color="pink" text @click="closeSnackbar">
         Close

@@ -88,12 +88,7 @@
           >
             Login
           </v-btn>
-          <v-btn
-            outlined
-            color="primary"
-            v-if="!isAuthenticated"
-            to="/register"
-          >
+          <v-btn color="primary" v-if="!isAuthenticated" to="/register">
             Register
           </v-btn>
 
@@ -102,7 +97,7 @@
             outlined
             color="primary"
             v-if="isAuthenticated"
-            to="/browse"
+            to="/browse/camps"
           >
             Browse Camps
           </v-btn>
@@ -139,17 +134,11 @@
 
                   <v-list-item-content>
                     <v-list-item-title>{{ user }}</v-list-item-title>
-                    <!-- <v-list-item-subtitle
-                      >Founder of Vuetify.js</v-list-item-subtitle
-                    > -->
+                    <v-list-item-subtitle>{{ email }}</v-list-item-subtitle>
                   </v-list-item-content>
 
                   <v-list-item-action>
-                    <v-btn
-                      :class="fav ? 'red--text' : ''"
-                      icon
-                      @click="fav = !fav"
-                    >
+                    <v-btn class="red--text fav" icon>
                       <v-icon>mdi-heart</v-icon>
                     </v-btn>
                   </v-list-item-action>
@@ -237,14 +226,18 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   computed: {
     isAuthenticated() {
       return this.$store.getters.isUserLoggedIn;
-    },
-    user() {
-      return this.$store.state.user;
     }
+    // user() {
+    //   return this.$store.state.user;
+    // },
+    // email() {
+    //   return this.$store.state.email;
+    // }
   },
   data() {
     return {
@@ -262,22 +255,33 @@ export default {
         { title: "Health & Fitness" },
         { title: "Music" }
       ],
-      drawer: null,
-      links: [
-        { title: "Home", icon: "dashboard" },
-        { title: "About", icon: "question_answer" }
-      ],
       dialog: false,
-      fav: true,
       menu: false,
-      message: false,
-      hints: true
+      user: null,
+      email: null
     };
   },
   methods: {
     logout() {
       this.$store.dispatch("logout");
     }
+  },
+  created() {
+    const token = localStorage.getItem("token");
+    axios
+      .get("http://localhost:5000/api/v1/auth/currentuser", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        console.log(response.data);
+        this.user = response.data.user.name;
+        this.email = response.data.user.email;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 };
 </script>

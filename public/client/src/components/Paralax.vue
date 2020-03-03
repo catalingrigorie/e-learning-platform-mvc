@@ -30,7 +30,8 @@
       </v-container>
     </v-parallax>
     <v-card
-      style="background: linear-gradient(-45deg,#EC5252 0%,#6E1A52 100%)"
+      style="background: rgb(251,63,63);
+background: linear-gradient(14deg, rgba(251,63,63,1) 0%, rgba(70,92,252,1) 100%);"
       flat
     >
       <v-container>

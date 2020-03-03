@@ -25,10 +25,16 @@ const routes = [
     beforeEnter: (to, from, next) => (checkToken() ? next("/") : next())
   },
   {
-    path: "/browse",
+    path: "/browse/:query",
     name: "Camps",
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Camps.vue")
+  },
+  {
+    path: "/view/:id",
+    name: "viewSingleCamp",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/SingleCamp.vue")
   }
 ];
 

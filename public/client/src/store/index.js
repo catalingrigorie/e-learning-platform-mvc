@@ -8,18 +8,15 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     token: null,
-    user: null,
     errors: null,
     registered: false
   },
   mutations: {
     authUser(state, userData) {
       state.token = userData.token;
-      state.user = userData.user.name;
     },
     clearAuthState(state) {
       state.token = null;
-      state.user = null;
     },
     closeSnackbar(state) {
       state.registered = !state.registered;
@@ -34,12 +31,10 @@ export default new Vuex.Store({
         })
         .then(response => {
           commit("authUser", {
-            token: response.data.token,
-            user: response.data.user
+            token: response.data.token
           });
           router.replace("/");
           localStorage.setItem("token", response.data.token);
-          localStorage.setItem("user", response.data.user.name);
         })
         .catch(error => {
           this.state.errors = error.response.data.error;
@@ -52,7 +47,6 @@ export default new Vuex.Store({
         .then(response => {
           commit("clearAuthState");
           localStorage.removeItem("token");
-          localStorage.removeItem("user");
           console.log(response);
         })
         .catch(error => {
@@ -62,11 +56,9 @@ export default new Vuex.Store({
     },
     tryLogin({ commit }) {
       const token = localStorage.getItem("token");
-      const userName = localStorage.getItem("user");
       if (!token) return;
       commit("authUser", {
-        token: token,
-        user: userName
+        token: token
       });
     },
     register({ commit }, data) {
@@ -80,8 +72,7 @@ export default new Vuex.Store({
         .then(response => {
           console.log(response.data);
           commit("authUser", {
-            token: response.data.token,
-            user: response.data.user
+            token: response.data.token
           });
           router.replace("/");
           this.state.registered = true;
