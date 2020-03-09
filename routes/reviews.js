@@ -18,7 +18,7 @@ router
     }),
     getReviews
   )
-  .post(protect, access("user", "admin"), createReview);
+  .post(protect, access("user", "admin", "publisher"), createReview);
 
 router.route("/:id").get(getReview);
 

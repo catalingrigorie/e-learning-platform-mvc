@@ -13,7 +13,8 @@ const CampSchema = new mongoose.Schema(
     slug: String,
     description: {
       type: String,
-      required: [true, "Please add a description"]
+      required: [true, "Please add a description"],
+      maxlength: [250, "Description can not be longer than 250 characters"]
     },
     website: {
       type: String,
@@ -31,7 +32,8 @@ const CampSchema = new mongoose.Schema(
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         "Please add a valid email"
-      ]
+      ],
+      required: [true, "Please add an email address"]
     },
     address: {
       type: String,

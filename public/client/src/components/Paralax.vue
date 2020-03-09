@@ -33,18 +33,19 @@
       style="background: rgb(251,63,63);
 background: linear-gradient(14deg, rgba(251,63,63,1) 0%, rgba(70,92,252,1) 100%);"
       flat
+      elevation="0"
     >
-      <v-container>
-        <v-row color="transparent" align="center" justify="center">
+      <v-container class="">
+        <v-row color="transparent" align="center" no-gutters justify="center">
           <v-col
             v-for="message in messages"
             :key="message.title"
             :cols="12"
             sm="3"
           >
-            <v-card width="250" color="transparent" flat>
+            <v-card color="transparent" flat class="ma-0 pa-0">
               <v-card-text class="text-center pa-2">
-                <v-icon class="mb-1" size="40" color="white">
+                <v-icon class="mb-1" size="30" color="white">
                   mdi-checkbox-marked-circle
                 </v-icon>
                 <p class="headline white--text ma-0">{{ message.title }}</p>
@@ -65,14 +66,17 @@ export default {
     return {
       messages: [
         {
+          icon: "",
           title: "50,000 Courses",
           desc: "Explore a variety of topics"
         },
         {
+          icon: "",
           title: "Trusted Publishers",
-          desc: "Over 20,000 Camps rated 9+"
+          desc: "Over 20,000 Camps rated 5+"
         },
         {
+          icon: "",
           title: "Quality Courses",
           desc: "Over 10,000 satisfied students"
         }

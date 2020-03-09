@@ -54,7 +54,7 @@ exports.getCamps = async (req, res, next) => {
  */
 exports.getCamp = async (req, res, next) => {
   try {
-    const camp = await Camp.findById(req.params.campId).populate("courses");
+    const camp = await Camp.findById(req.params.id).populate("courses");
 
     if (!camp) {
       return res.status(404).json({
@@ -86,12 +86,6 @@ exports.updateCamp = async (req, res, next) => {
         message: "Not found"
       });
     }
-    // TODO - create a middleware for this
-    // if (camp.user.toString() !== req.user.id || req.user.role === "admin") {
-    //   return res.status(401).json({
-    //     message: "You do not have access to do this"
-    //   });
-    // }
 
     camp = await Camp.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -144,7 +138,7 @@ exports.deleteCamp = async (req, res, next) => {
  */
 exports.uploadImage = async (req, res, next) => {
   try {
-    const camp = await Camp.findById(req.params.campId);
+    const camp = await Camp.findById(req.params.id);
 
     if (!camp) {
       return res.status(404).json({
@@ -174,7 +168,7 @@ exports.uploadImage = async (req, res, next) => {
     if (file.size > 1000000) {
       return next(
         res.status(400).json({
-          message: "Please upload with a size less than 1MB"
+          message: "Please upload an image with size less than 1MB"
         })
       );
     }

@@ -21,7 +21,7 @@ const CourseSchema = new mongoose.Schema({
   difficulty: {
     type: String,
     required: [true, "Please specify difficulty level"],
-    enum: ["beginner", "intermediate", "advanced"]
+    enum: ["Beginner", "Intermediate", "Advanced"]
   },
   availableJob: {
     type: Boolean,
@@ -43,10 +43,10 @@ const CourseSchema = new mongoose.Schema({
   }
 });
 
-CourseSchema.statics.getAverageCost = async function(campId) {
+CourseSchema.statics.getAverageCost = async function(id) {
   const arr = await this.aggregate([
     {
-      $match: { camp: campId }
+      $match: { camp: id }
     },
     {
       $group: {
@@ -57,7 +57,7 @@ CourseSchema.statics.getAverageCost = async function(campId) {
   ]);
 
   try {
-    await this.model("Camp").findByIdAndUpdate(campId, {
+    await this.model("Camp").findByIdAndUpdate(id, {
       averageCost: Math.ceil(arr[0].averageCost / 10) * 10
     });
   } catch (err) {

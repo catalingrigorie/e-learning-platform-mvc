@@ -7,7 +7,7 @@
     />
     <Cards />
     <v-container
-      style="background: linear-gradient(-45deg,#EC5252 0%,#6E1A52 100%)"
+      style="background: linear-gradient(14deg, rgb(251, 63, 63) 0%, rgb(70, 92, 252) 100%);"
       fluid
     >
       <Categories />

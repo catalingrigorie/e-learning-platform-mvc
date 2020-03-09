@@ -1,7 +1,7 @@
 const customResults = (model, populate) => async (req, res, next) => {
   let query;
   const requestQuery = { ...req.query };
-  const removeFields = ["select", "sort", "page", "limit"];
+  const removeFields = ["select", "sort", "page", "limit", "name"];
   removeFields.forEach(field => delete requestQuery[field]);
 
   let queryString = JSON.stringify(requestQuery);
@@ -11,6 +11,13 @@ const customResults = (model, populate) => async (req, res, next) => {
   );
 
   query = model.find(JSON.parse(queryString));
+
+  if (req.query.name) {
+    let RegExpQ = new RegExp(req.query.name, "i");
+    query = model.find({
+      name: { $regex: RegExpQ }
+    });
+  }
 
   if (req.query.select) {
     const fields = req.query.select.split(",").join(" ");
@@ -55,8 +62,7 @@ const customResults = (model, populate) => async (req, res, next) => {
   }
 
   res.customResults = {
-    data: results,
-    count: results.length,
+    results: results,
     pagination
   };
 

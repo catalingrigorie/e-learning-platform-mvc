@@ -46,18 +46,16 @@
 </template>
 
 <script>
-// import axios from "axios";
 import router from "../router/index";
 
 export default {
   props: ["camps"],
-
   data() {
     return {};
   },
   methods: {
-    viewCamp(campId) {
-      router.push({ path: `/view/${campId}` });
+    viewCamp(id) {
+      router.push({ path: `/view/${id}` });
     }
   },
   components: {}

@@ -28,13 +28,19 @@ const routes = [
     path: "/browse/:query",
     name: "Camps",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Camps.vue")
+      import(/* webpackChunkName: "about" */ "../views/CampsView.vue")
   },
   {
     path: "/view/:id",
     name: "viewSingleCamp",
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/SingleCamp.vue")
+  },
+  {
+    path: "/create",
+    name: "createCamp",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/createCamp.vue")
   }
 ];
 

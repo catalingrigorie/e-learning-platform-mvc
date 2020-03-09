@@ -14,14 +14,14 @@ const customResults = require("../middleware/customResults");
 const courseRouter = require("./courses");
 const reviewRouter = require("./reviews");
 const router = express.Router();
-router.use("/:campId/courses", courseRouter);
-router.use("/:campId/reviews", reviewRouter);
+router.use("/:id/courses", courseRouter);
+router.use("/:id/reviews", reviewRouter);
 router
   .route("/")
   .post(protect, access("publisher", "admin"), createCamp)
   .get(customResults(Camp, "courses"), getCamps);
 router
-  .route("/:campId")
+  .route("/:id")
   .get(getCamp)
   .put(protect, access("publisher", "admin"), checkOwnership(Camp), updateCamp)
   .delete(
@@ -32,10 +32,10 @@ router
   );
 
 router
-  .route("/:campId/image")
+  .route("/:id/image")
   .put(
     protect,
-    access("publisher", "admin"),
+    access("publisher", "admin", "user"),
     checkOwnership(Camp),
     uploadImage
   );

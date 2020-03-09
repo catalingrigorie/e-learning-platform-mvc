@@ -57,7 +57,7 @@ exports.access = (...roles) => {
 
 exports.checkOwnership = model => async (req, res, next) => {
   try {
-    let resource = await model.findById(req.params.campId);
+    let resource = await model.findById(req.params.id);
 
     if (!resource) {
       return next(

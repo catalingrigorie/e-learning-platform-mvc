@@ -3,11 +3,11 @@ const Review = require("../models/Review");
 
 exports.getReviews = async (req, res, next) => {
   try {
-    if (req.params.campId) {
-      const reviews = await Review.find({ camp: req.params.campId });
+    if (req.params.id) {
+      const reviews = await Review.find({ camp: req.params.id });
 
       return res.status(200).json({
-        data: reviews,
+        reviews,
         count: reviews.length
       });
     } else {
@@ -47,9 +47,9 @@ exports.getReview = async (req, res, next) => {
 
 exports.createReview = async (req, res, next) => {
   try {
-    req.body.camp = req.params.campId;
+    req.body.camp = req.params.id;
     req.body.user = req.user.id;
-    const camp = await Camp.findById(req.params.campId);
+    const camp = await Camp.findById(req.params.id);
 
     if (!camp) {
       return next(

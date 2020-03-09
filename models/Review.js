@@ -33,10 +33,10 @@ const ReviewSchema = new mongoose.Schema({
   }
 });
 
-ReviewSchema.statics.getAverageRating = async function(campId) {
+ReviewSchema.statics.getAverageRating = async function(id) {
   const arr = await this.aggregate([
     {
-      $match: { camp: campId }
+      $match: { camp: id }
     },
     {
       $group: {
@@ -47,7 +47,7 @@ ReviewSchema.statics.getAverageRating = async function(campId) {
   ]);
 
   try {
-    await this.model("Camp").findByIdAndUpdate(campId, {
+    await this.model("Camp").findByIdAndUpdate(id, {
       averageRating: arr[0].averageRating
     });
   } catch (err) {

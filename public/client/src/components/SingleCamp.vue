@@ -16,6 +16,7 @@
                 {{ camp.description }}
               </p>
 
+              <Course @newCourse="updatedStats" />
               <v-card elevation="0">
                 <v-card-title>
                   Courses in this camp
@@ -175,37 +176,7 @@
                   <v-btn outlined color="primary" text>Sing up</v-btn>
                 </v-card-actions>
               </v-card>
-              <v-card outlined class="mt-5">
-                <v-card-title>User Reviews</v-card-title>
-                <v-list three-line v-for="(review, i) in reviews" :key="i">
-                  <v-divider></v-divider>
-                  <v-list-item>
-                    <v-list-item-avatar>
-                      <v-btn icon>
-                        <v-icon color="#792a5d" size="50"
-                          >mdi-account-circle</v-icon
-                        >
-                      </v-btn>
-                    </v-list-item-avatar>
-                    <v-list-content>
-                      <v-rating
-                        readonly
-                        length="5"
-                        v-model="review.rating"
-                      ></v-rating>
-
-                      <v-list-item-title>
-                        {{ review.title }}
-                      </v-list-item-title>
-                      <v-list-item-subtitle>
-                        <span class="text-primary">
-                          {{ review.text }}
-                        </span>
-                      </v-list-item-subtitle>
-                    </v-list-content>
-                  </v-list-item>
-                </v-list>
-              </v-card>
+              <Reviews @updatedStats="updatedStats" />
             </v-col>
           </v-row>
         </v-col>
@@ -215,7 +186,9 @@
 </template>
 
 <script>
-import axios from "axios";
+import { CampsService } from "../services/api";
+import Reviews from "./Reviews";
+import Course from "../components/Course";
 
 export default {
   data() {
@@ -229,32 +202,37 @@ export default {
         "Job Guarantee",
         "Average Cost",
         "Average Rating"
-      ]
+      ],
+      overlay: false
     };
   },
-  components: {},
+  components: {
+    Reviews,
+    Course
+  },
+  methods: {
+    async updatedStats() {
+      let id = this.$route.params.id;
 
-  created() {
+      try {
+        const { data } = (await CampsService.getCamp(id)).data;
+        this.camp = data;
+        this.courses = data.courses;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  },
+  async created() {
     let id = this.$route.params.id;
-    axios
-      .get(`http://localhost:5000/api/v1/camps/${id}`)
-      .then(response => {
-        this.camp = response.data.data;
-        this.courses = response.data.data.courses;
-        console.log(response.data.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
 
-    axios
-      .get(`http://localhost:5000/api/v1/camps/${id}/reviews`)
-      .then(response => {
-        this.reviews = response.data.data;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    try {
+      const { data } = (await CampsService.getCamp(id)).data;
+      this.camp = data;
+      this.courses = data.courses;
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 </script>

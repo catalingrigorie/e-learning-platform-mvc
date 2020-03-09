@@ -41,7 +41,9 @@
                     <v-icon>mdi-arrow-right</v-icon>
                   </v-list-item-icon>
                   <v-list-item-title>
-                    {{ subItem }}
+                    <v-btn text :to="{ path: '/browse/' + subItem }">
+                      {{ subItem }}
+                    </v-btn>
                   </v-list-item-title>
                 </v-list-item>
               </v-list-group>
@@ -50,32 +52,24 @@
 
           <v-divider class="mx-4" vertical></v-divider>
 
-          <v-text-field
-            class="ml-10 hidden-md-and-down"
+          <v-autocomplete
+            v-model="searchModel"
+            :items="results"
+            :loading="isLoading"
+            :search-input.sync="search"
+            color="primary"
+            hide-no-data
             hide-details
             single-line
-            outlined
             dense
-            label="Search for anything"
-            v-model="query"
-            style="width: 50px"
-          ></v-text-field>
-
-          <!-- <v-autocomplete
-        v-model="model"
-        :items="items"
-        :loading="isLoading"
-        :search-input.sync="search"
-        color="white"
-        hide-no-data
-        hide-selected
-        item-text="Description"
-        item-value="API"
-        label="Public APIs"
-        placeholder="Start typing to Search"
-        prepend-icon="mdi-database-search"
-        return-object
-      ></v-autocomplete> -->
+            item-text="name"
+            class="ml-10 hidden-md-and-down"
+            item-value="_id"
+            @change="redirect($event)"
+            label="Search"
+            placeholder="Search for camps"
+            prepend-icon="mdi-database-search"
+          ></v-autocomplete>
 
           <v-spacer></v-spacer>
 
@@ -93,23 +87,13 @@
           </v-btn>
 
           <v-btn
+            color="primary"
             class="mr-5"
-            outlined
-            color="primary"
-            v-if="isAuthenticated"
-            to="/browse/camps"
+            v-if="isAuthenticated && this.$route.path !== '/create'"
+            @click="createCamp"
           >
-            Browse Camps
+            Create Camp
           </v-btn>
-          <!-- <v-btn
-            outlined
-            class=""
-            color="primary"
-            v-if="isAuthenticated"
-            @click="logout"
-          >
-            Logout
-          </v-btn> -->
           <v-menu
             v-model="menu"
             v-if="isAuthenticated"
@@ -227,24 +211,15 @@
 
 <script>
 import axios from "axios";
+import router from "../router/index";
+
 export default {
-  computed: {
-    isAuthenticated() {
-      return this.$store.getters.isUserLoggedIn;
-    }
-    // user() {
-    //   return this.$store.state.user;
-    // },
-    // email() {
-    //   return this.$store.state.email;
-    // }
-  },
   data() {
     return {
       query: "",
       items: [
         { title: "Development", items: { title: "Web Development" }, icon: "" },
-        { title: "Business" },
+        { title: "Data Science", items: { title: "Data Science" }, icon: "" },
         { title: "Finace & Accounting" },
         { title: "IT & Software" },
         { title: "Office & Productivity" },
@@ -258,12 +233,56 @@ export default {
       dialog: false,
       menu: false,
       user: null,
-      email: null
+      email: null,
+      entries: [],
+      isLoading: false,
+      searchModel: "",
+      search: null
     };
+  },
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isUserLoggedIn;
+    },
+
+    results() {
+      return this.entries.map(entry => {
+        return Object.assign({}, entry);
+      });
+    }
+  },
+  watch: {
+    search(val) {
+      if (this.entries.length > 10) return;
+
+      if (this.isLoading) return;
+
+      this.isLoading = true;
+
+      axios
+        .get(`http://localhost:5000/api/v1/camps?name=${val}`)
+        .then(response => {
+          this.entries = response.data.results;
+          this.isLoading = false;
+          console.log(response.data.results);
+        })
+        .catch(err => {
+          console.log(err.message);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    }
   },
   methods: {
     logout() {
       this.$store.dispatch("logout");
+    },
+    createCamp() {
+      this.$router.push("/create");
+    },
+    redirect() {
+      router.replace(`/view/${this.searchModel}`);
     }
   },
   created() {

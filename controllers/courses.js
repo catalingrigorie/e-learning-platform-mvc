@@ -5,12 +5,12 @@ const Camp = require("../models/Camp");
  * @desc Get all courses or all courses for a specific camp
  * @route /api/v1/courses
  * @method GET
- * @param campId
+ * @param id
  */
 exports.getCourses = async (req, res, next) => {
   try {
-    if (req.params.campId) {
-      const courses = await Course.find({ camp: req.params.campId });
+    if (req.params.id) {
+      const courses = await Course.find({ camp: req.params.id });
 
       return res.status(200).json({
         data: courses,
@@ -55,16 +55,16 @@ exports.getCourse = async (req, res, next) => {
 };
 
 /**
- * @desc Creates a course based on a campId
- * @route  /api/v1/camps/:campId/courses
+ * @desc Creates a course based on a id
+ * @route  /api/v1/camps/:id/courses
  * @method POST
- * @param campId
+ * @param id
  */
 exports.createCourse = async (req, res, next) => {
   try {
-    req.body.camp = req.params.campId;
+    req.body.camp = req.params.id;
     req.body.user = req.user.id;
-    const camp = await Camp.findById(req.params.campId);
+    const camp = await Camp.findById(req.params.id);
 
     if (!camp) {
       return res.status(404).json({
