@@ -48,8 +48,8 @@
                 value="publisher"
               ></v-radio>
             </v-radio-group>
-            <v-alert v-if="checkErorrs" type="error" outlined>
-              {{ checkErorrs }}
+            <v-alert v-if="errors" type="error" outlined>
+              {{ errors }}
             </v-alert>
           </v-form>
         </v-card-text>
@@ -84,7 +84,7 @@
 import loginLayout from "../layouts/loginLayout";
 
 export default {
-  name: "Login",
+  name: "RegisterForm",
   computed: {
     checkErorrs() {
       return this.$store.getters.checkErorrs;
@@ -96,6 +96,7 @@ export default {
       email: "",
       name: "",
       role: "",
+      errors: "",
       valid: true,
       rules: {
         required: value => !!value || "Required.",
@@ -109,14 +110,18 @@ export default {
     };
   },
   methods: {
-    validate() {
+    async validate() {
       if (this.$refs.form.validate()) {
-        this.$store.dispatch("register", {
-          email: this.email,
-          password: this.password,
-          role: this.role,
-          name: this.name
-        });
+        try {
+          await this.$store.dispatch("register", {
+            email: this.email,
+            password: this.password,
+            role: this.role,
+            name: this.name
+          });
+        } catch (error) {
+          this.errors = error.response.data.error;
+        }
       }
     }
   },

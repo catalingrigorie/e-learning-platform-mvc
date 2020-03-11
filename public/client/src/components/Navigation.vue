@@ -89,7 +89,11 @@
           <v-btn
             color="primary"
             class="mr-5"
-            v-if="isAuthenticated && this.$route.path !== '/create'"
+            v-if="
+              isAuthenticated &&
+                this.$route.path !== '/create' &&
+                getUser.role == 'publisher'
+            "
             @click="createCamp"
           >
             Create Camp
@@ -117,8 +121,10 @@
                   </v-list-item-avatar>
 
                   <v-list-item-content>
-                    <v-list-item-title>{{ user }}</v-list-item-title>
-                    <v-list-item-subtitle>{{ email }}</v-list-item-subtitle>
+                    <v-list-item-title>{{ getUser.name }}</v-list-item-title>
+                    <v-list-item-subtitle>{{
+                      getUser.email
+                    }}</v-list-item-subtitle>
                   </v-list-item-content>
 
                   <v-list-item-action>
@@ -244,11 +250,13 @@ export default {
     isAuthenticated() {
       return this.$store.getters.isUserLoggedIn;
     },
-
     results() {
       return this.entries.map(entry => {
         return Object.assign({}, entry);
       });
+    },
+    getUser() {
+      return this.$store.getters.getUser;
     }
   },
   watch: {
@@ -279,28 +287,14 @@ export default {
       this.$store.dispatch("logout");
     },
     createCamp() {
-      this.$router.push("/create");
+      this.$router.push({ path: "/create" });
     },
     redirect() {
       router.replace(`/view/${this.searchModel}`);
     }
   },
   created() {
-    const token = localStorage.getItem("token");
-    axios
-      .get("http://localhost:5000/api/v1/auth/currentuser", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(response => {
-        console.log(response.data);
-        this.user = response.data.user.name;
-        this.email = response.data.user.email;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.$store.dispatch("getLoggedInUser");
   }
 };
 </script>

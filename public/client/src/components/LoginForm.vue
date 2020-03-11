@@ -22,8 +22,8 @@
               v-model="password"
               :rules="[rules.required]"
             />
-            <v-alert v-if="checkErorrs" type="error" outlined>
-              {{ checkErorrs }}
+            <v-alert v-if="errors" type="error" outlined>
+              {{ errors }}
             </v-alert>
           </v-form>
         </v-card-text>
@@ -64,11 +64,6 @@ import loginLayout from "../layouts/loginLayout";
 
 export default {
   name: "Login",
-  computed: {
-    checkErorrs() {
-      return this.$store.getters.checkErorrs;
-    }
-  },
   data() {
     return {
       password: "",
@@ -86,12 +81,16 @@ export default {
     };
   },
   methods: {
-    validate() {
+    async validate() {
       if (this.$refs.form.validate()) {
-        this.$store.dispatch("login", {
-          email: this.email,
-          password: this.password
-        });
+        try {
+          await this.$store.dispatch("login", {
+            email: this.email,
+            password: this.password
+          });
+        } catch (error) {
+          this.errors = error.response.data.error;
+        }
       }
     }
   },

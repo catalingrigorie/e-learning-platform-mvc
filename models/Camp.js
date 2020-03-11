@@ -57,7 +57,7 @@ const CampSchema = new mongoose.Schema(
     },
     careers: {
       type: [String],
-      required: true,
+      required: [true, "Please select at least one relevant career"],
       enum: [
         "Robotics and Mechatronics",
         "Software Development",

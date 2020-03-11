@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from "axios";
 import router from "../router";
+import { AuthenticationService } from "../services/api";
 
 Vue.use(Vuex);
 
@@ -9,7 +9,8 @@ export default new Vuex.Store({
   state: {
     token: null,
     errors: null,
-    registered: false
+    registered: false,
+    user: {}
   },
   mutations: {
     authUser(state, userData) {
@@ -20,39 +21,30 @@ export default new Vuex.Store({
     },
     closeSnackbar(state) {
       state.registered = !state.registered;
+    },
+    loggedInUser(state, userData) {
+      Object.keys(userData).forEach(key => {
+        state.user = userData[key];
+      });
     }
   },
   actions: {
-    login({ commit }, data) {
-      axios
-        .post("http://localhost:5000/api/v1/auth/login", {
-          email: data.email,
-          password: data.password
-        })
-        .then(response => {
-          commit("authUser", {
-            token: response.data.token
-          });
-          router.replace("/");
-          localStorage.setItem("token", response.data.token);
-        })
-        .catch(error => {
-          this.state.errors = error.response.data.error;
-          console.error(error);
-        });
+    async login({ commit }, data) {
+      const { token } = (await AuthenticationService.login(data)).data;
+      commit("authUser", {
+        token: token
+      });
+      router.replace("/");
+      localStorage.setItem("token", token);
     },
-    logout({ commit }) {
-      axios
-        .get("http://localhost:5000/api/v1/auth/logout")
-        .then(response => {
-          commit("clearAuthState");
-          localStorage.removeItem("token");
-          console.log(response);
-        })
-        .catch(error => {
-          this.state.errors = error.response.data.error;
-          console.error(error.data.error);
-        });
+    async logout({ commit }) {
+      try {
+        await AuthenticationService.logout();
+        commit("clearAuthState");
+        localStorage.removeItem("token");
+      } catch (error) {
+        this.state.errors = error.response.data.error;
+      }
     },
     tryLogin({ commit }) {
       const token = localStorage.getItem("token");
@@ -61,28 +53,40 @@ export default new Vuex.Store({
         token: token
       });
     },
-    register({ commit }, data) {
-      axios
-        .post("http://localhost:5000/api/v1/auth/register", {
+    async register({ commit }, data) {
+      const { token } = (
+        await AuthenticationService.register({
           email: data.email,
           password: data.password,
           role: data.role,
           name: data.name
         })
-        .then(response => {
-          console.log(response.data);
-          commit("authUser", {
-            token: response.data.token
-          });
-          router.replace("/");
-          this.state.registered = true;
-        })
-        .catch(error => {
-          console.error(error.data.error);
-        });
+      ).data;
+
+      localStorage.setItem("token", token);
+      commit("authUser", {
+        token: token
+      });
+      router.replace("/");
+      this.state.registered = true;
     },
     closeSnackbar({ commit }) {
       commit("closeSnackbar");
+    },
+    async getLoggedInUser({ commit }) {
+      let token = localStorage.getItem("token");
+      if (!token) return;
+
+      const configObj = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+
+      const { user } = (await AuthenticationService.getUser(configObj)).data;
+      commit("loggedInUser", {
+        user
+      });
     }
   },
   getters: {
@@ -92,9 +96,9 @@ export default new Vuex.Store({
     accountCreated(state) {
       return state.registered;
     },
-    checkErorrs(state) {
-      if (state.error !== null) {
-        return state.errors;
+    getUser(state) {
+      if (state.user) {
+        return state.user;
       }
     }
   }

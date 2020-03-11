@@ -1,17 +1,17 @@
 <template>
-  <v-card-actions>
-    <v-dialog max-width="600" v-model="overlay">
-      <template v-slot:activator="{ on }">
-        <v-btn color="red lighten-2" dark v-on="on">
-          Create Course
-        </v-btn>
-      </template>
-      <v-card>
-        <v-card-title>
-          <span class="headline">Create Course</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
+  <v-dialog max-width="600" v-model="dialog" persistent>
+    <template v-slot:activator="{ on }">
+      <v-btn class="ma-1 pa-1" block color="primary" dark v-on="on">
+        Create Course
+      </v-btn>
+    </template>
+    <v-card>
+      <v-card-title>
+        <span class="headline">Create Course</span>
+      </v-card-title>
+      <v-card-text>
+        <v-container>
+          <v-form ref="form" v-model="valid">
             <v-row>
               <v-col cols="12" sm="6" md="6">
                 <v-text-field
@@ -23,13 +23,13 @@
                 />
               </v-col>
               <v-col cols="12" sm="6" md="6">
-                <v-text-field
+                <v-select
                   label="Duration"
                   v-model="duration"
-                  name="duration"
                   type="text"
                   :rules="[rules.required]"
-                />
+                  :items="['1 week or less', '2 weeks', '3 weeks or more']"
+                ></v-select>
               </v-col>
               <v-col cols="12">
                 <v-textarea
@@ -48,6 +48,7 @@
                   name="tuition"
                   type="text"
                   v-model="tuition"
+                  :rules="[rules.required, rules.number]"
                 />
               </v-col>
               <v-col cols="12" sm="6">
@@ -55,6 +56,7 @@
                   :items="['Beginner', 'Intermediate', 'Advanced']"
                   label="Difficulty"
                   v-model="difficulty"
+                  :rules="[rules.required]"
                 ></v-select>
               </v-col>
               <v-col cols="12" sm="6">
@@ -67,18 +69,18 @@
                 ></v-checkbox>
               </v-col>
             </v-row>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false"
-            >Close</v-btn
-          >
-          <v-btn color="blue darken-1" text @click="newCourse">Save</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-card-actions>
+          </v-form>
+        </v-container>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+        <v-btn :disabled="!valid" color="blue darken-1" text @click="newCourse"
+          >Save</v-btn
+        >
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -86,7 +88,7 @@ import { CoursesService } from "../services/api";
 export default {
   data() {
     return {
-      overlay: false,
+      dialog: false,
       valid: false,
       title: "",
       description: "",
@@ -95,28 +97,34 @@ export default {
       availableJob: "",
       duration: "",
       rules: {
-        required: value => !!value || "Required."
+        required: value => !!value || "Required.",
+        number: value => {
+          let RegExp = /^[0-9]*$/;
+          return RegExp.test(value) || "Only numbers allowed";
+        }
       }
     };
   },
   methods: {
     async newCourse() {
-      this.overlay = false;
-      let id = this.$route.params.id;
-      let courseData = {
-        title: this.title,
-        description: this.description,
-        difficulty: this.difficulty,
-        tuition: this.tuition,
-        availableJob: this.availableJob,
-        duration: this.duration
-      };
+      this.dialog = false;
+      if (this.$refs.form.validate()) {
+        let id = this.$route.params.id;
+        let courseData = {
+          title: this.title,
+          description: this.description,
+          difficulty: this.difficulty,
+          tuition: +this.tuition,
+          availableJob: this.availableJob,
+          duration: this.duration
+        };
 
-      try {
-        await CoursesService.createCourse(id, courseData);
-        this.$emit("newCourse");
-      } catch (error) {
-        console.log(error);
+        try {
+          await CoursesService.createCourse(id, courseData);
+          this.$emit("newCourse");
+        } catch (error) {
+          console.log(error);
+        }
       }
     }
   }

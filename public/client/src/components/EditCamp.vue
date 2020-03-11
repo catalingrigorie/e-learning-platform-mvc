@@ -1,73 +1,77 @@
 <template>
-  <v-container style="backgroundColor: #ececec;" fluid>
-    <v-container>
-      <v-row align="center" justify="center">
-        <v-col cols="12" sm="12" md="8" lg="4" xl="5">
-          <v-card outlined>
-            <v-card-title
-              style="background: rgb(251,63,63);
-background: linear-gradient(14deg, rgba(251,63,63,1) 0%, rgba(70,92,252,1) 100%);"
-            >
-              Create Camp
-            </v-card-title>
-            <v-card-text class="pa-7">
-              <v-form ref="form" v-model="valid">
+  <v-dialog max-width="650" v-model="dialog" persistent>
+    <template v-slot:activator="{ on }">
+      <v-btn class="ma-1 pa-1" block color="primary" dark v-on="on">
+        Edit Camp
+      </v-btn>
+    </template>
+    <v-card>
+      <v-card-title>
+        <span class="headline">Edit Camp</span>
+      </v-card-title>
+      <v-card-text>
+        <v-container>
+          <v-form ref="form" v-model="valid">
+            <v-row v-if="camp !== null">
+              <v-col cols="12">
                 <v-text-field
                   label="Name"
-                  v-model="name"
+                  v-model="camp.name"
                   name="name"
                   type="text"
                   :rules="[rules.required]"
                 />
-
+              </v-col>
+              <v-col cols="12">
                 <v-textarea
                   label="Description"
                   hint="Wirte a short description of the camp"
-                  v-model="description"
+                  v-model="camp.description"
                   :rules="[rules.required]"
                   auto-grow
                   rows="1"
                   counter="250"
                 ></v-textarea>
-
+              </v-col>
+              <v-col cols="12" sm="6">
                 <v-text-field
                   label="Email"
-                  v-model="email"
+                  v-model="camp.email"
                   name="email"
                   type="email"
                   :rules="[rules.required, rules.email]"
                 />
-
+              </v-col>
+              <v-col cols="12" sm="6">
                 <v-text-field
                   label="Camp Website"
                   name="website"
                   type="text"
-                  v-model="website"
+                  v-model="camp.website"
                 />
-
-                <!-- :rules="[rules.website]" -->
-
+              </v-col>
+              <v-col cols="12" sm="6">
                 <v-text-field
                   label="Phone Number"
                   name="phone"
                   type="text"
-                  v-model="phone"
+                  v-model="camp.phone"
                 />
-
+              </v-col>
+              <v-col cols="12" sm="6">
                 <v-text-field
+                  disabled
                   label="Address"
-                  v-model="address"
+                  v-if="camp.location.formattedAddress"
+                  v-model="camp.location.formattedAddress"
                   name="address"
                   type="text"
                   :rules="[rules.required]"
                 />
-                <!-- <v-select
-                  :items="fields"
-                  label="Careers"
-                  v-model="careers"
-                ></v-select> -->
+              </v-col>
+              <v-col cols="12">
                 <v-select
-                  v-model="careers"
+                  v-model="camp.careers"
                   :items="fields"
                   :menu-props="{ maxHeight: '400' }"
                   label="Careers"
@@ -76,52 +80,49 @@ background: linear-gradient(14deg, rgba(251,63,63,1) 0%, rgba(70,92,252,1) 100%)
                   persistent-hint
                   :rules="[rules.selected]"
                 ></v-select>
+              </v-col>
+              <v-col cols="12" sm="6">
                 <v-checkbox
-                  v-model="housing"
+                  v-model="camp.housing"
                   label="Housing"
                   hint="Does the bootcamp offer housing?"
                   value
                   persistent-hint
                 ></v-checkbox>
-
+              </v-col>
+              <v-col cols="12" sm="6">
                 <v-checkbox
-                  v-model="jobAssistance"
+                  v-model="camp.jobAssistance"
                   label="Job Assistance"
                   hint="Does the bootcamp offer assistance in getting a job?"
                   persistent-hint
                 ></v-checkbox>
+              </v-col>
+              <v-col cols="122">
                 <v-checkbox
-                  v-model="JobGuarantee"
+                  v-model="camp.JobGuarantee"
                   label="Job Guarantee"
                   hint="Does the bootcamp offer a guaranteed job?"
                   persistent-hint
                 ></v-checkbox>
-
-                <v-btn
-                  :disabled="!valid"
-                  class="mt-5"
-                  color="primary"
-                  @click="validate"
-                  >Submit</v-btn
-                >
-                <!-- <v-alert v-if="checkErorrs" type="error" outlined>
-              {{ checkErorrs }}
-            </v-alert> -->
-              </v-form>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-container>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-container>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+        <v-btn :disabled="!valid" color="blue darken-1" text @click="editCamp"
+          >Save</v-btn
+        >
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
-// import axios from "axios";
-// import { AuthenticationService } from "../services/api";
-
 import { CampsService } from "../services/api";
-import router from "../router/index";
 export default {
   data() {
     return {
@@ -135,18 +136,8 @@ export default {
         "Business",
         "Other"
       ],
-      name: "",
-      token: null,
-      description: "",
-      website: "",
-      phone: "",
-      email: "",
-      address: "",
-      careers: [],
-      image: "",
-      housing: false,
-      jobAssistance: false,
-      JobGuarantee: false,
+      dialog: false,
+      camp: null,
       valid: true,
       rules: {
         required: value => !!value || "Required.",
@@ -160,48 +151,49 @@ export default {
     };
   },
   computed: {
-    getUser() {
-      return this.$store.getters.getUser;
+    getLocation() {
+      return this.campDetails.location.formattedAddress;
     }
   },
   methods: {
-    async validate() {
+    async editCamp() {
+      this.dialog = false;
+
       if (this.$refs.form.validate()) {
-        const campData = {
-          name: this.name,
-          description: this.description,
-          website: this.website,
-          phone: this.phone,
-          email: this.email,
-          address: this.address,
-          careers: this.careers,
-          housing: this.housing,
-          jobAssistance: this.jobAssistance,
-          JobGuarantee: this.JobGuarantee
+        let id = this.$route.params.id;
+
+        let campData = {
+          name: this.camp.name,
+          description: this.camp.description,
+          website: this.camp.website,
+          phone: +this.camp.phone,
+          email: this.camp.email,
+          address: this.camp.address,
+          careers: this.camp.careers,
+          housing: this.camp.housing,
+          jobAssistance: this.camp.jobAssistance,
+          jobGuarantee: this.camp.jobGuarantee
         };
 
         try {
-          const { data } = (await CampsService.createCamp(campData)).data;
-          router.push({ path: `/view/${data._id}` });
+          await CampsService.editCamp(id, campData);
+          this.$emit("editedCamp");
         } catch (error) {
-          console.log(error.message);
+          console.log(error);
         }
       }
     }
   },
-  created() {
-    const User = this.getUser;
-    this.email = User.email;
-  },
-  beforeCreate() {
-    const allowedRoles = "publisher" || "admin";
-    const currentUserRole = this.$store.getters.getUser.role; // can't access computed propery in 'beforeCreate' hook
+  async created() {
+    let id = this.$route.params.id;
 
-    if (!allowedRoles.includes(currentUserRole)) {
-      router.replace("/");
+    try {
+      const { data } = (await CampsService.getCamp(id)).data;
+      this.camp = data;
+      this.courses = data.courses;
+    } catch (error) {
+      console.log(error);
     }
   }
 };
 </script>
-
-<style lang="css"></style>

@@ -7,14 +7,11 @@
 </template>
 
 <script>
-// @ is an alias to /src
-// import axios from "axios";
 import Navigation from "@/components/Navigation.vue";
 import Footer from "@/components/Footer.vue";
 import CreateCamp from "../components/CreateCamp";
 
 export default {
-  name: "CreateCamp",
   components: {
     Navigation,
     Footer,

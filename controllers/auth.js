@@ -50,7 +50,7 @@ exports.login = async (req, res, next) => {
     if (!isValidPassword) {
       return next(
         res.status(401).json({
-          error: "Invalid email or passowrd"
+          error: "Invalid email or password"
         })
       );
     }

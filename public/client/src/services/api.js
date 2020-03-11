@@ -8,6 +8,28 @@ const config = {
   }
 };
 
+export class AuthenticationService {
+  static login(credentials) {
+    let url = `http://localhost:5000/api/v1/auth/login`;
+    return axios.post(url, credentials);
+  }
+
+  static logout() {
+    let url = "http://localhost:5000/api/v1/auth/logout";
+    return axios.get(url);
+  }
+
+  static register(data) {
+    let url = "http://localhost:5000/api/v1/auth/register";
+    return axios.post(url, data);
+  }
+
+  static getUser(configObj) {
+    let url = "http://localhost:5000/api/v1/auth/currentuser";
+    return axios.get(url, configObj);
+  }
+}
+
 export class ReviewsService {
   static getReviews(id) {
     let url = `http://localhost:5000/api/v1/camps/${id}/reviews`;
@@ -36,7 +58,12 @@ export class CampsService {
     return axios.post(url, data, config);
   }
 
-  static editCamp(data, id) {
+  static editCamp(id, data) {
+    let url = `http://localhost:5000/api/v1/camps/${id}`;
+    return axios.put(url, data, config);
+  }
+
+  static uploadImage(data, id) {
     let url = `http://localhost:5000/api/v1/camps/${id}/image`;
     return axios.put(url, data, config);
   }

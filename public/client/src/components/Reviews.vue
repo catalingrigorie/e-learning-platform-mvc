@@ -1,8 +1,10 @@
 <template>
-  <v-card outlined class="mt-5">
-    <v-card-title>User Reviews</v-card-title>
+  <v-sheet v-if="reviews == ''" class="height text-center">
+    <v-progress-circular indeterminate color="primary"></v-progress-circular>
+  </v-sheet>
+
+  <v-card v-else outlined class="mt-5">
     <v-list three-line v-for="(review, i) in reviews" :key="i">
-      <v-divider></v-divider>
       <v-list-item>
         <v-list-item-avatar>
           <v-btn icon>
@@ -10,16 +12,21 @@
           </v-btn>
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-rating readonly length="5" v-model="review.rating"></v-rating>
-
           <v-list-item-title>
-            {{ review.title }}
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            <span class="text-primary">
-              {{ review.text }}
+            <span class="title mb-3 pl-1">
+              {{ review.title }}
             </span>
-          </v-list-item-subtitle>
+          </v-list-item-title>
+          <v-rating
+            dense
+            class="mb-3"
+            readonly
+            length="5"
+            v-model="review.rating"
+          ></v-rating>
+          <span class="subtitle-1 pb-2">
+            {{ review.text }}
+          </span>
         </v-list-item-content>
         <v-list-item-action>
           <v-btn height="25" outlined color="danger">
@@ -27,19 +34,41 @@
           </v-btn>
         </v-list-item-action>
       </v-list-item>
+      <v-divider v-if="i !== reviews.length - 1"></v-divider>
     </v-list>
-    <v-card>
+    <v-card v-if="isAuthenticated" flat elevation="0">
+      <v-divider></v-divider>
       <v-card-title>
-        Submit a review
+        Leave a review
       </v-card-title>
       <v-card-text>
-        <v-text-field label="Title" name="title" type="text" v-model="title" />
-        <v-text-field label="Text" name="title" type="text" v-model="text" />
-        <v-rating class="pl-2" length="5" v-model="rating"></v-rating>
-        <v-btn text @click="sendReview">
+        <v-form ref="form" v-model="valid">
+          <v-text-field
+            label="Title"
+            :rules="[rules.required]"
+            name="title"
+            type="text"
+            v-model="title"
+          />
+          <v-text-field
+            label="Text"
+            :rules="[rules.required]"
+            name="Text"
+            type="text"
+            v-model="text"
+          />
+        </v-form>
+      </v-card-text>
+      <v-card-actions class="pa-4">
+        Rating
+        <v-rating hover class="pl-2" length="5" v-model="rating"></v-rating>
+        <span class="caption mr-2"> ({{ rating }}) </span>
+        <v-spacer></v-spacer>
+
+        <v-btn :disabled="!valid" color="primary" outlined @click="sendReview">
           Submit
         </v-btn>
-      </v-card-text>
+      </v-card-actions>
     </v-card>
   </v-card>
 </template>
@@ -51,10 +80,19 @@ export default {
   data() {
     return {
       reviews: "",
-      rating: null,
+      valid: true,
+      rating: 1,
       title: "",
-      text: ""
+      text: "",
+      rules: {
+        required: value => !!value || "Required"
+      }
     };
+  },
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isUserLoggedIn;
+    }
   },
   methods: {
     async sendReview() {
@@ -65,16 +103,17 @@ export default {
         title: this.title,
         text: this.text
       };
-
-      try {
-        await ReviewsService.postReview(id, reviewData);
-        this.reviews = (await ReviewsService.getReviews(id)).data.reviews;
-        this.$emit("updatedStats");
-        this.title = null;
-        this.rating = null;
-        this.text = null;
-      } catch (error) {
-        console.log(error);
+      if (this.$refs.form.validate()) {
+        try {
+          await ReviewsService.postReview(id, reviewData);
+          this.reviews = (await ReviewsService.getReviews(id)).data.reviews;
+          this.$emit("updatedStats");
+          this.title = null;
+          this.rating = null;
+          this.text = null;
+        } catch (error) {
+          console.log(error);
+        }
       }
     }
   },
@@ -89,3 +128,9 @@ export default {
   }
 };
 </script>
+
+<style lang="css" scoped>
+.height {
+  height: 100vh;
+}
+</style>

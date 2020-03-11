@@ -40,7 +40,7 @@ const routes = [
     path: "/create",
     name: "createCamp",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/createCamp.vue")
+      import(/* webpackChunkName: "about" */ "../views/CreateCamp.vue")
   }
 ];
 

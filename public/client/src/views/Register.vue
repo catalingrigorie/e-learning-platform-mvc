@@ -14,7 +14,7 @@ import Footer from "../components/Footer";
 import Bar from "../components/Bar";
 
 export default {
-  name: "Login",
+  name: "Register",
   data() {
     return {};
   },
