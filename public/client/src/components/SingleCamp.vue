@@ -2,7 +2,7 @@
   <v-container style="background-color: rgb(236, 236, 236)" fluid>
     <v-container>
       <v-row justify="center">
-        <v-col cols="12" lg="10">
+        <v-col cols="12" lg="9">
           <v-card class="pa-5" flat elevation="0">
             <v-card-title class="display-2">{{ camp.name }} </v-card-title>
             <v-rating
@@ -184,14 +184,16 @@
             </v-card-text>
           </v-card>
         </v-col>
-        <v-col cols="12" lg="2" v-if="checkOwnership">
+        <v-col v-cloak cols="12" lg="3" v-if="checkOwnership && this.camp !== ''">
           <v-card outlined elevation="0">
             <v-card-title>
               Camp Dashboard
             </v-card-title>
             <v-card-text>
               <Course @newCourse="updatedStats" />
-              <EditCamp @editedCamp="updatedStats" />
+              <DeleteCourse :courses="getCourse" @deletedCourse="updatedStats"/>
+              <EditCamp :camp="camp" @editedCamp="updatedStats" />
+              <DeleteCamp @deletedCamp="updatedStats"/>
             </v-card-text>
           </v-card>
         </v-col>
@@ -205,12 +207,13 @@ import { CampsService } from "../services/api";
 import Reviews from "./Reviews";
 import Course from "../components/Course";
 import EditCamp from "../components/EditCamp";
+import DeleteCourse from "../components/DeleteCourse";
+import DeleteCamp from "../components/DeleteCamp";
 export default {
   data() {
     return {
-      camp: [],
-      courses: "",
-      reviews: "",
+      camp: '',
+      courses: [],
       items: [
         "Housing",
         "Job Assistance",
@@ -224,13 +227,24 @@ export default {
   components: {
     Reviews,
     Course,
-    EditCamp
+    EditCamp,
+    DeleteCourse,
+    DeleteCamp
   },
   computed: {
     checkOwnership() {
-      const user = this.$store.getters.getUser;
-      return this.camp.user == user._id;
+      const userId = localStorage.getItem('id');
+      return this.camp.user == userId;
+    },
+    getCourse() {
+
+      let courses = this.courses
+      const coursesArr = courses.map(el => {
+        return {title: el.title, _id: el._id }
+      })
+      return coursesArr
     }
+
   },
   methods: {
     async updatedStats() {
@@ -259,4 +273,10 @@ export default {
 };
 </script>
 
-<style lang="css"></style>
+<style lang="css">
+
+[v-cloak] {
+  display: none !important;
+}
+
+</style>

@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-col cols="12" lg="10">
+    <v-col cols="12"  xs="2" sm="8" md="10" lg="12">
       <v-row>
         <v-col v-for="(camp, idx) in camps" :key="idx">
           <v-card width="340">
@@ -32,7 +32,7 @@
           </v-card>
         </v-col>
         <v-row v-if="camps == null">
-          <v-col v-for="(n, index) in 10" :key="index" lg="3">
+          <v-col v-for="(n, index) in 10" :key="index" cols="12" md="8" lg="4">
             <v-skeleton-loader
               class="mx-auto"
               max-width="340"

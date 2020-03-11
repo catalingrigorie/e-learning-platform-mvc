@@ -30,18 +30,20 @@ export default new Vuex.Store({
   },
   actions: {
     async login({ commit }, data) {
-      const { token } = (await AuthenticationService.login(data)).data;
+      const { token, user} = (await AuthenticationService.login(data)).data;
       commit("authUser", {
         token: token
       });
       router.replace("/");
       localStorage.setItem("token", token);
+      localStorage.setItem("id", user._id);
     },
     async logout({ commit }) {
       try {
         await AuthenticationService.logout();
         commit("clearAuthState");
         localStorage.removeItem("token");
+        localStorage.removeItem("id");
       } catch (error) {
         this.state.errors = error.response.data.error;
       }
@@ -54,7 +56,7 @@ export default new Vuex.Store({
       });
     },
     async register({ commit }, data) {
-      const { token } = (
+      const { token, user } = (
         await AuthenticationService.register({
           email: data.email,
           password: data.password,
@@ -64,6 +66,8 @@ export default new Vuex.Store({
       ).data;
 
       localStorage.setItem("token", token);
+      localStorage.setItem("id", user._id);
+
       commit("authUser", {
         token: token
       });

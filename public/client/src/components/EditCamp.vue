@@ -137,7 +137,6 @@ export default {
         "Other"
       ],
       dialog: false,
-      camp: null,
       valid: true,
       rules: {
         required: value => !!value || "Required.",
@@ -149,11 +148,6 @@ export default {
           value.length > 0 || "Please select at least one relevant career"
       }
     };
-  },
-  computed: {
-    getLocation() {
-      return this.campDetails.location.formattedAddress;
-    }
   },
   methods: {
     async editCamp() {
@@ -184,15 +178,9 @@ export default {
       }
     }
   },
-  async created() {
-    let id = this.$route.params.id;
-
-    try {
-      const { data } = (await CampsService.getCamp(id)).data;
-      this.camp = data;
-      this.courses = data.courses;
-    } catch (error) {
-      console.log(error);
+  props: {
+    camp: {
+      type: Object
     }
   }
 };

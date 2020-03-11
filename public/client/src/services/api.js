@@ -63,6 +63,11 @@ export class CampsService {
     return axios.put(url, data, config);
   }
 
+  static deleteCamp(id) {
+    let url = `http://localhost:5000/api/v1/camps/${id}`;
+    return axios.delete(url, config)
+  }
+
   static uploadImage(data, id) {
     let url = `http://localhost:5000/api/v1/camps/${id}/image`;
     return axios.put(url, data, config);
@@ -73,5 +78,10 @@ export class CoursesService {
   static createCourse(id, data) {
     let url = `http://localhost:5000/api/v1/camps/${id}/courses`;
     return axios.post(url, data, config);
+  }
+
+  static deleteCourse(id) {
+    let url = `http://localhost:5000/api/v1/courses/${id}`
+    return axios.delete(url, config)
   }
 }

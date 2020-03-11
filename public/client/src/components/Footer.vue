@@ -89,22 +89,6 @@ export default {
       ]
     };
   },
-  computed: {
-    cols() {
-      const { lg, sm } = this.$vuetify.breakpoint;
-      return lg ? [3, 9] : sm ? [9, 3] : [6, 6];
-    }
-  }
-  // computed: {
-  //   columns() {
-  //     let columns = [];
-  //     let mid = Math.ceil(this.links.length / this.items);
-  //     for (let col = 0; col < this.items; col++) {
-  //       columns.push(this.links.slice(col * mid, col * mid + mid));
-  //     }
-  //     return columns;
-  //   }
-  // }
 };
 </script>
 

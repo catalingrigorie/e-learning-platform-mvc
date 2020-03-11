@@ -1,8 +1,6 @@
 <template>
   <v-content>
     <Navigation />
-    <CategoryToolbar @filterCamps="filterCamps($event)" />
-
     <v-container fluid>
       <v-container>
         <CampsGrid :camps="camps" />
@@ -18,7 +16,6 @@ import { CampsService } from "../services/api";
 import Navigation from "@/components/Navigation.vue";
 import Footer from "@/components/Footer.vue";
 import CampsGrid from "../components/CampsGrid";
-import CategoryToolbar from "../components/CategoryToolbar";
 
 export default {
   name: "Home",
@@ -26,7 +23,6 @@ export default {
     Navigation,
     Footer,
     CampsGrid,
-    CategoryToolbar
   },
 
   data() {
@@ -45,18 +41,6 @@ export default {
     };
   },
   methods: {
-    // filterCamps(title) {
-    //   const query = title;
-    //   axios
-    //     .get(`http://localhost:5000/api/v1/camps?careers=${query}`)
-    //     .then(response => {
-    //       console.log(response.data);
-    //       this.camps = response.data.results;
-    //     })
-    //     .catch(err => {
-    //       console.log(err.response.data.err.message);
-    //     });
-    // }
   },
   async created() {
     const query = this.$route.params.query;
