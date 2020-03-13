@@ -1,83 +1,85 @@
 <template>
-  <v-row align="center" justify="center">
-    <v-col cols="12" sm="12" md="8" lg="4" xl="3">
-      <v-card tile>
-        <v-toolbar color="primary" dark flat>
-          <v-toolbar-title>Register an account</v-toolbar-title>
-        </v-toolbar>
-        <v-card-text>
-          <v-form ref="form" v-model="valid">
-            <v-text-field
-              label="Full Name"
-              v-model="name"
-              name="name"
-              type="text"
-              :rules="[rules.required]"
-            />
+  <v-container fluid class="bg-color">
+    <v-row align="center" justify="center">
+      <v-col cols="12" sm="12" md="8" lg="4" xl="3">
+        <v-card elevation="0" class="mt-10 mb-10">
+          <v-card-title class="linear-gradient" flat>
+            Register an account
+          </v-card-title>
+          <v-card-text>
+            <v-form ref="form" v-model="valid">
+              <v-text-field
+                label="Full Name"
+                v-model="name"
+                name="name"
+                type="text"
+                :rules="[rules.required]"
+              />
 
-            <v-text-field
-              label="Email"
-              v-model="email"
-              name="email"
-              type="email"
-              :rules="[rules.required, rules.email]"
-            />
+              <v-text-field
+                label="Email"
+                v-model="email"
+                name="email"
+                type="email"
+                :rules="[rules.required, rules.email]"
+              />
 
-            <v-text-field
-              label="Password"
-              name="password"
-              type="password"
-              v-model="password"
-              :rules="[rules.required, rules.minLength]"
-            />
-            <v-radio-group
-              class=""
-              :rules="[rules.required]"
-              v-model="role"
-              :mandatory="true"
-              label="What are you here for ?"
-            >
-              <v-radio
-                class="mt-2"
-                label="I want to find new things to learn!"
-                value="user"
-              ></v-radio>
-              <v-radio
-                class="mt-2"
-                label="I want to publish courses and teach!"
-                value="publisher"
-              ></v-radio>
-            </v-radio-group>
-            <v-alert v-if="errors" type="error" outlined>
-              {{ errors }}
-            </v-alert>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-container fill-height fluid class="pa-0">
-            <v-row align="center" justify="center">
-              <v-col cols="12" lg="8" md="6" sm="4" class="text-center pa-3">
-                <router-link to="login"
-                  >Login if you already have an account.</router-link
-                >
-              </v-col>
-            </v-row>
-            <v-row align="center" justify="center">
-              <v-col cols="12" lg="8" md="6" sm="4" class="text-center pa-1">
-                <v-btn
-                  @click="validate"
-                  :disabled="!valid"
-                  color="success"
-                  class=""
-                  >Register</v-btn
-                >
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+              <v-text-field
+                label="Password"
+                name="password"
+                type="password"
+                v-model="password"
+                :rules="[rules.required, rules.minLength]"
+              />
+              <v-radio-group
+                class=""
+                :rules="[rules.required]"
+                v-model="role"
+                :mandatory="true"
+                label="What are you here for ?"
+              >
+                <v-radio
+                  class="mt-2"
+                  label="I want to find new things to learn!"
+                  value="user"
+                ></v-radio>
+                <v-radio
+                  class="mt-2"
+                  label="I want to publish courses and teach!"
+                  value="publisher"
+                ></v-radio>
+              </v-radio-group>
+              <v-alert v-if="errors" type="error" outlined>
+                {{ errors }}
+              </v-alert>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-container fill-height fluid class="pa-0">
+              <v-row align="center" justify="center">
+                <v-col cols="12" lg="8" md="6" sm="4" class="text-center pa-3">
+                  <router-link to="login"
+                    >Login if you already have an account.</router-link
+                  >
+                </v-col>
+              </v-row>
+              <v-row align="center" justify="center">
+                <v-col cols="12" lg="8" md="6" sm="4" class="text-center pa-1">
+                  <v-btn
+                    @click="validate"
+                    :disabled="!valid"
+                    color="success"
+                    class=""
+                    >Register</v-btn
+                  >
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -130,3 +132,14 @@ export default {
   }
 };
 </script>
+
+<style lang="css" scoped>
+.linear-gradient {
+  background: rgb(251, 63, 63) !important;
+  background: linear-gradient(
+    14deg,
+    rgba(251, 63, 63, 1) 0%,
+    rgba(70, 92, 252, 1) 100%
+  ) !important;
+}
+</style>

@@ -4,10 +4,7 @@
       <v-row align="center" justify="center">
         <v-col cols="12" sm="12" md="8" lg="4" xl="5">
           <v-card outlined>
-            <v-card-title
-              style="background: rgb(251,63,63);
-background: linear-gradient(14deg, rgba(251,63,63,1) 0%, rgba(70,92,252,1) 100%);"
-            >
+            <v-card-title class="linear-gradient">
               Create Camp
             </v-card-title>
             <v-card-text class="pa-7">
@@ -204,4 +201,13 @@ export default {
 };
 </script>
 
-<style lang="css"></style>
+<style lang="css" scoped>
+.linear-gradient {
+  background: rgb(251, 63, 63) !important;
+  background: linear-gradient(
+    14deg,
+    rgba(251, 63, 63, 1) 0%,
+    rgba(70, 92, 252, 1) 100%
+  ) !important;
+}
+</style>

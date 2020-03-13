@@ -11,19 +11,17 @@
       </v-card-title>
       <v-card-text>
         <v-container>
-            <v-row>
-              <v-col cols="12">
-                This will delete the camp and all related courses, are you sure?
-              </v-col>
-            </v-row>
+          <v-row>
+            <v-col cols="12">
+              This will delete the camp and all related courses, are you sure?
+            </v-col>
+          </v-row>
         </v-container>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="dialog = false">No</v-btn>
-        <v-btn color="blue darken-1" text @click="deleteCamp"
-          >Yes</v-btn
-        >
+        <v-btn color="blue darken-1" text @click="deleteCamp">Yes</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -31,27 +29,27 @@
 
 <script>
 import { CampsService } from "../services/api";
-import router from '../router/index'
+import router from "../router/index";
 export default {
-    data() {
-        return {
-            valid: true,
-            dialog: false,
-        }
-    },
+  data() {
+    return {
+      valid: true,
+      dialog: false
+    };
+  },
   methods: {
     async deleteCamp() {
       this.dialog = false;
-      const campId = this.$route.params.id
+      const campId = this.$route.params.id;
 
-        try {
-          await CampsService.deleteCamp(campId);
-          this.$emit("deletedCamp");
-          router.replace('/')
-        } catch (error) {
-          console.log(error);
-        }
-    },
-  },
+      try {
+        await CampsService.deleteCamp(campId);
+        this.$emit("deletedCamp");
+        router.go(-1);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 };
 </script>

@@ -1,9 +1,7 @@
 <template>
   <v-content>
     <Bar />
-    <v-container fluid fill-height class="height bg-color">
-      <RegisterForm />
-    </v-container>
+    <RegisterForm />
     <Footer />
   </v-content>
 </template>
@@ -28,10 +26,6 @@ export default {
 </script>
 
 <style lang="css">
-.height {
-  height: 70% !important;
-}
-
 .bg-color {
   background-color: #c7c7c72b;
 }

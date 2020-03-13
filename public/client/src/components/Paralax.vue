@@ -49,7 +49,9 @@ background: linear-gradient(14deg, rgba(251,63,63,1) 0%, rgba(70,92,252,1) 100%)
                   mdi-checkbox-marked-circle
                 </v-icon>
                 <p class="headline white--text ma-0">{{ message.title }}</p>
-                <p class="subheading white--text ma-0">{{ message.desc }}</p>
+                <p class="subheading white--text ma-0">
+                  {{ message.desc }}
+                </p>
               </v-card-text>
             </v-card>
           </v-col>

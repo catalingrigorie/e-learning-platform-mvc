@@ -1,27 +1,37 @@
 <template>
-  <v-container>
-    <v-content>
-      <v-card color="transparent" flat>
-        <v-container fluid>
-          <h1 class="headline white--text">Top Categories</h1>
+  <v-container
+    style="background: linear-gradient(14deg, rgb(251, 63, 63) 0%, rgb(70, 92, 252) 100%);"
+    fluid
+  >
+    <v-container>
+      <v-row no-guters justify="center">
+        <v-col cols="12" xl="11">
+          <v-card color="transparent" flat>
+            <v-container fluid>
+              <h1 class="headline white--text">Top Categories</h1>
 
-          <v-row color="transparent">
-            <v-col
-              v-for="category in categories"
-              :key="category.title"
-              :cols="12"
-              sm="3"
-            >
-              <v-card>
-                <v-card-text class="text-center pa-2">
-                  <h2 class="headline pa-2">{{ category.title }}</h2>
-                </v-card-text>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card>
-    </v-content>
+              <v-row color="transparent">
+                <v-col
+                  v-for="category in categories"
+                  :key="category.title"
+                  cols="12"
+                  sm="3"
+                >
+                  <v-card
+                    :to="{ name: 'Camps', params: { query: category.title } }"
+                    hover
+                  >
+                    <v-card-text class="text-center pa-2">
+                      <h2 class="headline pa-2">{{ category.title }}</h2>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-container>
 </template>
 

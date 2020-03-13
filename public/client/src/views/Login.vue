@@ -1,9 +1,7 @@
 <template>
   <v-content>
     <Bar />
-    <v-container fluid class="fill-height height bg-color">
-      <LoginForm />
-    </v-container>
+    <LoginForm />
     <Footer />
   </v-content>
 </template>
@@ -28,10 +26,6 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.height {
-  height: 75% !important;
-}
-
 .bg-color {
   background-color: #c7c7c72b;
 }

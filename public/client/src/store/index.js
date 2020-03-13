@@ -30,13 +30,13 @@ export default new Vuex.Store({
   },
   actions: {
     async login({ commit }, data) {
-      const { token, user} = (await AuthenticationService.login(data)).data;
+      const { token, user } = (await AuthenticationService.login(data)).data;
       commit("authUser", {
         token: token
       });
-      router.replace("/");
       localStorage.setItem("token", token);
       localStorage.setItem("id", user._id);
+      router.replace("/");
     },
     async logout({ commit }) {
       try {
@@ -44,8 +44,9 @@ export default new Vuex.Store({
         commit("clearAuthState");
         localStorage.removeItem("token");
         localStorage.removeItem("id");
+        router.replace("/");
       } catch (error) {
-        this.state.errors = error.response.data.error;
+        this.state.errors = error.message;
       }
     },
     tryLogin({ commit }) {
@@ -78,16 +79,7 @@ export default new Vuex.Store({
       commit("closeSnackbar");
     },
     async getLoggedInUser({ commit }) {
-      let token = localStorage.getItem("token");
-      if (!token) return;
-
-      const configObj = {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      };
-
-      const { user } = (await AuthenticationService.getUser(configObj)).data;
+      const { user } = (await AuthenticationService.getUser()).data;
       commit("loggedInUser", {
         user
       });
