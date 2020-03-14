@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import RegisterForm from "../components/RegisterForm";
-import Footer from "../components/Footer";
-import Bar from "../components/Bar";
+import RegisterForm from "../components/Authentication/RegisterForm";
+import Footer from "../components/Footer/Footer";
+import Bar from "../components/Navigation/Bar";
 
 export default {
   name: "Register",

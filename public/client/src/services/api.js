@@ -23,6 +23,7 @@ export class AuthenticationService {
   }
 
   static getUser() {
+    if (!token) return;
     return Api.get("/auth/currentuser");
   }
 }
@@ -34,6 +35,10 @@ export class ReviewsService {
 
   static postReview(id, data) {
     return Api.post(`/camps/${id}/reviews`, data);
+  }
+
+  static deleteReview(id) {
+    return Api.delete(`/reviews/${id}`);
   }
 }
 
@@ -56,6 +61,10 @@ export class CampsService {
 
   static deleteCamp(id) {
     return Api.delete(`/camps/${id}`);
+  }
+
+  static uploadPhoto(id, file) {
+    return Api.put(`/camps/${id}/image`, file);
   }
 }
 

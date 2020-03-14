@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import { CampsService } from "../services/api";
+import { CampsService } from "../../services/api";
 export default {
   data() {
     return {

@@ -13,16 +13,16 @@
 <script>
 // @ is an alias to /src
 import { CampsService } from "../services/api";
-import Navigation from "@/components/Navigation.vue";
-import Footer from "@/components/Footer.vue";
-import CampsGrid from "../components/CampsGrid";
+import Navigation from "../components/Navigation/Navigation";
+import Footer from "@/components/Footer/Footer.vue";
+import CampsGrid from "../components/Camps/CampsGrid";
 
 export default {
   name: "Home",
   components: {
     Navigation,
     Footer,
-    CampsGrid,
+    CampsGrid
   },
 
   data() {
@@ -40,8 +40,7 @@ export default {
       ]
     };
   },
-  methods: {
-  },
+  methods: {},
   async created() {
     const query = this.$route.params.query;
 

@@ -54,7 +54,9 @@ exports.getCamps = async (req, res, next) => {
  */
 exports.getCamp = async (req, res, next) => {
   try {
-    const camp = await Camp.findById(req.params.id).populate("courses");
+    const camp = await Camp.findById(req.params.id)
+      .populate("courses")
+      .populate("user");
 
     if (!camp) {
       return res.status(404).json({
@@ -164,11 +166,11 @@ exports.uploadImage = async (req, res, next) => {
       );
     }
 
-    // 1000000 = 1MB
-    if (file.size > 1000000) {
+    // 2000000 = 2MB
+    if (file.size > 2000000) {
       return next(
         res.status(400).json({
-          message: "Please upload an image with size less than 1MB"
+          message: "Please upload an image with size less than 2MB"
         })
       );
     }

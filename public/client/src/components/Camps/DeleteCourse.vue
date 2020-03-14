@@ -33,7 +33,11 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-        <v-btn :disabled="!valid" color="blue darken-1" text @click="deteleCourse"
+        <v-btn
+          :disabled="!valid"
+          color="blue darken-1"
+          text
+          @click="deteleCourse"
           >Save</v-btn
         >
       </v-card-actions>
@@ -42,22 +46,22 @@
 </template>
 
 <script>
-import { CoursesService } from "../services/api";
+import { CoursesService } from "../../services/api";
 export default {
-    data() {
-        return {
-            course: '',
-            valid: true,
-            dialog: false,
-            rules: {
-                selected: value => !!value || 'Please select a course to delete!'
-            }
-        }
-    },
+  data() {
+    return {
+      course: "",
+      valid: true,
+      dialog: false,
+      rules: {
+        selected: value => !!value || "Please select a course to delete!"
+      }
+    };
+  },
   methods: {
     async deteleCourse() {
       this.dialog = false;
-      const courseId = this.course
+      const courseId = this.course;
 
       if (this.$refs.form.validate()) {
         try {
@@ -67,12 +71,12 @@ export default {
           console.log(error);
         }
       }
-    },
+    }
   },
   props: {
-      courses: {
-          type: Array
-      }
+    courses: {
+      type: Array
+    }
   }
 };
 </script>

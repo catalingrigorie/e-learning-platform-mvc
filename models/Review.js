@@ -48,7 +48,7 @@ ReviewSchema.statics.getAverageRating = async function(id) {
 
   try {
     await this.model("Camp").findByIdAndUpdate(id, {
-      averageRating: arr[0].averageRating
+      averageRating: Math.round(arr[0].averageRating)
     });
   } catch (err) {
     console.error(err.message);

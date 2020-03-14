@@ -35,7 +35,7 @@ exports.login = async (req, res, next) => {
       return next(res.status(400).json("Please enter all fields"));
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
       return next(

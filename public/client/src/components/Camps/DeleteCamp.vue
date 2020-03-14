@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import { CampsService } from "../services/api";
-import router from "../router/index";
+import { CampsService } from "../../services/api";
+import router from "../../router/index";
 export default {
   data() {
     return {

@@ -10,29 +10,28 @@
     >
       <v-row justify="center">
         <v-col class="pl-7 pr-7">
-          <v-card>
+          <v-card hover @click="viewCamp(camp._id)">
             <v-img
               class="white--text align-end"
               height="250px"
               :src="`http://localhost:5000/images/${camp.image}`"
             >
-              <v-card-title>{{ camp.name }}</v-card-title>
             </v-img>
+            <v-card-title>{{ camp.name }}</v-card-title>
 
             <v-card-text style="min-height: 160px" class="text--primary">
               <div>{{ camp.description }}</div>
             </v-card-text>
 
             <v-card-actions>
-              <v-btn color="primary" @click="viewCamp(camp._id)" text>
-                View
-              </v-btn>
               <v-rating
                 readonly
                 length="5"
                 v-model="camp.averageRating"
               ></v-rating>
-              <p>{{ camp.averageCost }}</p>
+              <div v-if="camp.averageRating" class="grey--text ml-2">
+                ({{ camp.averageRating }})
+              </div>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -58,7 +57,7 @@
 </template>
 
 <script>
-import router from "../router/index";
+import router from "../../router/index";
 
 export default {
   props: ["camps"],

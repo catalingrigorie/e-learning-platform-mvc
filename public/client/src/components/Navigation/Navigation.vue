@@ -15,6 +15,7 @@
               <v-divider class="mx-4" vertical></v-divider>
 
               <v-menu
+                min-width="350"
                 :close-on-content-click="false"
                 open-on-hover
                 transition="slide-y-transition"
@@ -38,6 +39,7 @@
                         </v-list-item-title>
                       </v-list-item-content>
                     </template>
+
                     <v-list-item
                       v-for="(subItem, idx) in item.items"
                       :key="idx"
@@ -67,13 +69,13 @@
                 hide-details
                 single-line
                 dense
+                outlined
                 item-text="name"
                 class="ml-10 hidden-md-and-down"
                 item-value="_id"
                 @change="redirect($event)"
                 label="Search"
-                placeholder="Search for camps"
-                prepend-icon="mdi-database-search"
+                placeholder="Search for anything"
               ></v-autocomplete>
 
               <v-spacer></v-spacer>
@@ -231,24 +233,35 @@
 
 <script>
 import axios from "axios";
-import router from "../router/index";
+import router from "../../router/index";
 
 export default {
   data() {
     return {
       query: "",
       items: [
-        { title: "Development", items: { title: "Web Development" }, icon: "" },
-        { title: "Data Science", items: { title: "Data Science" }, icon: "" },
+        {
+          title: "Development",
+          items: ["Web Development", "Software Development", "Mobile Apps"]
+        },
+        {
+          title: "Data Science",
+          items: [
+            "Machine Learning",
+            "Data Analysis",
+            "Artificial Intelligence"
+          ]
+        },
+        {
+          title: "Robotics & Mechatronics",
+          items: ["Robotics", "Mechatronics", "Artificial Vision"]
+        },
         { title: "Finace & Accounting" },
         { title: "IT & Software" },
-        { title: "Office & Productivity" },
         { title: "Design" },
         { title: "Marketing" },
         { title: "Lifestyle" },
-        { title: "Photography" },
-        { title: "Health & Fitness" },
-        { title: "Music" }
+        { title: "Photography" }
       ],
       dialog: false,
       menu: false,
@@ -270,7 +283,9 @@ export default {
       });
     },
     getUser() {
-      return this.$store.getters.getUser;
+      const user = localStorage.getItem("user");
+      const userObj = JSON.parse(user);
+      return userObj;
     }
   },
   watch: {
@@ -306,9 +321,6 @@ export default {
     redirect() {
       router.replace(`/view/${this.searchModel}`);
     }
-  },
-  created() {
-    this.$store.dispatch("getLoggedInUser");
   }
 };
 </script>

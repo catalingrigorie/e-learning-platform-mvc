@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import loginLayout from "../layouts/loginLayout";
+import loginLayout from "../../layouts/loginLayout";
 
 export default {
   name: "Login",

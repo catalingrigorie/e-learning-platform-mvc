@@ -19,11 +19,11 @@
 </template>
 
 <script>
-import Navigation from "@/components/Navigation.vue";
-import Parallax from "@/components/Paralax.vue";
-import Cards from "@/components/Cards.vue";
-import Footer from "@/components/Footer.vue";
-import Categories from "@/components/Categories.vue";
+import Navigation from "@/components/Navigation/Navigation.vue";
+import Parallax from "@/components/Home/Paralax.vue";
+import Cards from "@/components/Home/Cards.vue";
+import Footer from "@/components/Footer/Footer.vue";
+import Categories from "@/components/Home/Categories.vue";
 
 export default {
   name: "Home",

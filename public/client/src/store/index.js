@@ -34,16 +34,20 @@ export default new Vuex.Store({
       commit("authUser", {
         token: token
       });
+
+      // remove 'password' field from user object
+      const userObj = filterObject(user, "password");
+
+      localStorage.setItem("user", JSON.stringify(userObj));
       localStorage.setItem("token", token);
-      localStorage.setItem("id", user._id);
-      router.replace("/");
+      router.replace("/").catch(err => console.log(err));
     },
     async logout({ commit }) {
       try {
         await AuthenticationService.logout();
         commit("clearAuthState");
+        localStorage.removeItem("user");
         localStorage.removeItem("token");
-        localStorage.removeItem("id");
         router.replace("/");
       } catch (error) {
         this.state.errors = error.message;
@@ -66,8 +70,10 @@ export default new Vuex.Store({
         })
       ).data;
 
+      const userObj = filterObject(user, "password");
+
+      localStorage.setItem("user", JSON.stringify(userObj));
       localStorage.setItem("token", token);
-      localStorage.setItem("id", user._id);
 
       commit("authUser", {
         token: token
@@ -93,9 +99,12 @@ export default new Vuex.Store({
       return state.registered;
     },
     getUser(state) {
-      if (state.user) {
-        return state.user;
-      }
+      return state.user;
     }
   }
 });
+
+const filterObject = (object, field) =>
+  Object.keys(object)
+    .filter(key => key !== field)
+    .reduce((obj, key) => Object.assign(obj, { [key]: object[key] }), {});

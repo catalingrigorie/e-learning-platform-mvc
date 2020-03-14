@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import Navigation from "@/components/Navigation.vue";
-import Footer from "@/components/Footer.vue";
-import CreateCamp from "../components/CreateCamp";
+import Navigation from "../components/Navigation/Navigation.vue";
+import Footer from "@/components/Footer/Footer.vue";
+import CreateCamp from "../components/Camps/CreateCamp";
 
 export default {
   components: {

@@ -65,8 +65,10 @@ const CampSchema = new mongoose.Schema(
         "Mobile Development",
         "UI/UX",
         "Data Science",
-        "Business",
-        "Other"
+        "Machine Learning",
+        "Data Analysis",
+        "Artificial Intelligence",
+        "Business"
       ]
     },
     averageRating: {

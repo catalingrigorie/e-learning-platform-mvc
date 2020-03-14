@@ -21,9 +21,38 @@
                   Camp
                 </v-tab>
                 <v-tab-item>
-                  <v-card outlined flat elevation="0">
+                  <v-card v-if="this.camp !== ''" outlined flat elevation="0">
                     <v-card-text>
                       <v-list dense>
+                        <v-divider></v-divider>
+
+                        <v-list-item>
+                          <v-list-item-content>
+                            <v-list-item-title>
+                              Publisher
+                            </v-list-item-title>
+                          </v-list-item-content>
+                          <v-list-item-action>
+                            <span class="body-1">
+                              {{ camp.user.name }}
+                            </span>
+                          </v-list-item-action>
+                        </v-list-item>
+                        <v-divider></v-divider>
+
+                        <v-list-item>
+                          <v-list-item-content>
+                            <v-list-item-title>
+                              Location
+                            </v-list-item-title>
+                          </v-list-item-content>
+                          <v-list-item-action>
+                            <span class="body-1">
+                              {{ camp.location.formattedAddress }}
+                            </span>
+                          </v-list-item-action>
+                        </v-list-item>
+
                         <v-divider></v-divider>
 
                         <v-list-item>
@@ -33,8 +62,15 @@
                             </v-list-item-title>
                           </v-list-item-content>
                           <v-list-item-action>
-                            <v-btn icon :color="camp.housing ? 'green' : ''">
-                              <v-icon> mdi-checkbox-marked-circle</v-icon>
+                            <v-btn v-if="camp.housing" icon color="green">
+                              <v-icon>
+                                mdi-checkbox-marked-circle
+                              </v-icon>
+                            </v-btn>
+                            <v-btn v-else icon color="red">
+                              <v-icon>
+                                mdi-close-circle
+                              </v-icon>
                             </v-btn>
                           </v-list-item-action>
                         </v-list-item>
@@ -47,11 +83,15 @@
                             </v-list-item-title>
                           </v-list-item-content>
                           <v-list-item-action>
-                            <v-btn
-                              icon
-                              :color="camp.jobAssistance ? 'green' : ''"
-                            >
-                              <v-icon> mdi-checkbox-marked-circle</v-icon>
+                            <v-btn v-if="camp.jobAssistance" icon color="green">
+                              <v-icon>
+                                mdi-checkbox-marked-circle
+                              </v-icon>
+                            </v-btn>
+                            <v-btn v-else icon color="red">
+                              <v-icon>
+                                mdi-close-circle
+                              </v-icon>
                             </v-btn>
                           </v-list-item-action>
                         </v-list-item>
@@ -64,11 +104,15 @@
                             </v-list-item-title>
                           </v-list-item-content>
                           <v-list-item-action>
-                            <v-btn
-                              icon
-                              :color="camp.jobGuarantee ? 'green' : ''"
-                            >
-                              <v-icon> mdi-checkbox-marked-circle</v-icon>
+                            <v-btn v-if="camp.jobGuarantee" icon color="green">
+                              <v-icon>
+                                mdi-checkbox-marked-circle
+                              </v-icon>
+                            </v-btn>
+                            <v-btn v-else icon color="red">
+                              <v-icon>
+                                mdi-close-circle
+                              </v-icon>
                             </v-btn>
                           </v-list-item-action>
                         </v-list-item>
@@ -113,66 +157,7 @@
                   Courses
                 </v-tab>
                 <v-tab-item>
-                  <v-card
-                    outlined
-                    class="pa-5 ma-5"
-                    v-for="(course, index) in courses"
-                    :key="index"
-                  >
-                    <v-card-title>{{ course.title }}</v-card-title>
-                    <v-card-text>
-                      <p class="title">
-                        {{ course.description }}
-                      </p>
-                    </v-card-text>
-                    <v-list>
-                      <v-divider></v-divider>
-
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Duration: {{ course.duration }}
-                          </v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                      <v-divider></v-divider>
-
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Tuition: ${{ course.tuition }}
-                          </v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                      <v-divider></v-divider>
-
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Course Difficulty: {{ course.difficulty }}
-                          </v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                      <v-divider></v-divider>
-
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Available Job
-                          </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          <v-btn
-                            icon
-                            :color="course.availableJob ? 'green' : ''"
-                          >
-                            <v-icon> mdi-checkbox-marked-circle</v-icon>
-                          </v-btn>
-                        </v-list-item-action>
-                      </v-list-item>
-                      <v-divider></v-divider>
-                    </v-list>
-                  </v-card>
+                  <Course :courses="courses" />
                 </v-tab-item>
                 <v-tab>
                   Reviews
@@ -184,16 +169,25 @@
             </v-card-text>
           </v-card>
         </v-col>
-        <v-col v-cloak cols="12" lg="3" v-if="checkOwnership && this.camp !== ''">
+        <v-col
+          v-cloak
+          cols="12"
+          lg="2"
+          v-if="checkOwnership && this.camp !== ''"
+        >
           <v-card outlined elevation="0">
             <v-card-title>
               Camp Dashboard
             </v-card-title>
             <v-card-text>
-              <Course @newCourse="updatedStats" />
-              <DeleteCourse :courses="getCourse" @deletedCourse="updatedStats"/>
+              <CreateCourse @newCourse="updatedStats" />
+              <DeleteCourse
+                :courses="getCourse"
+                @deletedCourse="updatedStats"
+              />
               <EditCamp :camp="camp" @editedCamp="updatedStats" />
-              <DeleteCamp @deletedCamp="updatedStats"/>
+              <DeleteCamp @deletedCamp="updatedStats" />
+              <UploadImage />
             </v-card-text>
           </v-card>
         </v-col>
@@ -203,17 +197,20 @@
 </template>
 
 <script>
-import { CampsService } from "../services/api";
+import { CampsService } from "../../services/api";
 import Reviews from "./Reviews";
-import Course from "../components/Course";
-import EditCamp from "../components/EditCamp";
-import DeleteCourse from "../components/DeleteCourse";
-import DeleteCamp from "../components/DeleteCamp";
+import CreateCourse from "./CreateCourse";
+import EditCamp from "./EditCamp";
+import DeleteCourse from "./DeleteCourse";
+import Course from "./Course";
+import DeleteCamp from "./DeleteCamp";
+import UploadImage from "./UploadImage";
 export default {
   data() {
     return {
-      camp: '',
-      courses: [],
+      camp: "",
+      courses: null,
+      user: "",
       items: [
         "Housing",
         "Job Assistance",
@@ -226,25 +223,26 @@ export default {
   },
   components: {
     Reviews,
-    Course,
+    CreateCourse,
     EditCamp,
     DeleteCourse,
-    DeleteCamp
+    DeleteCamp,
+    Course,
+    UploadImage
   },
   computed: {
     checkOwnership() {
-      const userId = localStorage.getItem('id');
-      return this.camp.user == userId;
+      const user = localStorage.getItem("user");
+      const userId = JSON.parse(user)._id;
+      return userId == this.user._id;
     },
     getCourse() {
-
-      let courses = this.courses
+      let courses = this.courses;
       const coursesArr = courses.map(el => {
-        return {title: el.title, _id: el._id }
-      })
-      return coursesArr
+        return { title: el.title, _id: el._id };
+      });
+      return coursesArr;
     }
-
   },
   methods: {
     async updatedStats() {
@@ -266,6 +264,7 @@ export default {
       const { data } = (await CampsService.getCamp(id)).data;
       this.camp = data;
       this.courses = data.courses;
+      this.user = data.user;
     } catch (error) {
       console.log(error);
     }
@@ -274,9 +273,7 @@ export default {
 </script>
 
 <style lang="css">
-
 [v-cloak] {
   display: none !important;
 }
-
 </style>

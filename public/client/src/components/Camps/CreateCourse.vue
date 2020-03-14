@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import { CoursesService } from "../services/api";
+import { CoursesService } from "../../services/api";
 export default {
   data() {
     return {

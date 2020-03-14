@@ -101,9 +101,6 @@
                   @click="validate"
                   >Submit</v-btn
                 >
-                <!-- <v-alert v-if="checkErorrs" type="error" outlined>
-              {{ checkErorrs }}
-            </v-alert> -->
               </v-form>
             </v-card-text>
           </v-card>
@@ -114,11 +111,8 @@
 </template>
 
 <script>
-// import axios from "axios";
-// import { AuthenticationService } from "../services/api";
-
-import { CampsService } from "../services/api";
-import router from "../router/index";
+import { CampsService } from "../../services/api";
+import router from "../../router/index";
 export default {
   data() {
     return {
@@ -186,17 +180,18 @@ export default {
       }
     }
   },
-  created() {
-    const User = this.getUser;
-    this.email = User.email;
-  },
   beforeCreate() {
     const allowedRoles = "publisher" || "admin";
-    const currentUserRole = this.$store.getters.getUser.role; // can't access computed propery in 'beforeCreate' hook
+    let user = localStorage.getItem("user");
+    let currentUserRole = JSON.parse(user).role;
 
     if (!allowedRoles.includes(currentUserRole)) {
       router.replace("/");
     }
+  },
+  created() {
+    const User = this.getUser;
+    this.email = User.email;
   }
 };
 </script>
