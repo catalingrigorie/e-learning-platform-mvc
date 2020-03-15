@@ -21,8 +21,8 @@
               <span class="title mb-3 pl-1">
                 {{ review.title }}
                 <small class="body-2">
-                  - left by {{ review.user.name }} on
-                  {{ new Date(review.createdAt).toLocaleString() }}
+                  - by {{ review.user.name }} on
+                  {{ new Date(review.createdAt).toLocaleDateString() }}
                 </small>
               </span>
             </v-list-item-title>

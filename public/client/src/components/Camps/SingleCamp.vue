@@ -139,7 +139,7 @@
                           </v-list-item-content>
                           <v-list-item-action class="bdoy-1">
                             <p color="green" class="title ma-0">
-                              ${{ camp.averageCost }}
+                              {{ camp.averageCost | currency }}
                             </p>
                           </v-list-item-action>
                         </v-list-item>

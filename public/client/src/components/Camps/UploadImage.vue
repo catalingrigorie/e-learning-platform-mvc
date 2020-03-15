@@ -72,7 +72,6 @@ export default {
 
       try {
         await CampsService.uploadPhoto(id, formData);
-        //   this.$emit("deletedCamp");
         //   router.go(-1);
       } catch (error) {
         console.log(error);

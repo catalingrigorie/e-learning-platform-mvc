@@ -1,11 +1,7 @@
 <template>
   <v-content>
     <Navigation />
-    <v-container fluid>
-      <v-container>
-        <CampsGrid :camps="camps" />
-      </v-container>
-    </v-container>
+    <CampsGrid :camps="camps" />
     <Footer />
   </v-content>
 </template>

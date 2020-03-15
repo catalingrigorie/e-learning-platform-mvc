@@ -8,6 +8,10 @@ import "@mdi/font/css/materialdesignicons.css";
 
 Vue.config.productionTip = false;
 
+Vue.filter("currency", function(value) {
+  return "$" + value.toLocaleString();
+});
+
 new Vue({
   router,
   store,

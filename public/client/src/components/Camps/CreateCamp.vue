@@ -150,11 +150,6 @@ export default {
       }
     };
   },
-  computed: {
-    getUser() {
-      return this.$store.getters.getUser;
-    }
-  },
   methods: {
     async validate() {
       if (this.$refs.form.validate()) {
@@ -188,10 +183,6 @@ export default {
     if (!allowedRoles.includes(currentUserRole)) {
       router.replace("/");
     }
-  },
-  created() {
-    const User = this.getUser;
-    this.email = User.email;
   }
 };
 </script>

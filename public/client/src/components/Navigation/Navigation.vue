@@ -319,7 +319,7 @@ export default {
       this.$router.push({ path: "/create" });
     },
     redirect() {
-      router.replace(`/view/${this.searchModel}`);
+      router.push(`/view/${this.searchModel}`);
     }
   }
 };

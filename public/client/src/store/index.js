@@ -10,37 +10,34 @@ export default new Vuex.Store({
     token: null,
     errors: null,
     registered: false,
-    user: {}
+    user: null
   },
   mutations: {
     authUser(state, userData) {
       state.token = userData.token;
+      state.user = userData.user;
     },
     clearAuthState(state) {
       state.token = null;
+      state.user = null;
     },
     closeSnackbar(state) {
       state.registered = !state.registered;
-    },
-    loggedInUser(state, userData) {
-      Object.keys(userData).forEach(key => {
-        state.user = userData[key];
-      });
     }
   },
   actions: {
     async login({ commit }, data) {
       const { token, user } = (await AuthenticationService.login(data)).data;
-      commit("authUser", {
-        token: token
-      });
-
       // remove 'password' field from user object
       const userObj = filterObject(user, "password");
-
       localStorage.setItem("user", JSON.stringify(userObj));
       localStorage.setItem("token", token);
+
       router.replace("/").catch(err => console.log(err));
+      commit("authUser", {
+        token: token,
+        user: userObj
+      });
     },
     async logout({ commit }) {
       try {
@@ -83,12 +80,6 @@ export default new Vuex.Store({
     },
     closeSnackbar({ commit }) {
       commit("closeSnackbar");
-    },
-    async getLoggedInUser({ commit }) {
-      const { user } = (await AuthenticationService.getUser()).data;
-      commit("loggedInUser", {
-        user
-      });
     }
   },
   getters: {
