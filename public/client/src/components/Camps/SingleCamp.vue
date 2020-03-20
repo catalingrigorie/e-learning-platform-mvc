@@ -1,5 +1,15 @@
 <template>
   <v-container style="background-color: rgb(236, 236, 236)" fluid>
+    <div v-if="snackbar" class="text-center">
+      <v-btn dark color="orange darken-2"> </v-btn>
+
+      <v-snackbar v-model="snackbar" :timeout="timeout">
+        {{ text }}
+        <v-btn color="blue" text @click="snackbar = false">
+          Close
+        </v-btn>
+      </v-snackbar>
+    </div>
     <v-container>
       <v-row justify="center">
         <v-col cols="12" lg="9">
@@ -124,7 +134,10 @@
                               Average Rating
                             </v-list-item-title>
                           </v-list-item-content>
-                          <v-list-item-action class="bdoy-1">
+                          <v-list-item-action
+                            v-if="camp.averageRating"
+                            class="bdoy-1"
+                          >
                             <p color="green" class="title ma-0">
                               {{ camp.averageRating }}
                             </p>
@@ -137,7 +150,10 @@
                               Average Cost
                             </v-list-item-title>
                           </v-list-item-content>
-                          <v-list-item-action class="bdoy-1">
+                          <v-list-item-action
+                            v-if="camp.averageCost"
+                            class="bdoy-1"
+                          >
                             <p color="green" class="title ma-0">
                               {{ camp.averageCost | currency }}
                             </p>
@@ -149,7 +165,17 @@
                     <v-row align="center" justify="end"> </v-row>
                     <v-card-actions class="pa-5">
                       <v-btn outlined color="primary" text>Visit Website</v-btn>
-                      <v-btn outlined color="primary" text>Sing up</v-btn>
+                      <v-btn
+                        outlined
+                        color="primary"
+                        @click="sendMail"
+                        v-if="isAuthenticated"
+                        :loading="sendingMail"
+                        >Sing up</v-btn
+                      >
+                      <span v-else class="ml-5">
+                        Login or register to enroll in this bootcamp
+                      </span>
                     </v-card-actions>
                   </v-card>
                 </v-tab-item>
@@ -210,7 +236,11 @@ export default {
     return {
       camp: "",
       courses: null,
+      sendingMail: false,
       user: "",
+      snackbar: false,
+      text: "Success! Check your email address for more information.",
+      timeout: 4000,
       items: [
         "Housing",
         "Job Assistance",
@@ -236,6 +266,9 @@ export default {
       const userId = JSON.parse(user)._id;
       return userId == this.user._id;
     },
+    isAuthenticated() {
+      return this.$store.getters.isUserLoggedIn;
+    },
     getCourse() {
       let courses = this.courses;
       const coursesArr = courses.map(el => {
@@ -254,6 +287,22 @@ export default {
         this.courses = data.courses;
       } catch (error) {
         console.log(error);
+      }
+    },
+    async sendMail() {
+      this.sendingMail = true;
+      let id = this.$route.params.id;
+      const user = localStorage.getItem("user");
+      const userEmail = JSON.parse(user).email;
+      try {
+        await CampsService.sendMail(id, {
+          email: userEmail
+        });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.sendingMail = false;
+        this.snackbar = true;
       }
     }
   },

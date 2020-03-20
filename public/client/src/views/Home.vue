@@ -2,7 +2,7 @@
   <v-content class="">
     <Navigation />
     <Parallax
-      height="650"
+      height="550"
       imgSrc="http://localhost:5000/images/business-computer-connection-contemporary-450035.jpg"
     />
     <Cards />

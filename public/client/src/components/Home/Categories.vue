@@ -15,7 +15,9 @@
                   v-for="category in categories"
                   :key="category.title"
                   cols="12"
-                  sm="3"
+                  xl="3"
+                  lg="4"
+                  sm="6"
                 >
                   <v-card
                     :to="{ name: 'Camps', params: { query: category.title } }"

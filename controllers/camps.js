@@ -1,5 +1,7 @@
 const Camp = require("../models/Camp");
+const User = require("../models/User");
 const path = require("path");
+const sendMail = require("../utils/email");
 
 /**
  * @description Creates a camp
@@ -194,6 +196,44 @@ exports.uploadImage = async (req, res, next) => {
       res.status(200).json({
         data: file.name
       });
+    });
+  } catch (error) {
+    res.status(404).json({
+      error: error.message
+    });
+  }
+};
+
+exports.signUp = async (req, res, next) => {
+  try {
+    const camp = await Camp.findById(req.params.id);
+    console.log(req.params.id);
+    console.log(req.body);
+    const user = await User.findOne({
+      email: req.body.email
+    });
+
+    if (!user || !camp) {
+      return next(
+        res.status(404).json({
+          error: "Not found"
+        })
+      );
+    }
+
+    const html = `
+    <h1>Hello ${user.name}, welcome to ${camp.name} </h1>
+    <h2>You are receiving this email because you singed up ${camp.name} on e-learning platform</h2>
+    `;
+
+    await sendMail({
+      email: user.email,
+      subject: "Bootcamp signup",
+      html
+    });
+
+    return res.status(200).json({
+      message: `Email sent to ${user.email}`
     });
   } catch (error) {
     res.status(404).json({

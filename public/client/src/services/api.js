@@ -66,6 +66,10 @@ export class CampsService {
   static uploadPhoto(id, file) {
     return Api.put(`/camps/${id}/image`, file);
   }
+
+  static sendMail(id, user) {
+    return Api.post(`/camps/${id}/signup`, user);
+  }
 }
 
 export class CoursesService {

@@ -5,7 +5,8 @@ const {
   getCamps,
   updateCamp,
   deleteCamp,
-  uploadImage
+  uploadImage,
+  signUp
 } = require("../controllers/camps");
 
 const { protect, access, checkOwnership } = require("../middleware/auth");
@@ -39,5 +40,7 @@ router
     checkOwnership(Camp),
     uploadImage
   );
+
+router.route("/:id/signup").post(protect, signUp);
 
 module.exports = router;
