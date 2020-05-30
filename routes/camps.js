@@ -6,7 +6,7 @@ const {
   updateCamp,
   deleteCamp,
   uploadImage,
-  signUp
+  signUp,
 } = require("../controllers/camps");
 
 const { protect, access, checkOwnership } = require("../middleware/auth");

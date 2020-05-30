@@ -83,15 +83,6 @@
               </v-col>
               <v-col cols="12" sm="6">
                 <v-checkbox
-                  v-model="camp.housing"
-                  label="Housing"
-                  hint="Does the bootcamp offer housing?"
-                  value
-                  persistent-hint
-                ></v-checkbox>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-checkbox
                   v-model="camp.jobAssistance"
                   label="Job Assistance"
                   hint="Does the bootcamp offer assistance in getting a job?"
@@ -134,19 +125,19 @@ export default {
         "UI/UX",
         "Data Science",
         "Business",
-        "Other"
+        "Other",
       ],
       dialog: false,
       valid: true,
       rules: {
-        required: value => !!value || "Required.",
-        email: value => {
+        required: (value) => !!value || "Required.",
+        email: (value) => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "Invalid e-mail.";
         },
-        selected: value =>
-          value.length > 0 || "Please select at least one relevant career"
-      }
+        selected: (value) =>
+          value.length > 0 || "Please select at least one relevant career",
+      },
     };
   },
   methods: {
@@ -164,9 +155,8 @@ export default {
           email: this.camp.email,
           address: this.camp.address,
           careers: this.camp.careers,
-          housing: this.camp.housing,
           jobAssistance: this.camp.jobAssistance,
-          jobGuarantee: this.camp.jobGuarantee
+          jobGuarantee: this.camp.jobGuarantee,
         };
 
         try {
@@ -176,12 +166,12 @@ export default {
           console.log(error);
         }
       }
-    }
+    },
   },
   props: {
     camp: {
-      type: Object
-    }
-  }
+      type: Object,
+    },
+  },
 };
 </script>

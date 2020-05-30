@@ -12,17 +12,29 @@
         >
           <v-row justify="center">
             <v-col class="pl-7 pr-7">
-              <v-card hover @click="viewCamp(camp._id)">
+              <v-card :min-height="minHeight" hover @click="viewCamp(camp._id)">
                 <v-img
                   class="white--text align-end"
-                  height="250px"
+                  :height="imgHeight || null"
                   :src="`http://localhost:5000/images/${camp.image}`"
                 >
                 </v-img>
-                <v-card-title>{{ camp.name }}</v-card-title>
+                <v-card-title
+                  class="text-truncate d-inline-block "
+                  style="max-width: inherit;"
+                >
+                  {{ camp.name }}
+                </v-card-title>
 
-                <v-card-text style="min-height: 160px" class="text--primary">
-                  <div>{{ camp.description }}</div>
+                <v-card-text class="text--primary">
+                  <div>
+                    <span
+                      class="d-block"
+                      :class="truncate"
+                      style="truncate ? max-width: inherit : ''; white-space: pre-line;"
+                      >{{ camp.description }}</span
+                    >
+                  </div>
                 </v-card-text>
 
                 <v-card-actions>
@@ -39,7 +51,7 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-row v-if="camps == null">
+        <v-row v-if="camps == null && loaders">
           <v-col
             v-for="(n, index) in 10"
             :key="index"
@@ -64,16 +76,23 @@
 import router from "../../router/index";
 
 export default {
-  props: ["camps"],
+  props: [
+    "camps",
+    "loaders",
+    "imgHeight",
+    "minHeight",
+    "truncate",
+    "descWidth",
+  ],
   data() {
     return {};
   },
   methods: {
     viewCamp(id) {
       router.push({ path: `/view/${id}` });
-    }
+    },
   },
-  components: {}
+  components: {},
 };
 </script>
 

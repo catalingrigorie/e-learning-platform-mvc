@@ -14,14 +14,14 @@ exports.getCourses = async (req, res, next) => {
 
       return res.status(200).json({
         data: courses,
-        count: courses.length
+        count: courses.length,
       });
     } else {
       res.status(200).json(res.customResults);
     }
   } catch (error) {
     res.status(404).json({
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -35,21 +35,21 @@ exports.getCourse = async (req, res, next) => {
   try {
     const course = await Course.findById(req.params.id).populate({
       path: "camp",
-      select: "name description"
+      select: "name description",
     });
 
     if (!course) {
       return res.status(404).json({
-        error: "Not found"
+        error: "Not found",
       });
     }
 
     res.status(200).json({
-      data: courses
+      data: courses,
     });
   } catch (error) {
     res.status(404).json({
-      error: "Not found"
+      error: "Not found",
     });
   }
 };
@@ -68,18 +68,18 @@ exports.createCourse = async (req, res, next) => {
 
     if (!camp) {
       return res.status(404).json({
-        error: "Not found"
+        error: "Not found",
       });
     }
 
     const course = await Course.create(req.body);
 
     res.status(200).json({
-      data: course
+      data: course,
     });
   } catch (error) {
     res.status(404).json({
-      error: "Not found"
+      error: "Not found",
     });
   }
 };
@@ -93,21 +93,21 @@ exports.updateCourse = async (req, res, next) => {
   try {
     const course = await Course.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     });
 
     if (!course) {
       return res.status(404).json({
-        error: "Not found"
+        error: "Not found",
       });
     }
 
     res.status(200).json({
-      data: course
+      data: course,
     });
   } catch (error) {
     res.status(404).json({
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -124,18 +124,18 @@ exports.deleteCourse = async (req, res, next) => {
 
     if (!course) {
       return res.status(404).json({
-        error: "Not found"
+        error: "Not found",
       });
     }
 
     await course.remove();
 
     res.status(200).json({
-      data: {}
+      data: {},
     });
   } catch (error) {
     res.status(404).json({
-      error: error.message
+      error: error.message,
     });
   }
 };

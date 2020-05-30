@@ -15,24 +15,27 @@ export default {
   components: {
     Navigation,
     Footer,
-    CreateCamp
+    CreateCamp,
   },
 
   data() {
     return {
       camps: null,
       fields: [
-        "Robotics and Mechatronics",
+        "Robotics",
+        "Mechatronics",
         "Software Development",
         "Web Development",
         "Mobile Development",
         "UI/UX",
-        "Data Science",
         "Business",
-        "Other"
-      ]
+        "Machine Learning",
+        "Data Analysis",
+        "Artificial Intelligence",
+        "Artificial Vision",
+      ],
     };
   },
-  methods: {}
+  methods: {},
 };
 </script>

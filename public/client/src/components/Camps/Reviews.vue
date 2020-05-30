@@ -37,7 +37,9 @@
               {{ review.text }}
             </span>
           </v-list-item-content>
-          <v-list-item-action v-if="review.user._id == currentUserId">
+          <v-list-item-action
+            v-if="currentUserId != null && review.user._id == currentUserId"
+          >
             <v-btn @click="deleteReview(review._id)" outlined color="danger">
               Delete
             </v-btn>
@@ -95,8 +97,8 @@ export default {
       title: "",
       text: "",
       rules: {
-        required: value => !!value || "Required"
-      }
+        required: (value) => !!value || "Required",
+      },
     };
   },
   computed: {
@@ -105,10 +107,11 @@ export default {
     },
     currentUserId() {
       const user = localStorage.getItem("user");
+      if (!user) return null;
       const userId = JSON.parse(user)._id;
 
       return userId;
-    }
+    },
   },
   methods: {
     async sendReview() {
@@ -117,7 +120,7 @@ export default {
       const reviewData = {
         rating: this.rating,
         title: this.title,
-        text: this.text
+        text: this.text,
       };
       if (this.$refs.form.validate()) {
         try {
@@ -141,7 +144,7 @@ export default {
       } catch (error) {
         console.error(error.message);
       }
-    }
+    },
   },
   async created() {
     let id = this.$route.params.id;
@@ -151,7 +154,7 @@ export default {
     } catch (error) {
       console.log(error.message);
     }
-  }
+  },
 };
 </script>
 

@@ -94,15 +94,15 @@ export default {
       description: "",
       difficulty: "",
       tuition: "",
-      availableJob: "",
+      availableJob: false,
       duration: "",
       rules: {
-        required: value => !!value || "Required.",
-        number: value => {
+        required: (value) => !!value || "Required.",
+        number: (value) => {
           let RegExp = /^[0-9]*$/;
           return RegExp.test(value) || "Only numbers allowed";
-        }
-      }
+        },
+      },
     };
   },
   methods: {
@@ -116,7 +116,7 @@ export default {
           difficulty: this.difficulty,
           tuition: +this.tuition,
           availableJob: this.availableJob,
-          duration: this.duration
+          duration: this.duration,
         };
 
         try {
@@ -126,7 +126,7 @@ export default {
           console.log(error);
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>

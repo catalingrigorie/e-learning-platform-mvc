@@ -1,7 +1,12 @@
 <template>
   <v-content>
     <Navigation />
-    <CampsGrid :camps="camps" />
+    <CampsGrid
+      :camps="camps"
+      loaders="true"
+      imgHeight="250px"
+      minHeight="450"
+    />
     <Footer />
   </v-content>
 </template>
@@ -18,7 +23,7 @@ export default {
   components: {
     Navigation,
     Footer,
-    CampsGrid
+    CampsGrid,
   },
 
   data() {
@@ -32,8 +37,8 @@ export default {
         "UI/UX",
         "Data Science",
         "Business",
-        "Other"
-      ]
+        "Other",
+      ],
     };
   },
   methods: {},
@@ -45,6 +50,6 @@ export default {
     } catch (error) {
       console.log(error.message);
     }
-  }
+  },
 };
 </script>

@@ -3,7 +3,7 @@ const {
   getReviews,
   getReview,
   createReview,
-  deleteReview
+  deleteReview,
 } = require("../controllers/reviews");
 const router = express.Router({ mergeParams: true });
 const customResults = require("../middleware/customResults");
@@ -15,11 +15,11 @@ router
   .get(
     customResults(Review, {
       path: "camp",
-      select: "name description"
+      select: "name description",
     }),
     getReviews
   )
-  .post(protect, access("user", "admin", "publisher"), createReview);
+  .post(protect, access("user", "publisher"), createReview);
 
 router
   .route("/:id")

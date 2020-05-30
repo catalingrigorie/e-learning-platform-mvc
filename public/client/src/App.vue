@@ -13,11 +13,11 @@ export default {
   components: {},
   data() {
     return {
-      layout: `div`
+      layout: `div`,
     };
   },
   created() {
     this.$store.dispatch("tryLogin");
-  }
+  },
 };
 </script>

@@ -1,5 +1,10 @@
 <template>
   <v-container style="background-color: rgb(236, 236, 236)" fluid>
+    <Map
+      v-if="this.camp !== ''"
+      :lat="Number(this.camp.location.coordinates[1])"
+      :lng="Number(this.camp.location.coordinates[0])"
+    />
     <div v-if="snackbar" class="text-center">
       <v-btn dark color="orange darken-2"> </v-btn>
 
@@ -22,7 +27,7 @@
               v-model="camp.averageRating"
             ></v-rating>
             <v-card-text class="headline">
-              <p class="headinline mb-5">
+              <p class="body-1 mb-5" style="white-space: pre-line;">
                 {{ camp.description }}
               </p>
 
@@ -49,6 +54,19 @@
                           </v-list-item-action>
                         </v-list-item>
                         <v-divider></v-divider>
+                        <v-list-item>
+                          <v-list-item-content>
+                            <v-list-item-title>
+                              Publisher E-Mail Address
+                            </v-list-item-title>
+                          </v-list-item-content>
+                          <v-list-item-action>
+                            <span class="body-1">
+                              {{ camp.email }}
+                            </span>
+                          </v-list-item-action>
+                        </v-list-item>
+                        <v-divider></v-divider>
 
                         <v-list-item>
                           <v-list-item-content>
@@ -63,27 +81,6 @@
                           </v-list-item-action>
                         </v-list-item>
 
-                        <v-divider></v-divider>
-
-                        <v-list-item>
-                          <v-list-item-content>
-                            <v-list-item-title>
-                              Housing
-                            </v-list-item-title>
-                          </v-list-item-content>
-                          <v-list-item-action>
-                            <v-btn v-if="camp.housing" icon color="green">
-                              <v-icon>
-                                mdi-checkbox-marked-circle
-                              </v-icon>
-                            </v-btn>
-                            <v-btn v-else icon color="red">
-                              <v-icon>
-                                mdi-close-circle
-                              </v-icon>
-                            </v-btn>
-                          </v-list-item-action>
-                        </v-list-item>
                         <v-divider></v-divider>
 
                         <v-list-item>
@@ -128,7 +125,7 @@
                         </v-list-item>
                         <v-divider></v-divider>
 
-                        <v-list-item>
+                        <v-list-item v-if="camp.averageRating">
                           <v-list-item-content>
                             <v-list-item-title>
                               Average Rating
@@ -143,8 +140,8 @@
                             </p>
                           </v-list-item-action>
                         </v-list-item>
-                        <v-divider></v-divider>
-                        <v-list-item>
+                        <v-divider v-if="camp.averageRating"></v-divider>
+                        <v-list-item v-if="camp.averageCost">
                           <v-list-item-content>
                             <v-list-item-title>
                               Average Cost
@@ -159,7 +156,7 @@
                             </p>
                           </v-list-item-action>
                         </v-list-item>
-                        <v-divider></v-divider>
+                        <v-divider v-if="camp.averageCost"></v-divider>
                       </v-list>
                     </v-card-text>
                     <v-row align="center" justify="end"> </v-row>
@@ -169,11 +166,11 @@
                         outlined
                         color="primary"
                         @click="sendMail"
-                        v-if="isAuthenticated"
+                        v-if="isAuthenticated && signed == false"
                         :loading="sendingMail"
                         >Sing up</v-btn
                       >
-                      <span v-else class="ml-5">
+                      <span v-else-if="isAuthenticated == false" class="ml-5">
                         Login or register to enroll in this bootcamp
                       </span>
                     </v-card-actions>
@@ -199,7 +196,7 @@
           v-cloak
           cols="12"
           lg="2"
-          v-if="checkOwnership && this.camp !== ''"
+          v-if="checkOwnership == true && this.camp !== ''"
         >
           <v-card outlined elevation="0">
             <v-card-title>
@@ -231,24 +228,26 @@ import DeleteCourse from "./DeleteCourse";
 import Course from "./Course";
 import DeleteCamp from "./DeleteCamp";
 import UploadImage from "./UploadImage";
+import Map from "./Map";
+
 export default {
   data() {
     return {
       camp: "",
       courses: null,
       sendingMail: false,
+      signed: false,
       user: "",
       snackbar: false,
       text: "Success! Check your email address for more information.",
       timeout: 4000,
       items: [
-        "Housing",
         "Job Assistance",
         "Job Guarantee",
         "Average Cost",
-        "Average Rating"
+        "Average Rating",
       ],
-      overlay: false
+      overlay: false,
     };
   },
   components: {
@@ -258,11 +257,13 @@ export default {
     DeleteCourse,
     DeleteCamp,
     Course,
-    UploadImage
+    UploadImage,
+    Map,
   },
   computed: {
     checkOwnership() {
       const user = localStorage.getItem("user");
+      if (!user) return null;
       const userId = JSON.parse(user)._id;
       return userId == this.user._id;
     },
@@ -271,11 +272,11 @@ export default {
     },
     getCourse() {
       let courses = this.courses;
-      const coursesArr = courses.map(el => {
+      const coursesArr = courses.map((el) => {
         return { title: el.title, _id: el._id };
       });
       return coursesArr;
-    }
+    },
   },
   methods: {
     async updatedStats() {
@@ -296,15 +297,16 @@ export default {
       const userEmail = JSON.parse(user).email;
       try {
         await CampsService.sendMail(id, {
-          email: userEmail
+          email: userEmail,
         });
       } catch (error) {
         console.log(error);
       } finally {
         this.sendingMail = false;
         this.snackbar = true;
+        this.signed = true;
       }
-    }
+    },
   },
   async created() {
     let id = this.$route.params.id;
@@ -317,12 +319,14 @@ export default {
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 };
 </script>
 
-<style lang="css">
-[v-cloak] {
-  display: none !important;
+<style lang="css" scoped>
+.vue-map-container,
+.vue-map-container .vue-map {
+  width: 100%;
+  height: 100%;
 }
 </style>

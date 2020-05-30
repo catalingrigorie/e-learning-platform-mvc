@@ -56,7 +56,13 @@
           </v-list-item-content>
           <v-list-item-action>
             <v-btn icon :color="course.availableJob ? 'green' : ''">
-              <v-icon> mdi-checkbox-marked-circle</v-icon>
+              <v-icon>
+                {{
+                  course.availableJob
+                    ? "mdi-checkbox-marked-circle"
+                    : "mdi-close-circle"
+                }}
+              </v-icon>
             </v-btn>
           </v-list-item-action>
         </v-list-item>
@@ -70,9 +76,9 @@
 export default {
   props: {
     courses: {
-      type: Array
-    }
-  }
+      type: Array,
+    },
+  },
 };
 </script>
 

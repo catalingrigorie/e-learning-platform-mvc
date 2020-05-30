@@ -24,7 +24,7 @@
                   :rules="[rules.required]"
                   auto-grow
                   rows="1"
-                  counter="250"
+                  counter="1000"
                 ></v-textarea>
 
                 <v-text-field
@@ -73,13 +73,6 @@
                   persistent-hint
                   :rules="[rules.selected]"
                 ></v-select>
-                <v-checkbox
-                  v-model="housing"
-                  label="Housing"
-                  hint="Does the bootcamp offer housing?"
-                  value
-                  persistent-hint
-                ></v-checkbox>
 
                 <v-checkbox
                   v-model="jobAssistance"
@@ -124,7 +117,7 @@ export default {
         "UI/UX",
         "Data Science",
         "Business",
-        "Other"
+        "Other",
       ],
       name: "",
       token: null,
@@ -135,19 +128,18 @@ export default {
       address: "",
       careers: [],
       image: "",
-      housing: false,
       jobAssistance: false,
       JobGuarantee: false,
       valid: true,
       rules: {
-        required: value => !!value || "Required.",
-        email: value => {
+        required: (value) => !!value || "Required.",
+        email: (value) => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "Invalid e-mail.";
         },
-        selected: value =>
-          value.length > 0 || "Please select at least one relevant career"
-      }
+        selected: (value) =>
+          value.length > 0 || "Please select at least one relevant career",
+      },
     };
   },
   methods: {
@@ -161,9 +153,8 @@ export default {
           email: this.email,
           address: this.address,
           careers: this.careers,
-          housing: this.housing,
           jobAssistance: this.jobAssistance,
-          JobGuarantee: this.JobGuarantee
+          JobGuarantee: this.JobGuarantee,
         };
 
         try {
@@ -173,7 +164,7 @@ export default {
           console.log(error.message);
         }
       }
-    }
+    },
   },
   beforeCreate() {
     const allowedRoles = "publisher" || "admin";
@@ -183,7 +174,7 @@ export default {
     if (!allowedRoles.includes(currentUserRole)) {
       router.replace("/");
     }
-  }
+  },
 };
 </script>
 

@@ -5,8 +5,8 @@ let token = localStorage.getItem("token");
 const Api = axios.create({
   baseURL: "http://localhost:5000/api/v1",
   headers: {
-    Authorization: `Bearer ${token}`
-  }
+    Authorization: `Bearer ${token}`,
+  },
 });
 
 export class AuthenticationService {
@@ -45,6 +45,10 @@ export class ReviewsService {
 export class CampsService {
   static getFilteredCamps(query) {
     return Api.get(`/camps?careers=${query}`);
+  }
+
+  static getTrendingCamps(query, careerType) {
+    return Api.get(`/camps?${query}&careers=${careerType}`);
   }
 
   static getCamp(id) {

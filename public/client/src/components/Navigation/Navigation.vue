@@ -242,26 +242,30 @@ export default {
       items: [
         {
           title: "Development",
-          items: ["Web Development", "Software Development", "Mobile Apps"]
+          items: [
+            "Web Development",
+            "Software Development",
+            "Mobile Development",
+          ],
         },
         {
           title: "Data Science",
           items: [
             "Machine Learning",
             "Data Analysis",
-            "Artificial Intelligence"
-          ]
+            "Artificial Intelligence",
+          ],
         },
         {
           title: "Robotics & Mechatronics",
-          items: ["Robotics", "Mechatronics", "Artificial Vision"]
+          items: ["Robotics", "Mechatronics", "Artificial Vision"],
         },
         { title: "Finace & Accounting" },
         { title: "IT & Software" },
-        { title: "Design" },
+        { title: "Design", items: ["UI/UX"] },
         { title: "Marketing" },
         { title: "Lifestyle" },
-        { title: "Photography" }
+        { title: "Photography" },
       ],
       dialog: false,
       menu: false,
@@ -270,7 +274,7 @@ export default {
       entries: [],
       isLoading: false,
       searchModel: "",
-      search: null
+      search: null,
     };
   },
   computed: {
@@ -278,7 +282,7 @@ export default {
       return this.$store.getters.isUserLoggedIn;
     },
     results() {
-      return this.entries.map(entry => {
+      return this.entries.map((entry) => {
         return Object.assign({}, entry);
       });
     },
@@ -286,7 +290,7 @@ export default {
       const user = localStorage.getItem("user");
       const userObj = JSON.parse(user);
       return userObj;
-    }
+    },
   },
   watch: {
     search(val) {
@@ -298,18 +302,18 @@ export default {
 
       axios
         .get(`http://localhost:5000/api/v1/camps?name=${val}`)
-        .then(response => {
+        .then((response) => {
           this.entries = response.data.results;
           this.isLoading = false;
           console.log(response.data.results);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err.message);
         })
         .finally(() => {
           this.isLoading = false;
         });
-    }
+    },
   },
   methods: {
     logout() {
@@ -320,8 +324,8 @@ export default {
     },
     redirect() {
       router.push(`/view/${this.searchModel}`);
-    }
-  }
+    },
+  },
 };
 </script>
 

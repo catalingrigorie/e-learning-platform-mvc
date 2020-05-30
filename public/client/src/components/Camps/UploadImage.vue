@@ -28,8 +28,8 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="dialog = false">No</v-btn>
-        <v-btn color="blue darken-1" text @click="uploadImage">Yes</v-btn>
+        <v-btn color="blue darken-1" text @click="dialog = false">Cancel</v-btn>
+        <v-btn color="blue darken-1" text @click="uploadImage">Upload</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -37,27 +37,28 @@
 
 <script>
 import { CampsService } from "../../services/api";
-// import router from "../router/index";
 export default {
   data() {
     return {
       image: null,
       dialog: false,
       loading: false,
+      snackbar: true,
+      snackBarMsg: null,
       rules: {
-        image: value =>
+        image: (value) =>
           !value ||
           value.size < 2000000 ||
           "Image size should be less than 2 MB!",
-        extension: value => {
+        extension: (value) => {
           const allowedImages = ["image/jpeg", "image/jpg", "image/png"];
           if (value) {
             if (!allowedImages.includes(value.type)) {
-              return "That's not an image file" || "";
+              return "That's not an image file";
             }
           }
-        }
-      }
+        },
+      },
     };
   },
   methods: {
@@ -72,13 +73,15 @@ export default {
 
       try {
         await CampsService.uploadPhoto(id, formData);
-        //   router.go(-1);
+        this.snackBarMsg = "Success";
       } catch (error) {
         console.log(error);
+        this.snackBarMsg = error.message;
       } finally {
+        this.dialog = false;
         this.loading = false;
       }
-    }
-  }
+    },
+  },
 };
 </script>
