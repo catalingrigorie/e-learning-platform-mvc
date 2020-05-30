@@ -60,6 +60,7 @@
               <v-divider class="mx-4" vertical></v-divider>
 
               <v-autocomplete
+              
                 v-model="searchModel"
                 :items="results"
                 :loading="isLoading"
@@ -97,7 +98,7 @@
                 color="primary"
                 class="mr-5"
                 v-if="
-                  isAuthenticated &&
+                  isAuthenticated && getUser != null &&
                     this.$route.path !== '/create' &&
                     getUser.role == 'publisher'
                 "
@@ -129,7 +130,7 @@
                         />
                       </v-list-item-avatar>
 
-                      <v-list-item-content>
+                      <v-list-item-content v-if="getUser != null">
                         <v-list-item-title>{{
                           getUser.name
                         }}</v-list-item-title>

@@ -26,7 +26,6 @@ router
   .get(getReview)
   .delete(
     protect,
-    access("user", "admin", "publisher"),
     checkOwnership(Review),
     deleteReview
   );
