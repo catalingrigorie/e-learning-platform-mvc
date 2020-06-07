@@ -1,7 +1,7 @@
 <template>
   <v-container style="background-color: rgb(236, 236, 236)" fluid>
     <Map
-      v-if="this.camp !== ''"
+      v-if="this.camp !== '' && this.camp.location.coordinates"
       :lat="Number(this.camp.location.coordinates[1])"
       :lng="Number(this.camp.location.coordinates[0])"
     />
@@ -57,7 +57,7 @@
                         <v-list-item>
                           <v-list-item-content>
                             <v-list-item-title>
-                              Publisher E-Mail Address
+                              E-Mail Address
                             </v-list-item-title>
                           </v-list-item-content>
                           <v-list-item-action>
@@ -66,9 +66,11 @@
                             </span>
                           </v-list-item-action>
                         </v-list-item>
-                        <v-divider></v-divider>
+                        <v-divider
+                          v-if="camp.location != undefined"
+                        ></v-divider>
 
-                        <v-list-item>
+                        <v-list-item v-if="camp.location != undefined">
                           <v-list-item-content>
                             <v-list-item-title>
                               Location
@@ -77,6 +79,21 @@
                           <v-list-item-action>
                             <span class="body-1">
                               {{ camp.location.formattedAddress }}
+                            </span>
+                          </v-list-item-action>
+                        </v-list-item>
+
+                        <v-divider></v-divider>
+
+                        <v-list-item>
+                          <v-list-item-content>
+                            <v-list-item-title>
+                              Start Date
+                            </v-list-item-title>
+                          </v-list-item-content>
+                          <v-list-item-action>
+                            <span class="body-1">
+                              {{ getStartDate }}
                             </span>
                           </v-list-item-action>
                         </v-list-item>
@@ -276,6 +293,17 @@ export default {
         return { title: el.title, _id: el._id };
       });
       return coursesArr;
+    },
+    getStartDate() {
+      const startDate = new Date(this.camp.startDate);
+      const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
+
+      return startDate.toLocaleDateString(undefined, options);
     },
   },
   methods: {

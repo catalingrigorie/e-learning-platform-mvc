@@ -1,34 +1,45 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <v-col cols="12" xl="11">
+      <v-col cols="12" xl="10">
         <v-card flat>
-          <v-row dense justify="start">
-            <v-col cols="12" sm="4">
-              <v-container class="mt-5">
-                <h2 class="headline">Popular Bootcamps by category</h2>
-              </v-container>
-            </v-col>
-          </v-row>
+          <v-card-title>
+            Popular Bootcamps by category
+          </v-card-title>
+          <v-tabs centered v-model="tab" background-color="white">
+            <v-tab
+              v-for="item in items"
+              :key="item.tab"
+              @click="fetch(item.tab)"
+            >
+              {{ item.tab }}
+            </v-tab>
+          </v-tabs>
+
+          <v-tabs-items v-model="tab">
+            <v-tab-item
+              transition="-"
+              reverse-transition="-"
+              v-for="item in items"
+              :key="item.tab"
+            >
+              <v-sheet v-if="loading" style="height: 433px" class="text-center">
+                <v-progress-circular
+                  indeterminate
+                  color="primary"
+                ></v-progress-circular>
+              </v-sheet>
+              <CampsGrid
+                v-else
+                :camps="camps"
+                imgHeight="200"
+                truncate="text-truncate"
+              />
+            </v-tab-item>
+          </v-tabs-items>
         </v-card>
       </v-col>
     </v-row>
-
-    <v-card flat>
-      <v-container>
-        <v-tabs class="pl-10 pr-10" v-model="tab" background-color="white">
-          <v-tab v-for="item in items" :key="item.tab" @click="fetch(item.tab)">
-            {{ item.tab }}
-          </v-tab>
-        </v-tabs>
-      </v-container>
-
-      <v-tabs-items v-model="tab">
-        <v-tab-item v-for="item in items" :key="item.tab">
-          <CampsGrid :camps="camps" imgHeight="200" truncate="text-truncate" />
-        </v-tab-item>
-      </v-tabs-items>
-    </v-card>
   </v-container>
 </template>
 
@@ -41,17 +52,17 @@ export default {
     return {
       camps: null,
       tab: null,
+      loading: false,
       items: [
-        { tab: "Web Development", content: "Tab 1 Content" },
-        { tab: "Mobile Development", content: "Tab 2 Content" },
-        { tab: "Software Development", content: "Tab 3 Content" },
-        { tab: "Robotics", content: "Tab 4 Content" },
-        { tab: "Mechatronics", content: "Tab 5 Content" },
-        { tab: "Data Science", content: "Tab 6 Content" },
-        { tab: "UI/UX", content: "Tab 7 Content" },
-        { tab: "Marketing", content: "Tab 8 Content" },
-        { tab: "Lifestyle", content: "Tab 9 Content" },
-        { tab: "Photography", content: "Tab 10 Content" },
+        { tab: "Web Development" },
+        { tab: "Mobile Development" },
+        { tab: "Software Development" },
+        { tab: "Robotics and Mechatronics" },
+        { tab: "Data Science" },
+        { tab: "UI/UX" },
+        { tab: "Marketing" },
+        { tab: "Lifestyle" },
+        { tab: "Photography" },
       ],
     };
   },
@@ -63,6 +74,7 @@ export default {
     async fetch(id) {
       let careerType = id;
       let query = "averageRating[gte]=4";
+      this.loading = true;
 
       try {
         this.camps = (
@@ -70,6 +82,8 @@ export default {
         ).data.results;
       } catch (error) {
         console.log(this.tab);
+      } finally {
+        this.loading = false;
       }
     },
   },

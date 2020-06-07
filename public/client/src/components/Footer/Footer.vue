@@ -30,6 +30,7 @@
             v-for="(link, index) in links"
             :key="index"
             cols="12"
+            sm="4"
             lg="4"
             xl="3"
           >
@@ -39,18 +40,20 @@
 
         <v-divider class="ma-3"></v-divider>
 
-        <v-row dense justify="center">
+        <v-row dense align="center" justify="center">
           <v-col cols="12" class="mt-auto">
             <v-card elevation="0">
-              <v-card-title class="">
-                <v-btn v-for="icon in icons" :key="icon" class="mx-4" icon>
-                  <v-icon size="24px">{{ icon }}</v-icon>
-                </v-btn>
-              </v-card-title>
+              <v-row align="center" justify="center">
+                <v-card-title class="">
+                  <v-btn v-for="icon in icons" :key="icon" class="mx-4" icon>
+                    <v-icon size="24px">{{ icon }}</v-icon>
+                  </v-btn>
+                </v-card-title>
+              </v-row>
             </v-card>
           </v-col>
           <v-col cols="12" sm="4">
-            <v-card elevation="0" dense>
+            <v-card elevation="0">
               <p class="text-center">
                 {{ new Date().getFullYear() }} —
                 <strong>E-Learning Platform</strong>
@@ -83,7 +86,7 @@ export default {
         "Featured camps",
         "Featured camps",
         "Featured camps",
-        "Featured camps"
+        "Featured camps",
       ],
       items: 4,
       icons: [
@@ -91,10 +94,10 @@ export default {
         "mdi-twitter",
         "mdi-google-plus",
         "mdi-linkedin",
-        "mdi-instagram"
-      ]
+        "mdi-instagram",
+      ],
     };
-  }
+  },
 };
 </script>
 

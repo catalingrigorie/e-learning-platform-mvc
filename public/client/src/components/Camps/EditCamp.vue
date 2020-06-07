@@ -58,12 +58,11 @@
                   v-model="camp.phone"
                 />
               </v-col>
-              <v-col cols="12" sm="6">
+              <v-col v-if="camp.location != undefined" cols="12" sm="6">
                 <v-text-field
-                  disabled
                   label="Address"
                   v-if="camp.location.formattedAddress"
-                  v-model="camp.location.formattedAddress"
+                  v-model="camp.address"
                   name="address"
                   type="text"
                   :rules="[rules.required]"

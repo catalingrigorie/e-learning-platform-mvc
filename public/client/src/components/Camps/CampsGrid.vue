@@ -28,12 +28,7 @@
 
                 <v-card-text class="text--primary">
                   <div>
-                    <span
-                      class="d-block"
-                      :class="truncate"
-                      style="truncate ? max-width: inherit : ''; white-space: pre-line;"
-                      >{{ camp.description }}</span
-                    >
+                    <span class="ellipsis">{{ camp.description }}</span>
                   </div>
                 </v-card-text>
 
@@ -96,4 +91,14 @@ export default {
 };
 </script>
 
-<style lang="css"></style>
+<style lang="css">
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: initial;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <v-content class="">
+  <v-content>
     <Navigation />
     <Parallax
       height="550"
@@ -32,12 +32,13 @@ export default {
     Parallax,
     Cards,
     Footer,
-    Categories
+    Categories,
   },
 
   data() {
     return {
-      message: "You registered your account successfully and are now logged in!"
+      message:
+        "You registered your account successfully and are now logged in!",
     };
   },
   created() {
@@ -46,12 +47,12 @@ export default {
   methods: {
     closeSnackbar() {
       this.$store.dispatch("closeSnackbar");
-    }
+    },
   },
   computed: {
     accountCreated() {
       return this.$store.getters.accountCreated;
-    }
-  }
+    },
+  },
 };
 </script>

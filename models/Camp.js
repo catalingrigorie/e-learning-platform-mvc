@@ -37,7 +37,6 @@ const CampSchema = new mongoose.Schema(
     },
     address: {
       type: String,
-      required: [true, "Please add an address"],
     },
     location: {
       type: {
@@ -70,6 +69,7 @@ const CampSchema = new mongoose.Schema(
         "Data Analysis",
         "Artificial Intelligence",
         "Business",
+        "Robotics and Mechatronics",
       ],
     },
     averageRating: {
@@ -99,6 +99,9 @@ const CampSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    startDate: {
+      type: Date,
+    },
   },
   {
     toJSON: { virtuals: true },
@@ -111,6 +114,15 @@ CampSchema.pre("save", function () {
 });
 
 CampSchema.pre("save", async function (next) {
+  if (this.address == "") {
+    this.location = {
+      formattedAddress: "Remote",
+    };
+
+    this.address = undefined;
+    return;
+  }
+
   const location = await geocoder.geocode(this.address);
   this.location = {
     type: "Point",

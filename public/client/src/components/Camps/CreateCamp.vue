@@ -42,6 +42,42 @@
                   v-model="website"
                 />
 
+                <v-menu
+                  ref="menu"
+                  v-model="menu"
+                  :close-on-content-click="false"
+                  :return-value.sync="startDate"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="startDate"
+                      label="Start Date"
+                      readonly
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    :min="minDate"
+                    v-model="startDate"
+                    no-title
+                    scrollable
+                  >
+                    <v-spacer></v-spacer>
+                    <v-btn text color="primary" @click="menu = false"
+                      >Cancel</v-btn
+                    >
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="$refs.menu.save(startDate)"
+                      >OK</v-btn
+                    >
+                  </v-date-picker>
+                </v-menu>
+
                 <!-- :rules="[rules.website]" -->
 
                 <v-text-field
@@ -55,21 +91,18 @@
                   label="Address"
                   v-model="address"
                   name="address"
+                  hint="Enter the address where the bootcamp will take place, leave blank if it's remote."
+                  persistent-hint
                   type="text"
-                  :rules="[rules.required]"
                 />
-                <!-- <v-select
-                  :items="fields"
-                  label="Careers"
-                  v-model="careers"
-                ></v-select> -->
+
                 <v-select
                   v-model="careers"
-                  :items="fields"
+                  :items="sortedFields"
                   :menu-props="{ maxHeight: '400' }"
                   label="Careers"
                   multiple
-                  hint="Select all relevant careers"
+                  hint="Select all relevant careers."
                   persistent-hint
                   :rules="[rules.selected]"
                 ></v-select>
@@ -107,6 +140,18 @@
 import { CampsService } from "../../services/api";
 import router from "../../router/index";
 export default {
+  computed: {
+    sortedFields() {
+      return this.fields.slice().sort((a, b) => {
+        return a > b ? 1 : -1;
+      });
+    },
+    minDate() {
+      let date = new Date();
+      date.setTime(date.getTime() + 1000 * 60 * 60 * 24);
+      return date.toISOString().substr(0, 10);
+    },
+  },
   data() {
     return {
       fields: [
@@ -115,10 +160,15 @@ export default {
         "Web Development",
         "Mobile Development",
         "UI/UX",
-        "Data Science",
+        "Machine Learning",
+        "Data Analysis",
+        "Artificial Intelligence",
+        "Artificial Vision",
         "Business",
-        "Other",
       ],
+      menu: false,
+      modal: false,
+      startDate: null,
       name: "",
       token: null,
       description: "",
@@ -150,6 +200,7 @@ export default {
           description: this.description,
           website: this.website,
           phone: this.phone,
+          startDate: this.startDate,
           email: this.email,
           address: this.address,
           careers: this.careers,
