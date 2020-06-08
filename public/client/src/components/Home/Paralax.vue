@@ -15,8 +15,8 @@
                   <h2
                     class=" subheading white--text font-weight-medium text-left mb-4"
                   >
-                    Study any topic, anytime. Choose from thousands of
-                    expert-led courses now.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Sunt, atque?
                   </h2>
 
                   <Autocomplete />
@@ -77,18 +77,18 @@ export default {
       messages: [
         {
           icon: "",
-          title: "50,000 Courses",
+          title: "1000 Bootcamps",
           desc: "Explore a variety of topics",
         },
         {
           icon: "",
           title: "Trusted Publishers",
-          desc: "Over 20,000 Camps rated 5+",
+          desc: "Over 200 Bootcamps rated 5+",
         },
         {
           icon: "",
           title: "Quality Courses",
-          desc: "Over 10,000 satisfied students",
+          desc: "Over 5,000 satisfied students",
         },
       ],
     };

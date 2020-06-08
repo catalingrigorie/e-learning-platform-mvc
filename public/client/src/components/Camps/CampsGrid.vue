@@ -48,7 +48,7 @@
         </v-col>
         <v-row v-if="camps == null && loaders">
           <v-col
-            v-for="(n, index) in 10"
+            v-for="(n, index) in 4"
             :key="index"
             cols="12"
             xl="3"
@@ -57,7 +57,7 @@
           >
             <v-skeleton-loader
               class="mx-auto"
-              max-width="340"
+              max-width="370"
               type="card, article, actions"
             ></v-skeleton-loader>
           </v-col>

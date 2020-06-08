@@ -119,27 +119,7 @@
                             </v-btn>
                           </v-list-item-action>
                         </v-list-item>
-                        <v-divider></v-divider>
 
-                        <v-list-item>
-                          <v-list-item-content>
-                            <v-list-item-title>
-                              Job Guarantee
-                            </v-list-item-title>
-                          </v-list-item-content>
-                          <v-list-item-action>
-                            <v-btn v-if="camp.jobGuarantee" icon color="green">
-                              <v-icon>
-                                mdi-checkbox-marked-circle
-                              </v-icon>
-                            </v-btn>
-                            <v-btn v-else icon color="red">
-                              <v-icon>
-                                mdi-close-circle
-                              </v-icon>
-                            </v-btn>
-                          </v-list-item-action>
-                        </v-list-item>
                         <v-divider></v-divider>
 
                         <v-list-item v-if="camp.averageRating">

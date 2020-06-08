@@ -43,48 +43,48 @@ export default {
     return {
       categories: [
         {
-          title: "Robotics & Mechatronics",
+          title: "Mechatronics",
           subtitle:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi dolorem impedit assumenda quos totam, voluptates laudantium sunt dolore voluptatibus repellendus porro nobis itaque eligendi nostrum!"
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi dolorem impedit assumenda quos totam, voluptates laudantium sunt dolore voluptatibus repellendus porro nobis itaque eligendi nostrum!",
+        },
+        {
+          title: "Robotics",
+          subtitle:
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi dolorem impedit assumenda quos totam, voluptates laudantium sunt dolore voluptatibus repellendus porro nobis itaque eligendi nostrum!",
         },
         {
           title: "Web Development",
           subtitle:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi dolorem impedit assumenda quos totam, voluptates laudantium sunt dolore voluptatibus repellendus porro nobis itaque eligendi nostrum!"
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi dolorem impedit assumenda quos totam, voluptates laudantium sunt dolore voluptatibus repellendus porro nobis itaque eligendi nostrum!",
         },
         {
           title: "Mobile Development",
           subtitle:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi dolorem impedit assumenda quos totam, voluptates laudantium sunt dolore voluptatibus repellendus porro nobis itaque eligendi nostrum!"
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi dolorem impedit assumenda quos totam, voluptates laudantium sunt dolore voluptatibus repellendus porro nobis itaque eligendi nostrum!",
         },
         {
-          title: "Business",
+          title: "Software Development",
           subtitle:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi dolorem impedit assumenda quos totam, voluptates laudantium sunt dolore voluptatibus repellendus porro nobis itaque eligendi nostrum!"
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi dolorem impedit assumenda quos totam, voluptates laudantium sunt dolore voluptatibus repellendus porro nobis itaque eligendi nostrum!",
         },
         {
-          title: "IT & Software",
+          title: "Networking",
           subtitle:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi dolorem impedit assumenda quos totam, voluptates laudantium sunt dolore voluptatibus repellendus porro nobis itaque eligendi nostrum!"
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi dolorem impedit assumenda quos totam, voluptates laudantium sunt dolore voluptatibus repellendus porro nobis itaque eligendi nostrum!",
         },
         {
-          title: "Marketing",
+          title: "Digital Marketing",
           subtitle:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi dolorem impedit assumenda quos totam, voluptates laudantium sunt dolore voluptatibus repellendus porro nobis itaque eligendi nostrum!"
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi dolorem impedit assumenda quos totam, voluptates laudantium sunt dolore voluptatibus repellendus porro nobis itaque eligendi nostrum!",
         },
         {
-          title: "Lifestyle",
+          title: "Artificial Intelligence",
           subtitle:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi dolorem impedit assumenda quos totam, voluptates laudantium sunt dolore voluptatibus repellendus porro nobis itaque eligendi nostrum!"
+            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi dolorem impedit assumenda quos totam, voluptates laudantium sunt dolore voluptatibus repellendus porro nobis itaque eligendi nostrum!",
         },
-        {
-          title: "Photography",
-          subtitle:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi dolorem impedit assumenda quos totam, voluptates laudantium sunt dolore voluptatibus repellendus porro nobis itaque eligendi nostrum!"
-        }
-      ]
+      ],
     };
-  }
+  },
 };
 </script>
 

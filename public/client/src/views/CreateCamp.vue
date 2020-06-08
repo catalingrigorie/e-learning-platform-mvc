@@ -21,19 +21,6 @@ export default {
   data() {
     return {
       camps: null,
-      fields: [
-        "Robotics",
-        "Mechatronics",
-        "Software Development",
-        "Web Development",
-        "Mobile Development",
-        "UI/UX",
-        "Business",
-        "Machine Learning",
-        "Data Analysis",
-        "Artificial Intelligence",
-        "Artificial Vision",
-      ],
     };
   },
   methods: {},

@@ -68,8 +68,8 @@ const CampSchema = new mongoose.Schema(
         "Machine Learning",
         "Data Analysis",
         "Artificial Intelligence",
-        "Business",
         "Robotics and Mechatronics",
+        "Networking",
       ],
     },
     averageRating: {
@@ -83,10 +83,6 @@ const CampSchema = new mongoose.Schema(
       default: "no-photo.jpg",
     },
     jobAssistance: {
-      type: Boolean,
-      default: false,
-    },
-    jobGuarantee: {
       type: Boolean,
       default: false,
     },

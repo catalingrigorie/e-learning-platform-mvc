@@ -5,7 +5,7 @@
         <v-col cols="12" sm="12" md="8" lg="4" xl="5">
           <v-card outlined>
             <v-card-title class="linear-gradient">
-              Create Camp
+              New Bootcamp
             </v-card-title>
             <v-card-text class="pa-7">
               <v-form ref="form" v-model="valid">
@@ -113,12 +113,6 @@
                   hint="Does the bootcamp offer assistance in getting a job?"
                   persistent-hint
                 ></v-checkbox>
-                <v-checkbox
-                  v-model="JobGuarantee"
-                  label="Job Guarantee"
-                  hint="Does the bootcamp offer a guaranteed job?"
-                  persistent-hint
-                ></v-checkbox>
 
                 <v-btn
                   :disabled="!valid"
@@ -156,6 +150,8 @@ export default {
     return {
       fields: [
         "Robotics and Mechatronics",
+        "Robotics",
+        "Mechatronics",
         "Software Development",
         "Web Development",
         "Mobile Development",
@@ -164,7 +160,8 @@ export default {
         "Data Analysis",
         "Artificial Intelligence",
         "Artificial Vision",
-        "Business",
+        "Networking",
+        "Digital Marketing",
       ],
       menu: false,
       modal: false,
@@ -179,7 +176,6 @@ export default {
       careers: [],
       image: "",
       jobAssistance: false,
-      JobGuarantee: false,
       valid: true,
       rules: {
         required: (value) => !!value || "Required.",
@@ -205,7 +201,6 @@ export default {
           address: this.address,
           careers: this.careers,
           jobAssistance: this.jobAssistance,
-          JobGuarantee: this.JobGuarantee,
         };
 
         try {

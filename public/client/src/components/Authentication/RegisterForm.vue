@@ -36,16 +36,12 @@
                 :rules="[rules.required]"
                 v-model="role"
                 :mandatory="true"
-                label="What are you here for ?"
+                label="Account Type"
               >
+                <v-radio class="mt-2" label="User" value="user"></v-radio>
                 <v-radio
                   class="mt-2"
-                  label="I want to find new things to learn!"
-                  value="user"
-                ></v-radio>
-                <v-radio
-                  class="mt-2"
-                  label="I want to publish courses and teach!"
+                  label="Publisher"
                   value="publisher"
                 ></v-radio>
               </v-radio-group>
@@ -90,7 +86,7 @@ export default {
   computed: {
     checkErorrs() {
       return this.$store.getters.checkErorrs;
-    }
+    },
   },
   data() {
     return {
@@ -101,14 +97,14 @@ export default {
       errors: "",
       valid: true,
       rules: {
-        required: value => !!value || "Required.",
-        minLength: value =>
+        required: (value) => !!value || "Required.",
+        minLength: (value) =>
           value.length >= 6 || "Minimum 6 characters required",
-        email: value => {
+        email: (value) => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "Invalid e-mail.";
-        }
-      }
+        },
+      },
     };
   },
   methods: {
@@ -119,17 +115,17 @@ export default {
             email: this.email,
             password: this.password,
             role: this.role,
-            name: this.name
+            name: this.name,
           });
         } catch (error) {
           this.errors = error.response.data.error;
         }
       }
-    }
+    },
   },
   created() {
     this.$emit("update:layout", loginLayout);
-  }
+  },
 };
 </script>
 

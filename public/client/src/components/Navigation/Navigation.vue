@@ -81,7 +81,7 @@
               "
               @click="createCamp"
             >
-              Create Camp
+              Create
             </v-btn>
             <v-menu
               v-model="menu"
@@ -218,6 +218,10 @@ export default {
           ],
         },
         {
+          title: "Robotics & Mechatronics",
+          items: ["Robotics", "Mechatronics", "Artificial Vision"],
+        },
+        {
           title: "Data Science",
           items: [
             "Machine Learning",
@@ -225,16 +229,10 @@ export default {
             "Artificial Intelligence",
           ],
         },
-        {
-          title: "Robotics & Mechatronics",
-          items: ["Robotics", "Mechatronics", "Artificial Vision"],
-        },
-        { title: "Finace & Accounting" },
-        { title: "IT & Software" },
-        { title: "Design", items: ["UI/UX"] },
-        { title: "Marketing" },
-        { title: "Lifestyle" },
-        { title: "Photography" },
+
+        { title: "IT & Software", items: ["Networking"] },
+        { title: "Design", items: ["User Interface", "User Experience"] },
+        { title: "Marketing", items: ["Digital Marketing"] },
       ],
       dialog: false,
       menu: false,

@@ -60,9 +60,10 @@
               </v-col>
               <v-col v-if="camp.location != undefined" cols="12" sm="6">
                 <v-text-field
+                  disabled
                   label="Address"
                   v-if="camp.location.formattedAddress"
-                  v-model="camp.address"
+                  v-model="camp.location.formattedAddress"
                   name="address"
                   type="text"
                   :rules="[rules.required]"
@@ -85,14 +86,6 @@
                   v-model="camp.jobAssistance"
                   label="Job Assistance"
                   hint="Does the bootcamp offer assistance in getting a job?"
-                  persistent-hint
-                ></v-checkbox>
-              </v-col>
-              <v-col cols="122">
-                <v-checkbox
-                  v-model="camp.JobGuarantee"
-                  label="Job Guarantee"
-                  hint="Does the bootcamp offer a guaranteed job?"
                   persistent-hint
                 ></v-checkbox>
               </v-col>
@@ -155,7 +148,6 @@ export default {
           address: this.camp.address,
           careers: this.camp.careers,
           jobAssistance: this.camp.jobAssistance,
-          jobGuarantee: this.camp.jobGuarantee,
         };
 
         try {
