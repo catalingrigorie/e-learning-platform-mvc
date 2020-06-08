@@ -1,12 +1,12 @@
 <template>
   <v-container fluid no-gutters class="pa-0">
     <v-row no-gutters>
-      <v-col cols="12" sm="8" xl="12">
+      <v-col cols="12" sm="8" md="12" xl="12">
         <v-parallax dark :src="imgSrc" :height="height">
           <v-card elevation="0" color="transparent">
             <v-container>
               <v-row class="ml-10 pl-15" justify="start">
-                <v-col xl="4">
+                <v-col sm="4" xl="4" lg="4">
                   <h1
                     class=" display-1 text-left white--text font-weight-medium mb-4"
                   >

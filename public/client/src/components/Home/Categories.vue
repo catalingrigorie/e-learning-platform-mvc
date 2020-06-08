@@ -4,13 +4,13 @@
     fluid
   >
     <v-container>
-      <v-row no-guters justify="center">
+      <v-row no-guters justify="center" align="center">
         <v-col cols="12" xl="11">
           <v-card color="transparent" flat>
             <v-container fluid>
               <h1 class="headline white--text">Top Categories</h1>
 
-              <v-row color="transparent">
+              <v-row  align="center" color="transparent">
                 <v-col
                   v-for="category in categories"
                   :key="category.title"
@@ -22,6 +22,7 @@
                   <v-card
                     :to="{ name: 'Camps', params: { query: category.title } }"
                     hover
+                    width="300"
                   >
                     <v-card-text class="text-center pa-2">
                       <h2 class="headline pa-2">{{ category.title }}</h2>

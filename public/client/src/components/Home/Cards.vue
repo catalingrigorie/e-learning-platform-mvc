@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <v-col cols="12" xl="10">
+      <v-col cols="12" xl="10" md="8">
         <v-card flat>
           <v-card-title>
             Popular Bootcamps by category
