@@ -18,7 +18,7 @@
     <v-container>
       <v-row justify="center">
         <v-col cols="12" lg="9">
-          <v-card class="pa-5" flat elevation="0">
+          <v-card class="pa-5" text elevation="0">
             <v-card-title class="display-2">{{ camp.name }} </v-card-title>
             <v-rating
               class="pl-2"
@@ -36,7 +36,7 @@
                   Camp
                 </v-tab>
                 <v-tab-item>
-                  <v-card v-if="this.camp !== ''" outlined flat elevation="0">
+                  <v-card v-if="this.camp !== ''" outlined text elevation="0">
                     <v-card-text>
                       <v-list dense>
                         <v-divider></v-divider>

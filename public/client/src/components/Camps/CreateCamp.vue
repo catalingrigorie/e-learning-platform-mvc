@@ -97,13 +97,21 @@
                 />
 
                 <v-select
-                  v-model="careers"
-                  :items="sortedFields"
+                  v-model="category"
+                  :items="getCategories"
+                  label="Category"
                   :menu-props="{ maxHeight: '400' }"
-                  label="Careers"
+                  hint="Select Category"
+                  :rules="[rules.selected]"
+                ></v-select>
+
+                <v-select
+                  v-if="this.category != null"
+                  v-model="careers"
+                  :items="getCareers"
+                  :menu-props="{ maxHeight: '400' }"
+                  label="Select Careers"
                   multiple
-                  hint="Select all relevant careers."
-                  persistent-hint
                   :rules="[rules.selected]"
                 ></v-select>
 
@@ -135,10 +143,31 @@ import { CampsService } from "../../services/api";
 import router from "../../router/index";
 export default {
   computed: {
-    sortedFields() {
-      return this.fields.slice().sort((a, b) => {
-        return a > b ? 1 : -1;
+    // sortedFields() {
+    //   return this.categories.slice().sort((a, b) => {
+    //     return a > b ? 1 : -1;
+    //   });
+    // },
+    getCategories() {
+      const categories = this.categories.slice();
+
+      return categories.map((el) => {
+        return el.title;
       });
+    },
+    getCareers() {
+      const careers = this.categories.slice();
+      const careersArr = [];
+
+      careers.map((el) => {
+        if (el.title == this.category) {
+          for (let key in el.items) {
+            careersArr.push(key);
+          }
+        }
+      });
+
+      return careersArr;
     },
     minDate() {
       let date = new Date();
@@ -148,21 +177,42 @@ export default {
   },
   data() {
     return {
-      fields: [
-        "Robotics and Mechatronics",
-        "Robotics",
-        "Mechatronics",
-        "Software Development",
-        "Web Development",
-        "Mobile Development",
-        "UI/UX",
-        "Machine Learning",
-        "Data Analysis",
-        "Artificial Intelligence",
-        "Artificial Vision",
-        "Networking",
-        "Digital Marketing",
+      categories: [
+        {
+          title: "Software Development",
+          items: {
+            "Mobile Development": "Mobile Development",
+            "Web Development": "Web Development",
+            "Desktop Applications": "Desktop Applications",
+          },
+        },
+        {
+          title: "Robotics & Mechatronics",
+          items: {
+            Robotics: "Robotics",
+            Mechatronics: "Mechatronics",
+            "Artificial Vision": "Artificial Vision",
+            "Artificial Intelligence": "Artificial Intelligence",
+            "Programmable Logic Controller": "Programmable Logic Controller",
+          },
+        },
+        {
+          title: "IT & Software",
+          items: {
+            "Networking & Security": "Networking & Security",
+            "Operating Systems": "Operating Systems",
+            Hardware: "Hardware",
+          },
+        },
+        {
+          title: "Design",
+          items: {
+            "Web Design": "Web Design",
+            "Graphic Design": "Graphic Design",
+          },
+        },
       ],
+
       menu: false,
       modal: false,
       startDate: null,
@@ -173,6 +223,7 @@ export default {
       phone: "",
       email: "",
       address: "",
+      category: null,
       careers: [],
       image: "",
       jobAssistance: false,
@@ -213,12 +264,15 @@ export default {
     },
   },
   beforeCreate() {
-    const allowedRoles = "publisher" || "admin";
+    const allowedRoles = ["publisher", "admin"];
     let user = localStorage.getItem("user");
     let currentUserRole = JSON.parse(user).role;
 
+    console.log(currentUserRole);
+
     if (!allowedRoles.includes(currentUserRole)) {
       router.replace("/");
+      console.log("Not allowed");
     }
   },
 };

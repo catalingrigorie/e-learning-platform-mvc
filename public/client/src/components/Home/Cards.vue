@@ -2,26 +2,32 @@
   <v-container fluid>
     <v-row justify="center">
       <v-col cols="12" xl="10" md="8">
-        <v-card flat>
+        <v-card elevation="0" text>
           <v-card-title>
-            Popular Bootcamps by category
+            {{
+              getLang == "Romana"
+                ? "Topicuri populare dupa categorie"
+                : "Popular Bootcamps by category"
+            }}
           </v-card-title>
           <v-tabs centered v-model="tab" background-color="white">
-            <v-tab
-              v-for="item in items"
-              :key="item.tab"
-              @click="fetch(item.tab)"
-            >
-              {{ item.tab }}
-            </v-tab>
+            <template v-for="item in items[getLang]">
+              <v-tab
+                v-for="(name, index) in item.tab"
+                :key="index"
+                @click="fetch(name)"
+              >
+                <span :key="item.tab + index">{{ index }}</span>
+              </v-tab>
+            </template>
           </v-tabs>
 
           <v-tabs-items v-model="tab">
             <v-tab-item
               transition="-"
               reverse-transition="-"
-              v-for="item in items"
-              :key="item.tab"
+              v-for="(item, index) in items[getLang]"
+              :key="index + item.tab"
             >
               <v-sheet v-if="loading" style="height: 433px" class="text-center">
                 <v-progress-circular
@@ -53,18 +59,92 @@ export default {
       camps: null,
       tab: null,
       loading: false,
-      items: [
-        { tab: "Web Development" },
-        { tab: "Mobile Development" },
-        { tab: "Software Development" },
-        { tab: "Robotics" },
-        { tab: "Mechatronics" },
-        { tab: "Machine Learning" },
-        { tab: "Data Analysis" },
-        { tab: "Artificial Inteligence" },
-        { tab: "Networking" },
-        { tab: "Digial Marketing" },
-      ],
+      items: {
+        English: [
+          {
+            tab: {
+              Mechatronics: "Mechatronics",
+            },
+          },
+          {
+            tab: {
+              Robotics: "Robotics",
+            },
+          },
+          {
+            tab: {
+              "Web Development": "Web Development",
+            },
+          },
+          {
+            tab: {
+              "Mobile Development": "Mobile Development",
+            },
+          },
+          {
+            tab: {
+              "Desktop Applications": "Desktop Applications",
+            },
+          },
+          {
+            tab: {
+              "Artificial Intelligence": "Artificial Intelligence",
+            },
+          },
+          {
+            tab: {
+              "Networking & Security": "Networking & Security",
+            },
+          },
+          {
+            tab: {
+              "Artificial Vision": "Artificial Vision",
+            },
+          },
+        ],
+        Romana: [
+          {
+            tab: {
+              Mecatrnoica: "Mechatronics",
+            },
+          },
+          {
+            tab: {
+              Robotica: "Robotics",
+            },
+          },
+          {
+            tab: {
+              "Programare Web": "Web Development",
+            },
+          },
+          {
+            tab: {
+              "Aplicatii Mobile": "Mobile Development",
+            },
+          },
+          {
+            tab: {
+              "Aplicatii Desktop": "Desktop Applications",
+            },
+          },
+          {
+            tab: {
+              "Inteligenta Artificiala": "Artificial Intelligence",
+            },
+          },
+          {
+            tab: {
+              "Retele si Securitate": "Networking",
+            },
+          },
+          {
+            tab: {
+              "Vedere Artificiala": "Artificial Vision",
+            },
+          },
+        ],
+      },
     };
   },
   components: {
@@ -89,9 +169,15 @@ export default {
     },
   },
 
+  computed: {
+    getLang() {
+      return this.$store.getters.getLang;
+    },
+  },
+
   async created() {
     let query = "averageRating[gte]=4";
-    let careerType = "Web Development";
+    let careerType = "Mechatronics";
 
     try {
       this.camps = (

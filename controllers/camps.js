@@ -185,7 +185,7 @@ exports.uploadImage = async (req, res, next) => {
 
     file.name = `image_${camp._id}${path.parse(file.name).ext}`;
 
-    file.mv(`${process.env.UPLOAD_PATH}/${file.name}`, async (error) => {
+    file.mv(`${process.env.IMAGE_UPLOAD_PATH}/${file.name}`, async (error) => {
       if (error) {
         console.error(error.message);
         return next(

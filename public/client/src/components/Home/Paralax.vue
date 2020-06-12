@@ -10,7 +10,11 @@
                   <h1
                     class=" display-1 text-left white--text font-weight-medium mb-4"
                   >
-                    Start learning today!
+                    {{
+                      getLang == "Romana"
+                        ? "Incepe sa inveti acum!"
+                        : "Start learning today!"
+                    }}
                   </h1>
                   <h2
                     class=" subheading white--text font-weight-medium text-left mb-4"
@@ -29,12 +33,7 @@
     </v-row>
     <v-row no-gutters>
       <v-col>
-        <v-card
-          style="background: rgb(251,63,63);
-background: linear-gradient(14deg, rgba(251,63,63,1) 0%, rgba(70,92,252,1) 100%);"
-          flat
-          elevation="0"
-        >
+        <v-card style="background: #204165" text elevation="0">
           <v-container class="">
             <v-row
               color="transparent"
@@ -43,12 +42,17 @@ background: linear-gradient(14deg, rgba(251,63,63,1) 0%, rgba(70,92,252,1) 100%)
               justify="center"
             >
               <v-col
-                v-for="message in messages"
+                v-for="message in messages[getLang]"
                 :key="message.title"
                 :cols="12"
                 sm="3"
               >
-                <v-card color="transparent" flat class="ma-0 pa-0">
+                <v-card
+                  color="transparent"
+                  elevation="0"
+                  text
+                  class="ma-0 pa-0"
+                >
                   <v-card-text class="text-center pa-2">
                     <v-icon class="mb-1" size="30" color="white">
                       mdi-checkbox-marked-circle
@@ -74,27 +78,48 @@ export default {
   props: ["imgSrc", "height"],
   data() {
     return {
-      messages: [
-        {
-          icon: "",
-          title: "1000 Bootcamps",
-          desc: "Explore a variety of topics",
-        },
-        {
-          icon: "",
-          title: "Trusted Publishers",
-          desc: "Over 200 Bootcamps rated 5+",
-        },
-        {
-          icon: "",
-          title: "Quality Courses",
-          desc: "Over 5,000 satisfied students",
-        },
-      ],
+      messages: {
+        English: [
+          {
+            icon: "",
+            title: "500+ Bootcamps",
+            desc: "Explore a variety of topics",
+          },
+          {
+            icon: "",
+            title: "Trusted Publishers",
+            desc: "Over 200 Bootcamps rated 5+",
+          },
+          {
+            icon: "",
+            title: "Quality Courses",
+            desc: "Over 5,000 satisfied students",
+          },
+        ],
+        Romana: [
+          {
+            title: "500+ Programe in care te poti inscrie!",
+            desc: "Explora o varietate de topicuri",
+          },
+          {
+            title: "Autori de incredere",
+            desc: "Peste 200 programe recenzii de peste 4 stele",
+          },
+          {
+            title: "Cursuri de calitate",
+            desc: "Peste 5,000 studenti satisfacuti",
+          },
+        ],
+      },
     };
   },
   components: {
     Autocomplete,
+  },
+  computed: {
+    getLang() {
+      return this.$store.getters.getLang;
+    },
   },
 };
 </script>

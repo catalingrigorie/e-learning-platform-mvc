@@ -10,7 +10,7 @@ export default new Vuex.Store({
     token: null,
     errors: null,
     registered: false,
-    user: null
+    user: null,
   },
   mutations: {
     authUser(state, userData) {
@@ -23,7 +23,10 @@ export default new Vuex.Store({
     },
     closeSnackbar(state) {
       state.registered = !state.registered;
-    }
+    },
+    languageChanged(state, lang) {
+      localStorage.setItem("preferedLang", lang);
+    },
   },
   actions: {
     async login({ commit }, data) {
@@ -32,12 +35,12 @@ export default new Vuex.Store({
       const userObj = filterObject(user, "password");
       localStorage.setItem("user", JSON.stringify(userObj));
       localStorage.setItem("token", token);
-
-      router.replace("/").catch(err => console.log(err));
       commit("authUser", {
         token: token,
-        user: userObj
+        user: userObj,
       });
+
+      router.go("/").catch((err) => console.log(err));
     },
     async logout({ commit }) {
       try {
@@ -54,7 +57,7 @@ export default new Vuex.Store({
       const token = localStorage.getItem("token");
       if (!token) return;
       commit("authUser", {
-        token: token
+        token: token,
       });
     },
     async register({ commit }, data) {
@@ -63,7 +66,7 @@ export default new Vuex.Store({
           email: data.email,
           password: data.password,
           role: data.role,
-          name: data.name
+          name: data.name,
         })
       ).data;
 
@@ -73,14 +76,17 @@ export default new Vuex.Store({
       localStorage.setItem("token", token);
 
       commit("authUser", {
-        token: token
+        token: token,
       });
       router.replace("/");
       this.state.registered = true;
     },
     closeSnackbar({ commit }) {
       commit("closeSnackbar");
-    }
+    },
+    changeLanguage({ commit }, lang) {
+      commit("languageChanged", lang);
+    },
   },
   getters: {
     isUserLoggedIn(state) {
@@ -91,11 +97,16 @@ export default new Vuex.Store({
     },
     getUser(state) {
       return state.user;
-    }
-  }
+    },
+    getLang() {
+      const lang = localStorage.getItem("preferedLang");
+      if (!lang) return "English";
+      return lang;
+    },
+  },
 });
 
 const filterObject = (object, field) =>
   Object.keys(object)
-    .filter(key => key !== field)
+    .filter((key) => key !== field)
     .reduce((obj, key) => Object.assign(obj, { [key]: object[key] }), {});

@@ -26,6 +26,10 @@ export class AuthenticationService {
     if (!token) return;
     return Api.get("/auth/currentuser");
   }
+
+  static changePassword(data) {
+    return Api.put("/auth/changePassword", data);
+  }
 }
 
 export class ReviewsService {

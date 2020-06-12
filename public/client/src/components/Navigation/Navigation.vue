@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container style="border-bottom: 1px solid #E0E0E0" fluid>
     <v-row justify="center" no-gutters>
       <v-col cols="12" xl="10">
         <v-card class="hidden-sm-and-down" elevation="0">
@@ -22,12 +22,15 @@
             >
               <template v-slot:activator="{ on }">
                 <v-btn class="" color="primary" outlined v-on="on">
-                  Categories
+                  {{ getLang == "Romana" ? "Categorii" : "Categories" }}
                 </v-btn>
               </template>
 
               <v-list>
-                <v-list-group v-for="(item, index) in items" :key="index">
+                <v-list-group
+                  v-for="(item, index) in items[getLang]"
+                  :key="index"
+                >
                   <template v-slot:activator>
                     <v-list-item-icon>
                       <v-icon>mdi-laptop-windows</v-icon>
@@ -39,13 +42,16 @@
                     </v-list-item-content>
                   </template>
 
-                  <v-list-item v-for="(subItem, idx) in item.items" :key="idx">
+                  <v-list-item
+                    v-for="(subItem, index) in item.items"
+                    :key="index"
+                  >
                     <v-list-item-icon>
                       <v-icon>mdi-arrow-right</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title>
                       <v-btn text :to="{ path: '/browse/' + subItem }">
-                        {{ subItem }}
+                        {{ index }}
                       </v-btn>
                     </v-list-item-title>
                   </v-list-item>
@@ -64,10 +70,10 @@
               color="primary"
               to="/login"
             >
-              Login
+              {{ getLang == "Romana" ? "Autentificare" : "Login" }}
             </v-btn>
             <v-btn color="primary" v-if="!isAuthenticated" to="/register">
-              Register
+              {{ getLang == "Romana" ? "Inregistrare" : "Register" }}
             </v-btn>
 
             <v-btn
@@ -77,11 +83,11 @@
                 isAuthenticated &&
                   getUser != null &&
                   this.$route.path !== '/create' &&
-                  getUser.role == 'publisher'
+                  (getUser.role == 'publisher' || 'admin')
               "
               @click="createCamp"
             >
-              Create
+              {{ getLang == "Romana" ? "Anunt Nou" : "Create" }}
             </v-btn>
             <v-menu
               v-model="menu"
@@ -124,8 +130,12 @@
 
                 <v-list>
                   <v-list-item>
-                    <v-btn block text>
-                      Account
+                    <v-btn
+                      :to="{ path: '/profile/' + getUser.name }"
+                      block
+                      text
+                    >
+                      {{ getLang == "Romana" ? "Profilul meu" : "ACCOUNT" }}
                     </v-btn>
                   </v-list-item>
 
@@ -158,7 +168,7 @@
             transition="dialog-bottom-transition"
           >
             <v-card elevation="0">
-              <v-toolbar flat color="">
+              <v-toolbar text color="">
                 <router-link to="/">
                   <v-img
                     width="70"
@@ -208,32 +218,79 @@ export default {
   data() {
     return {
       query: "",
-      items: [
-        {
-          title: "Development",
-          items: [
-            "Web Development",
-            "Software Development",
-            "Mobile Development",
-          ],
-        },
-        {
-          title: "Robotics & Mechatronics",
-          items: ["Robotics", "Mechatronics", "Artificial Vision"],
-        },
-        {
-          title: "Data Science",
-          items: [
-            "Machine Learning",
-            "Data Analysis",
-            "Artificial Intelligence",
-          ],
-        },
-
-        { title: "IT & Software", items: ["Networking"] },
-        { title: "Design", items: ["User Interface", "User Experience"] },
-        { title: "Marketing", items: ["Digital Marketing"] },
-      ],
+      lang: "",
+      items: {
+        English: [
+          {
+            title: "Software Development",
+            items: {
+              "Mobile Development": "Mobile Development",
+              "Web Development": "Web Development",
+              "Desktop Applications": "Desktop Applications",
+            },
+          },
+          {
+            title: "Robotics & Mechatronics",
+            items: {
+              Robotics: "Robotics",
+              Mechatronics: "Mechatronics",
+              "Artificial Vision": "Artificial Vision",
+              "Artificial Intelligence": "Artificial Intelligence",
+              "Programmable Logic Controller": "Programmable Logic Controller",
+            },
+          },
+          {
+            title: "IT & Software",
+            items: {
+              "Networking & Security": "Networking & Security",
+              "Operating Systems": "Operating Systems",
+              Hardware: "Hardware",
+            },
+          },
+          {
+            title: "Design",
+            items: {
+              "Web Design": "Web Design",
+              "Graphic Design": "Graphic Design",
+            },
+          },
+        ],
+        Romana: [
+          {
+            title: "Dezvoltare Software",
+            items: {
+              "Aplicatii Mobile": "Mobile Development",
+              "Programare Web": "Web Development",
+              "Aplicatii Desktop": "Desktop Applications",
+            },
+          },
+          {
+            title: "Mecatronica si Robotica",
+            items: {
+              Robotica: "Robotics",
+              Mecatronica: "Mechatronics",
+              "Vedere Artificiala": "Artificial Vision",
+              "Inteligenta Artificiala": "Artificial Intelligence",
+              "Automate Programabile": "Programmable Logic Controller",
+            },
+          },
+          {
+            title: "IT si Software",
+            items: {
+              "Retele si securitate": "Networking & Security",
+              "Sisteme de Operare": "Operating Systems",
+              Hardwware: "Hardware",
+            },
+          },
+          {
+            title: "Design",
+            items: {
+              "Design Web": "Web Design",
+              "Design Grafic": "Graphic Design",
+            },
+          },
+        ],
+      },
       dialog: false,
       menu: false,
       user: null,
@@ -251,6 +308,9 @@ export default {
       const user = localStorage.getItem("user");
       const userObj = JSON.parse(user);
       return userObj;
+    },
+    getLang() {
+      return this.$store.getters.getLang;
     },
   },
   methods: {

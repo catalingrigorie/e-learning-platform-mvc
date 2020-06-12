@@ -16,7 +16,7 @@
     item-value="_id"
     @change="redirect($event)"
     label="Search"
-    placeholder="Search for anything"
+    :placeholder="placeholder"
   ></v-autocomplete>
 </template>
 
@@ -39,6 +39,14 @@ export default {
       return this.entries.map((entry) => {
         return Object.assign({}, entry);
       });
+    },
+    getLang() {
+      return this.$store.getters.getLang;
+    },
+    placeholder() {
+      return this.getLang == "Romana"
+        ? "Cauta un topic"
+        : "Search for anything";
     },
   },
   methods: {

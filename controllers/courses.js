@@ -1,5 +1,6 @@
 const Course = require("../models/Course");
 const Camp = require("../models/Camp");
+const path = require("path");
 
 /**
  * @desc Get all courses or all courses for a specific camp
@@ -68,18 +69,59 @@ exports.createCourse = async (req, res, next) => {
 
     if (!camp) {
       return res.status(404).json({
-        error: "Not found",
+        error: "Camp Not Found",
       });
     }
 
-    const course = await Course.create(req.body);
+    if (!req.files) {
+      return next(
+        res.status(400).json({
+          message: "Please select pdf document",
+        })
+      );
+    }
 
-    res.status(200).json({
-      data: course,
+    const pdf = req.files.pdf;
+
+    if (!pdf.mimetype.startsWith("application/pdf")) {
+      return next(
+        res.status(400).json({
+          message: "That doesn't look like a pdf document",
+        })
+      );
+    }
+
+    pdf.name = `doc_${req.body.title}${path.parse(pdf.name).ext}`;
+
+    pdf.mv(`${process.env.PDF_UPLOAD_PATH}/${pdf.name}`, async (error) => {
+      if (error) {
+        console.error(error.message);
+        return next(
+          res.status(500).json({
+            error: "Something went wrong",
+          })
+        );
+      }
+
+      const course = await Course.create({
+        availableJob: req.body.availableJob,
+        pdf: pdf.name,
+        title: req.body.title,
+        description: req.body.description,
+        duration: req.body.duration,
+        tuition: req.body.tuition,
+        difficulty: req.body.difficulty,
+        camp: req.body.camp,
+        user: req.body.user,
+      });
+
+      res.status(200).json({
+        data: course,
+      });
     });
   } catch (error) {
     res.status(404).json({
-      error: "Not found",
+      error: error.message,
     });
   }
 };

@@ -48,8 +48,16 @@
                   name="tuition"
                   type="text"
                   v-model="tuition"
-                  :rules="[rules.required, rules.number]"
+                  :rules="[rules.number]"
                 />
+              </v-col>
+              <v-col cols="12">
+                <v-file-input
+                  v-model="pdf"
+                  show-size
+                  label="PDF Document"
+                  prepend-icon=""
+                ></v-file-input>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-select
@@ -94,6 +102,7 @@ export default {
       description: "",
       difficulty: "",
       tuition: "",
+      pdf: null,
       availableJob: false,
       duration: "",
       rules: {
@@ -110,17 +119,18 @@ export default {
       this.dialog = false;
       if (this.$refs.form.validate()) {
         let id = this.$route.params.id;
-        let courseData = {
-          title: this.title,
-          description: this.description,
-          difficulty: this.difficulty,
-          tuition: +this.tuition,
-          availableJob: this.availableJob,
-          duration: this.duration,
-        };
+        const fromData = new FormData();
+
+        fromData.append("pdf", this.pdf);
+        fromData.append("title", this.title);
+        fromData.append("description", this.description);
+        fromData.append("difficulty", this.difficulty);
+        fromData.append("tuition", this.tuition);
+        fromData.append("availableJob", this.availableJob);
+        fromData.append("duration", this.duration);
 
         try {
-          await CoursesService.createCourse(id, courseData);
+          await CoursesService.createCourse(id, fromData);
           this.$emit("newCourse");
         } catch (error) {
           console.log(error);

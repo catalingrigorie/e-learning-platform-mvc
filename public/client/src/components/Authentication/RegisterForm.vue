@@ -3,7 +3,7 @@
     <v-row align="center" justify="center">
       <v-col cols="12" sm="12" md="8" lg="4" xl="3">
         <v-card elevation="0" class="mt-10 mb-10">
-          <v-card-title class="linear-gradient" flat>
+          <v-card-title class="linear-gradient" text>
             Register an account
           </v-card-title>
           <v-card-text>

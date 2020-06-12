@@ -48,7 +48,7 @@
         <v-divider v-if="i !== reviews.length - 1"></v-divider>
       </v-list>
     </v-card>
-    <v-card v-if="isAuthenticated" flat elevation="0">
+    <v-card v-if="isAuthenticated" text elevation="0">
       <v-divider></v-divider>
       <v-card-title>
         Leave a review

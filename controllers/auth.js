@@ -13,7 +13,7 @@ exports.register = async (req, res, next) => {
       name,
       email,
       password,
-      role
+      role,
     });
 
     const token = user.getSignedJwtToken();
@@ -40,7 +40,7 @@ exports.login = async (req, res, next) => {
     if (!user) {
       return next(
         res.status(401).json({
-          error: "Invalid email or password"
+          error: "Invalid email or password",
         })
       );
     }
@@ -50,7 +50,7 @@ exports.login = async (req, res, next) => {
     if (!isValidPassword) {
       return next(
         res.status(401).json({
-          error: "Invalid email or password"
+          error: "Invalid email or password",
         })
       );
     }
@@ -58,7 +58,7 @@ exports.login = async (req, res, next) => {
     sendToken(user, 200, res);
   } catch (error) {
     res.status(400).json({
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -68,11 +68,11 @@ exports.getLoggedInUser = async (req, res, next) => {
     const user = await User.findById(req.user.id);
 
     res.status(200).json({
-      user
+      user,
     });
   } catch (error) {
     res.status(404).json({
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -80,15 +80,15 @@ exports.getLoggedInUser = async (req, res, next) => {
 exports.logout = async (req, res, next) => {
   try {
     res.cookie("token", "none", {
-      expires: new Date(Date.now() + 1 * 1000)
+      expires: new Date(Date.now() + 1 * 1000),
     });
 
     res.status(200).json({
-      data: {}
+      data: {},
     });
   } catch (error) {
     res.status(404).json({
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -96,13 +96,13 @@ exports.logout = async (req, res, next) => {
 exports.forgotPassword = async (req, res, next) => {
   try {
     const user = await User.findOne({
-      email: req.body.email
+      email: req.body.email,
     });
 
     if (!user) {
       return next(
         res.status(404).json({
-          error: "Not found"
+          error: "Not found",
         })
       );
     }
@@ -120,11 +120,11 @@ exports.forgotPassword = async (req, res, next) => {
     await sendMail({
       email: user.email,
       subject: "Password reset token",
-      message
+      message,
     });
 
     return res.status(200).json({
-      message: `Email sent to ${user.email}`
+      message: `Email sent to ${user.email}`,
     });
   } catch (error) {
     console.error(error.message);
@@ -132,7 +132,7 @@ exports.forgotPassword = async (req, res, next) => {
     user.resetPasswordExpire = undefined;
     await user.save({ validateBeforeSave: false });
     res.status(500).json({
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -146,13 +146,13 @@ exports.resetPassword = async (req, res, next) => {
 
     const user = await User.findOne({
       resetPasswordToken,
-      resetPasswordExpire: { $gt: Date.now() }
+      resetPasswordExpire: { $gt: Date.now() },
     });
 
     if (!user) {
       return next(
         res.status(400).json({
-          error: "Invalid"
+          error: "Invalid",
         })
       );
     }
@@ -165,7 +165,7 @@ exports.resetPassword = async (req, res, next) => {
     sendToken(user, 200, res);
   } catch (error) {
     res.status(404).json({
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -174,20 +174,20 @@ exports.editUser = async (req, res, next) => {
   try {
     const fields = {
       name: req.body.name,
-      email: req.body.email
+      email: req.body.email,
     };
 
     const user = await User.findByIdAndUpdate(req.user.id, fields, {
       new: true,
-      runValidators: true
+      runValidators: true,
     });
 
     res.status(200).json({
-      user
+      user,
     });
   } catch (error) {
     res.status(404).json({
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -196,10 +196,12 @@ exports.changePassword = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
 
-    if (!(await user.matchPassword(req.body.currentPassword))) {
+    const match = await user.matchPassword(req.body.currentPassword);
+
+    if (!match) {
       return next(
         res.status(401).json({
-          error: "Password is inccorrect"
+          error: "Password is inccorrect",
         })
       );
     }
@@ -210,7 +212,7 @@ exports.changePassword = async (req, res, next) => {
     sendToken(user, 200, res);
   } catch (error) {
     res.status(404).json({
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -222,15 +224,12 @@ const sendToken = (user, statusCode, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     ),
-    httpOnly: true
+    httpOnly: true,
   };
 
-  res
-    .status(statusCode)
-    .cookie("token", token, options)
-    .json({
-      success: true,
-      token,
-      user
-    });
+  res.status(statusCode).cookie("token", token, options).json({
+    success: true,
+    token,
+    user,
+  });
 };

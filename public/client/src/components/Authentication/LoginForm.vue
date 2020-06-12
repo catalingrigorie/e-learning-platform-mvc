@@ -3,7 +3,7 @@
     <v-row align="center" justify="center">
       <v-col cols="12" sm="12" md="8" lg="4" xl="3">
         <v-card elevation="0" class="mt-10 mb-10">
-          <v-card-title class="linear-gradient" dark flat>
+          <v-card-title class="linear-gradient" dark text>
             Log in to your account
           </v-card-title>
           <v-card-text>
@@ -74,14 +74,14 @@ export default {
       email: "",
       valid: true,
       rules: {
-        required: value => !!value || "Required.",
-        email: value => {
+        required: (value) => !!value || "Required.",
+        email: (value) => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "Invalid e-mail.";
         },
-        validationError: erorrs => !!erorrs || ""
+        validationError: (erorrs) => !!erorrs || "",
       },
-      errors: ""
+      errors: "",
     };
   },
   methods: {
@@ -90,17 +90,17 @@ export default {
         try {
           await this.$store.dispatch("login", {
             email: this.email,
-            password: this.password
+            password: this.password,
           });
         } catch (error) {
           this.errors = error.response.data.error;
         }
       }
-    }
+    },
   },
   created() {
     this.$emit("update:layout", loginLayout);
-  }
+  },
 };
 </script>
 

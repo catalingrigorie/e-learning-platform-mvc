@@ -24,27 +24,51 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title>
-              Duration: {{ course.duration }}
+              Duration
             </v-list-item-title>
           </v-list-item-content>
+          <v-list-item-action>
+            {{ course.duration }}
+          </v-list-item-action>
         </v-list-item>
         <v-divider></v-divider>
+
+        <v-list-item v-if="course.tuition != null">
+          <v-list-item-content>
+            <v-list-item-title>
+              Tuition
+            </v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-action>
+            {{ course.tuition | currency }}
+          </v-list-item-action>
+        </v-list-item>
+        <v-divider v-if="course.tuition != null"></v-divider>
 
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title>
-              Tuition: {{ course.tuition | currency }}
+              Difficulty
             </v-list-item-title>
           </v-list-item-content>
+          <v-list-item-action>
+            {{ course.difficulty }}
+          </v-list-item-action>
         </v-list-item>
         <v-divider></v-divider>
-
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title>
-              Course Difficulty: {{ course.difficulty }}
+              PDF Document
             </v-list-item-title>
           </v-list-item-content>
+          <v-list-item-action>
+            <a
+              target="_blank"
+              :href="`http://localhost:5000/documents/${course.pdf}`"
+              >{{ course.pdf }}</a
+            >
+          </v-list-item-action>
         </v-list-item>
         <v-divider></v-divider>
 
