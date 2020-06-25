@@ -1,5 +1,5 @@
 # E Learning Platform
-![Image of Yaktocat](https://i.imgur.com/ztLtPUU.png)
+
 ## Built With
 
 * NodeJs, Express
@@ -47,4 +47,6 @@ FROM_EMAIL=
 FROM_NAME=E-learning API
 ````
 
+## UI
+![Image of Yaktocat](https://i.imgur.com/ztLtPUU.png)
 
