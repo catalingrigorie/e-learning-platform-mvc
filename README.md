@@ -13,7 +13,7 @@
 * Create courses for bootcamps (crud)
 
 
-### Installing
+## Installing
 
 Navigate to the root folder and run
 
