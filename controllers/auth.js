@@ -194,7 +194,7 @@ exports.editUser = async (req, res, next) => {
 
 exports.changePassword = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user.id).select("+password");
 
     const match = await user.matchPassword(req.body.currentPassword);
 

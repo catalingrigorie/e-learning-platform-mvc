@@ -19,15 +19,11 @@ router
     }),
     getReviews
   )
-  .post(protect, access("user", "publisher"), createReview);
+  .post(protect, access("user", "admin"), createReview);
 
 router
   .route("/:id")
   .get(getReview)
-  .delete(
-    protect,
-    checkOwnership(Review),
-    deleteReview
-  );
+  .delete(protect, checkOwnership(Review), deleteReview);
 
 module.exports = router;

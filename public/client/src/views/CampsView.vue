@@ -19,7 +19,7 @@ import Footer from "@/components/Footer/Footer.vue";
 import CampsGrid from "../components/Camps/CampsGrid";
 
 export default {
-  name: "Home",
+  name: "CampsView",
   components: {
     Navigation,
     Footer,

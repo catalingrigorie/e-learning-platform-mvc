@@ -83,7 +83,7 @@
                 isAuthenticated &&
                   getUser != null &&
                   this.$route.path !== '/create' &&
-                  (getUser.role == 'publisher' || 'admin')
+                  (getUser.role == 'admin' || getUser.role == 'publisher')
               "
               @click="createCamp"
             >
@@ -94,6 +94,7 @@
               v-if="isAuthenticated"
               :close-on-content-click="false"
               :nudge-width="200"
+              offset-y="200"
             >
               <template v-slot:activator="{ on }">
                 <v-btn icon v-on="on">
@@ -131,11 +132,17 @@
                 <v-list>
                   <v-list-item>
                     <v-btn
+                      v-if="getUser.role != 'admin'"
                       :to="{ path: '/profile/' + getUser.name }"
                       block
                       text
                     >
                       {{ getLang == "Romana" ? "Profilul meu" : "ACCOUNT" }}
+                    </v-btn>
+                    <v-btn v-else block text :to="{ path: '/dashboard' }">
+                      {{
+                        getLang == "Romana" ? "Panou de Control" : "Dashboard"
+                      }}
                     </v-btn>
                   </v-list-item>
 

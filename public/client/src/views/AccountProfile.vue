@@ -12,7 +12,7 @@ import Navigation from "../components/Navigation/Navigation";
 import Profile from "../components/UserProfile/Profile";
 
 export default {
-  name: "Login",
+  name: "AccountProfileView",
   data() {
     return {};
   },

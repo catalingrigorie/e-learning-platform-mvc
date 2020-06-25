@@ -30,7 +30,7 @@
                   :rules="[rules.required]"
                   auto-grow
                   rows="1"
-                  counter="250"
+                  counter="1000"
                 ></v-textarea>
               </v-col>
               <v-col cols="12" sm="6">

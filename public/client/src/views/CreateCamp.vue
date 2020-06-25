@@ -12,6 +12,7 @@ import Footer from "@/components/Footer/Footer.vue";
 import CreateCamp from "../components/Camps/CreateCamp";
 
 export default {
+  name: "CreateCampView",
   components: {
     Navigation,
     Footer,

@@ -78,6 +78,10 @@ export class CampsService {
   static sendMail(id, user) {
     return Api.post(`/camps/${id}/signup`, user);
   }
+
+  static getCamps() {
+    return Api.get("/camps");
+  }
 }
 
 export class CoursesService {

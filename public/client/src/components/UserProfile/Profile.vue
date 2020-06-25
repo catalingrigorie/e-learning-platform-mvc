@@ -14,7 +14,7 @@
           <div v-else>
             <v-text-field
               readonly
-              :value="this.user.name.toLocaleString()"
+              :value="this.user.name"
               outlined
               label="Name"
             ></v-text-field>

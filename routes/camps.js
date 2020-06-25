@@ -20,7 +20,7 @@ router.use("/:id/reviews", reviewRouter);
 router
   .route("/")
   .post(protect, access("publisher", "admin"), createCamp)
-  .get(customResults(Camp, "courses"), getCamps);
+  .get(customResults(Camp, "courses user"), getCamps);
 router
   .route("/:id")
   .get(getCamp)

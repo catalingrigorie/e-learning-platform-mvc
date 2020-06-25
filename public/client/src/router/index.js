@@ -43,6 +43,12 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/AccountProfile.vue"),
   },
   {
+    path: "/dashboard",
+    name: "adminDashboard",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/AdminDashboard.vue"),
+  },
+  {
     path: "/create",
     name: "createCamp",
     component: () =>

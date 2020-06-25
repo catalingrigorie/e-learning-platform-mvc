@@ -163,7 +163,9 @@
                         outlined
                         color="primary"
                         @click="sendMail"
-                        v-if="isAuthenticated && signed == false"
+                        v-if="
+                          isAuthenticated && signed == false && !enrolledUser
+                        "
                         :loading="sendingMail"
                         >Sing up</v-btn
                       >
@@ -189,13 +191,13 @@
             </v-card-text>
           </v-card>
         </v-col>
-        <v-col
-          v-cloak
-          cols="12"
-          lg="2"
-          v-if="checkOwnership == true && this.camp !== ''"
-        >
-          <v-card outlined elevation="0">
+        <v-col cols="12" lg="2">
+          <v-card
+            v-if="checkOwnership == true && this.camp !== ''"
+            outlined
+            elevation="0"
+            class="mb-5"
+          >
             <v-card-title>
               Camp Dashboard
             </v-card-title>
@@ -208,6 +210,27 @@
               <EditCamp :camp="camp" @editedCamp="updatedStats" />
               <DeleteCamp @deletedCamp="updatedStats" />
               <UploadImage />
+            </v-card-text>
+          </v-card>
+          <v-card v-if="camp.enrolledUsers" outlined elevation="0">
+            <v-card-title>
+              Enrolled Students
+            </v-card-title>
+            <v-card-text>
+              <v-list-item-group>
+                <v-list dense outlined>
+                  <v-list-item
+                    :key="index"
+                    v-for="(key, index) in camp.enrolledUsers"
+                  >
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        {{ key.email }}
+                      </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-list-item-group>
             </v-card-text>
           </v-card>
         </v-col>
@@ -236,6 +259,7 @@ export default {
       signed: false,
       user: "",
       snackbar: false,
+      loggedInUser: null,
       text: "Success! Check your email address for more information.",
       timeout: 4000,
       items: [
@@ -285,6 +309,12 @@ export default {
 
       return startDate.toLocaleDateString(undefined, options);
     },
+    enrolledUser() {
+      const enrolledUsers = this.camp.enrolledUsers;
+      const emailsArr = enrolledUsers.map((el) => el.email);
+      if (emailsArr.includes(this.loggedInUser)) return true;
+      return false;
+    },
   },
   methods: {
     async updatedStats() {
@@ -301,11 +331,10 @@ export default {
     async sendMail() {
       this.sendingMail = true;
       let id = this.$route.params.id;
-      const user = localStorage.getItem("user");
-      const userEmail = JSON.parse(user).email;
+
       try {
         await CampsService.sendMail(id, {
-          email: userEmail,
+          email: this.loggedInUser,
         });
       } catch (error) {
         console.log(error);
@@ -318,6 +347,11 @@ export default {
   },
   async created() {
     let id = this.$route.params.id;
+    const user = localStorage.getItem("user");
+    if (user) {
+      const userEmail = JSON.parse(user).email;
+      this.loggedInUser = userEmail;
+    }
 
     try {
       const { data } = (await CampsService.getCamp(id)).data;

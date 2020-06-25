@@ -7,7 +7,11 @@
             <h3
               class="title text-uppercase font-weight-bold text-center mb-0 text-lg-right white--text"
             >
-              Get our newsletter
+              {{
+                getLang == "Romana"
+                  ? "Aboneaza-ta la newsletter"
+                  : "Get our newsletter"
+              }}
             </h3>
           </v-col>
           <v-col cols="8" lg="4">
@@ -152,12 +156,16 @@
               >
                 <v-form ref="form" v-model="valid">
                   <v-card-title class="pl-0">
-                    MAIL US YOUR MESSAGE
+                    {{
+                      getLang == "Romana"
+                        ? "Trimite-ne un mesaj"
+                        : "MAIL US YOUR MESSAGE"
+                    }}
                   </v-card-title>
                   <v-text-field
                     :rules="[rules.required]"
                     outlined
-                    label="Name"
+                    :label="getLang == 'Romana' ? 'Nume' : 'Name'"
                     v-model="name"
                   ></v-text-field>
                   <v-text-field
@@ -169,14 +177,16 @@
                   <v-text-field
                     :rules="[rules.required]"
                     outlined
-                    label="Subject"
+                    :label="getLang == 'Romana' ? 'Subiect' : 'Subject'"
                     v-model="subject"
                   ></v-text-field>
                   <v-textarea
                     :rules="[rules.required]"
                     outlined
                     name="Your Need & Description"
-                    label="Your Need & Description"
+                    :label="
+                      getLang == 'Romana' ? 'Mesajul tau' : 'Your message'
+                    "
                     v-model="message"
                   ></v-textarea>
                   <v-btn
@@ -187,7 +197,7 @@
                     outlined
                     default
                     text
-                    >SEND MESSAGE</v-btn
+                    >{{ getLang == "Romana" ? "Triimite" : "Send" }}</v-btn
                   >
                 </v-form>
               </v-card>

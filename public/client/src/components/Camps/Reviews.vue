@@ -5,7 +5,7 @@
     </v-sheet>
     <v-sheet v-else-if="reviews.length == 0" class="text-center">
       <p>
-        No reviews yet, be the first to leave a review
+        No reviews yet
       </p>
     </v-sheet>
     <v-card v-else outlined class="mt-5">

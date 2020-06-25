@@ -75,6 +75,9 @@ const CampSchema = new mongoose.Schema(
         "Graphic Design",
       ],
     },
+    enrolledUsers: {
+      type: [{ email: String, name: String }],
+    },
     averageRating: {
       type: Number,
       min: [1, "Rating must be at least 1"],

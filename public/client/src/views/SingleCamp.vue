@@ -11,16 +11,14 @@ import Navigation from "@/components/Navigation/Navigation.vue";
 import Footer from "@/components/Footer/Footer.vue";
 import SingleCamp from "@/components/Camps/SingleCamp.vue";
 export default {
-  data() {
-    return {};
-  },
+  name: "SingleCampView",
   methods: {},
   components: {
     Navigation,
     Footer,
-    SingleCamp
+    SingleCamp,
   },
-  created() {}
+  created() {},
 };
 </script>
 

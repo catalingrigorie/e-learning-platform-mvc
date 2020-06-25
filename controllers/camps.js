@@ -212,7 +212,7 @@ exports.uploadImage = async (req, res, next) => {
 
 exports.signUp = async (req, res, next) => {
   try {
-    const camp = await Camp.findById(req.params.id);
+    let camp = await Camp.findById(req.params.id);
     console.log(req.params.id);
     console.log(req.body);
     const user = await User.findOne({
@@ -226,6 +226,15 @@ exports.signUp = async (req, res, next) => {
         })
       );
     }
+
+    await Camp.findByIdAndUpdate(req.params.id, {
+      enrolledUsers: {
+        $push: {
+          name: req.body.name,
+          email: req.body.email,
+        },
+      },
+    });
 
     const html = `
     <h1>Hello ${user.name}, welcome to ${camp.name} </h1>
