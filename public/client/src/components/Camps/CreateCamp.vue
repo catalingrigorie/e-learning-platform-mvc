@@ -143,11 +143,6 @@ import { CampsService } from "../../services/api";
 import router from "../../router/index";
 export default {
   computed: {
-    // sortedFields() {
-    //   return this.categories.slice().sort((a, b) => {
-    //     return a > b ? 1 : -1;
-    //   });
-    // },
     getCategories() {
       const categories = this.categories.slice();
 

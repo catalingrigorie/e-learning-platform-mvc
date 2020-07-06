@@ -33,8 +33,12 @@ export class AuthenticationService {
 }
 
 export class ReviewsService {
-  static getReviews(id) {
+  static getReview(id) {
     return Api.get(`/camps/${id}/reviews`);
+  }
+
+  static getReviews() {
+    return Api.get("/reviews");
   }
 
   static postReview(id, data) {
@@ -87,6 +91,10 @@ export class CampsService {
 export class CoursesService {
   static createCourse(id, data) {
     return Api.post(`/camps/${id}/courses`, data);
+  }
+
+  static getCourses() {
+    return Api.get("/courses");
   }
 
   static deleteCourse(id) {

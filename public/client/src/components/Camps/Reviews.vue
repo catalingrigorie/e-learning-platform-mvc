@@ -38,7 +38,11 @@
             </span>
           </v-list-item-content>
           <v-list-item-action
-            v-if="currentUserId != null && review.user._id == currentUserId"
+            v-if="
+              currentUserId != null &&
+                (review.user._id == currentUserId._id ||
+                  currentUserId.role == 'admin')
+            "
           >
             <v-btn @click="deleteReview(review._id)" outlined color="danger">
               Delete
@@ -108,9 +112,9 @@ export default {
     currentUserId() {
       const user = localStorage.getItem("user");
       if (!user) return null;
-      const userId = JSON.parse(user)._id;
+      const userObj = JSON.parse(user);
 
-      return userId;
+      return userObj;
     },
   },
   methods: {
@@ -125,7 +129,7 @@ export default {
       if (this.$refs.form.validate()) {
         try {
           await ReviewsService.postReview(id, reviewData);
-          this.reviews = (await ReviewsService.getReviews(id)).data.reviews;
+          this.reviews = (await ReviewsService.getReview(id)).data.reviews;
           this.$emit("updatedStats");
           this.title = null;
           this.rating = null;
@@ -140,7 +144,7 @@ export default {
 
       try {
         await ReviewsService.deleteReview(reviewId);
-        this.reviews = (await ReviewsService.getReviews(id)).data.reviews;
+        this.reviews = (await ReviewsService.getReview(id)).data.reviews;
       } catch (error) {
         console.error(error.message);
       }
@@ -150,7 +154,7 @@ export default {
     let id = this.$route.params.id;
 
     try {
-      this.reviews = (await ReviewsService.getReviews(id)).data.reviews;
+      this.reviews = (await ReviewsService.getReview(id)).data.reviews;
     } catch (error) {
       console.log(error.message);
     }

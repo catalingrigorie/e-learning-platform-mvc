@@ -34,22 +34,31 @@ export default {
   data() {
     return {
       valid: true,
-      dialog: false
+      dialog: false,
     };
   },
   methods: {
     async deleteCamp() {
       this.dialog = false;
-      const campId = this.$route.params.id;
+      const campId = this.$route.params.id || this.campId;
 
       try {
         await CampsService.deleteCamp(campId);
         this.$emit("deletedCamp");
-        router.go(-1);
+        if (this.$route.params.id) {
+          router.go(-1);
+        } else {
+          router.go();
+        }
       } catch (error) {
         console.log(error);
       }
-    }
-  }
+    },
+  },
+  props: {
+    campId: {
+      type: String,
+    },
+  },
 };
 </script>

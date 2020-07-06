@@ -9,7 +9,7 @@
             >
               {{
                 getLang == "Romana"
-                  ? "Aboneaza-ta la newsletter"
+                  ? "Aboneaza-te la newsletter"
                   : "Get our newsletter"
               }}
             </h3>

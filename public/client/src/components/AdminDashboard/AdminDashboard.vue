@@ -7,14 +7,6 @@
 
       <v-spacer></v-spacer>
 
-      <!-- <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn> -->
-
-      <!-- <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn> -->
-
       <template v-slot:extension>
         <v-tabs v-model="tab" align-with-title>
           <v-tabs-slider color="yellow"></v-tabs-slider>
@@ -26,61 +18,60 @@
       </template>
     </v-toolbar>
 
-    <v-tabs-items v-model="tab">
+    <v-sheet v-if="bootcamps == null" class="height text-center">
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    </v-sheet>
+    <v-tabs-items v-else v-model="tab">
       <v-tab-item v-for="item in items" :key="item">
         <v-data-table
-          :expanded.sync="expanded"
+          v-if="item == 'Bootcamps'"
           :headers="headers"
           :items="bootcamps"
-          sort-by="calories"
         >
           <template v-slot:top>
             <v-toolbar flat color="white">
-              <v-toolbar-title>Bootcamps Panel</v-toolbar-title>
+              <v-toolbar-title>{{ item }}</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
-              <v-spacer></v-spacer>
-              <v-dialog v-model="dialog" max-width="500px">
-                <v-card>
-                  <v-card-text>
-                    <v-container>
-                      <v-row>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field label="Dessert name"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field label="Calories"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field label="Fat (g)"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field label="Carbs (g)"></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field label="Protein (g)"></v-text-field>
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-card-text>
-
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="close"
-                      >Cancel</v-btn
-                    >
-                    <v-btn color="blue darken-1" text @click="save">Save</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
             </v-toolbar>
           </template>
           <template v-slot:item.actions="{ item }">
-            <v-icon small class="mr-2" @click="editItem(item)">
-              mdi-pencil
-            </v-icon>
-            <v-icon small @click="deleteItem(item)">
-              mdi-delete
-            </v-icon>
+            <EditCamp :camp="item" />
+            <DeleteCamp :campId="item._id" />
+            <DeleteCourse :courses="item.courses" />
+          </template>
+        </v-data-table>
+        <v-data-table
+          v-if="item == 'Courses'"
+          :headers="coursesHeaders"
+          :items="courses"
+        >
+          <template v-slot:top>
+            <v-toolbar flat color="white">
+              <v-toolbar-title>{{ item }}</v-toolbar-title>
+              <v-divider class="mx-4" inset vertical></v-divider>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+          </template>
+          <template v-slot:item.actions="{ item }">
+            <DeleteCourse :courses="item" />
+          </template>
+        </v-data-table>
+        <v-data-table
+          v-if="item == 'Reviews'"
+          :headers="reviewsHeaders"
+          :items="reviews"
+        >
+          <template v-slot:top>
+            <v-toolbar flat color="white">
+              <v-toolbar-title>{{ item }}</v-toolbar-title>
+              <v-divider class="mx-4" inset vertical></v-divider>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+          </template>
+          <template v-slot:item.actions="{ item }">
+            <v-btn color="primary" flat @click="deleteReview(item)"
+              >Delete</v-btn
+            >
           </template>
         </v-data-table>
       </v-tab-item>
@@ -89,7 +80,15 @@
 </template>
 
 <script>
-import { CampsService } from "../../services/api";
+import {
+  CampsService,
+  CoursesService,
+  ReviewsService,
+} from "../../services/api";
+import EditCamp from "../Camps/EditCamp";
+import DeleteCamp from "../Camps/DeleteCamp";
+import DeleteCourse from "../Camps/DeleteCourse";
+
 // import router from "../../router/index";
 export default {
   data: () => ({
@@ -108,11 +107,43 @@ export default {
       { text: "Enrolled Users", value: "enrolledUsers.length" },
       { text: "Courses", value: "courses.length" },
       { text: "Average Rating", value: "averageRating" },
-      { text: "Actions", value: "actions", sortable: false },
+      { text: "Actions", value: "actions", sortable: false, width: 100 },
+    ],
+    coursesHeaders: [
+      {
+        text: "Courses",
+        align: "start",
+        sortable: false,
+        value: "title",
+        width: 100,
+      },
+      { text: "Added on", value: "createdAt" },
+      { text: "Created By", value: "user.name" },
+      { text: "Pdf", value: "pdf" },
+      { text: "Bootcamp", value: "bootcamp.name" },
+      { text: "Actions", value: "actions", sortable: false, width: 100 },
+    ],
+    reviewsHeaders: [
+      {
+        text: "Reviews",
+        align: "start",
+        sortable: false,
+        value: "title",
+        width: 100,
+      },
+      { text: "Added on", value: "createdAt" },
+      { text: "Bootcamp", value: "bootcamp.name" },
+      { text: "Created By", value: "user.name" },
+      { text: "Title", value: "title" },
+      { text: "Rating", value: "rating" },
+      { text: "Text", value: "text" },
+      { text: "Actions", value: "actions", sortable: false, width: 100 },
     ],
     dates: null,
 
-    bootcamps: [],
+    bootcamps: null,
+    courses: null,
+    reviews: null,
     tab: null,
     items: [
       "Bootcamps",
@@ -126,35 +157,59 @@ export default {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   }),
 
-  // computed: {
-  //   getDates() {
-  //     const camps = this.bootcamps;
-  //     return camps.map((el) => {
-  //       return {
-  //         name: el.name,
-  //         createdAt: el.createdAt,
-  //         user: el.user,
-  //         enrolledUsers: el.enrolledUsers.length,
-  //       };
-  //     });
-  //   },
-  // },
-
-  //   watch: {
-  //     dialog(val) {
-  //       val || this.close();
-  //     },
-  //   },
+  computed: {
+    // getDates() {
+    //   const camps = this.bootcamps;
+    //   return camps.map((el) => {
+    //     return {
+    //       name: el.name,
+    //       createdAt: el.createdAt,
+    //       user: el.user,
+    //       enrolledUsers: el.enrolledUsers.length,
+    //     };
+    //   });
+    // },
+  },
 
   created() {
     this.initialize();
+  },
+  components: {
+    EditCamp,
+    DeleteCamp,
+    DeleteCourse,
   },
 
   methods: {
     async initialize() {
       let camps = (await CampsService.getCamps()).data.results;
+      let courses = (await CoursesService.getCourses()).data.results;
+      let reviews = (await ReviewsService.getReviews()).data.results;
 
-      let filtered = camps.map((el) => {
+      let coursesArr = courses.map((el) => {
+        return {
+          _id: el._id,
+          title: el.title,
+          createdAt: new Date(el.createdAt).toISOString().substring(0, 10),
+          user: el.user,
+          bootcamp: el.camp,
+          pdf: el.pdf,
+        };
+      });
+
+      let reviewsArr = reviews.map((el) => {
+        return {
+          _id: el._id,
+          rating: el.rating,
+          title: el.title,
+          user: el.user,
+          bootcamp: el.camp,
+          text: el.text,
+          createdAt: new Date(el.createdAt).toISOString().substring(0, 10),
+        };
+      });
+
+      let campsArr = camps.map((el) => {
         return {
           _id: el._id,
           name: el.name,
@@ -164,15 +219,19 @@ export default {
           enrolledUsers: el.enrolledUsers,
           startDate: new Date(el.startDate).toISOString().substr(0, 10),
           averageRating: el.averageRating,
+          email: el.email,
+          phone: el.phone,
+          description: el.description,
+          careers: el.careers,
+          jobAssistance: el.jobAssistance,
+          website: el.website,
         };
       });
 
-      this.bootcamps = filtered;
+      this.bootcamps = campsArr;
+      this.courses = coursesArr;
+      this.reviews = reviewsArr;
     },
-
-    // editItem(item) {
-    //   router.push({ path: `/view/${item._id}` });
-    // },
 
     // async fetch(item) {
     //   try {
@@ -212,13 +271,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: initial;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+.height {
+  height: 500px;
 }
 </style>

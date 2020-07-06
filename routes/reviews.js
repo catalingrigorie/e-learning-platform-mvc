@@ -14,12 +14,12 @@ router
   .route("/")
   .get(
     customResults(Review, {
-      path: "camp",
+      path: "camp user",
       select: "name description",
     }),
     getReviews
   )
-  .post(protect, access("user", "admin"), createReview);
+  .post(protect, access("user", "admin", "publisher"), createReview);
 
 router
   .route("/:id")

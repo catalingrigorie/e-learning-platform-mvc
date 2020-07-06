@@ -33,7 +33,7 @@
 
               <v-tabs>
                 <v-tab>
-                  Camp
+                  {{ getLang == "Romana" ? "DETALII" : "DETAILS" }}
                 </v-tab>
                 <v-tab-item>
                   <v-card v-if="this.camp !== ''" outlined text elevation="0">
@@ -44,7 +44,9 @@
                         <v-list-item>
                           <v-list-item-content>
                             <v-list-item-title>
-                              Publisher
+                              {{
+                                getLang == "Romana" ? "Instructor" : "Publisher"
+                              }}
                             </v-list-item-title>
                           </v-list-item-content>
                           <v-list-item-action>
@@ -57,7 +59,28 @@
                         <v-list-item>
                           <v-list-item-content>
                             <v-list-item-title>
-                              E-Mail Address
+                              {{
+                                getLang == "Romana"
+                                  ? "Nr. Telefon"
+                                  : "Phone Number"
+                              }}
+                            </v-list-item-title>
+                          </v-list-item-content>
+                          <v-list-item-action>
+                            <span class="body-1">
+                              {{ camp.phone }}
+                            </span>
+                          </v-list-item-action>
+                        </v-list-item>
+                        <v-divider></v-divider>
+                        <v-list-item>
+                          <v-list-item-content>
+                            <v-list-item-title>
+                              {{
+                                getLang == "Romana"
+                                  ? "Adresa de E-Mail"
+                                  : "E-Mail Address"
+                              }}
                             </v-list-item-title>
                           </v-list-item-content>
                           <v-list-item-action>
@@ -73,7 +96,7 @@
                         <v-list-item v-if="camp.location != undefined">
                           <v-list-item-content>
                             <v-list-item-title>
-                              Location
+                              {{ getLang == "Romana" ? "Locatie" : "Location" }}
                             </v-list-item-title>
                           </v-list-item-content>
                           <v-list-item-action>
@@ -88,7 +111,11 @@
                         <v-list-item>
                           <v-list-item-content>
                             <v-list-item-title>
-                              Start Date
+                              {{
+                                getLang == "Romana"
+                                  ? "Data incepere"
+                                  : "Start Date"
+                              }}
                             </v-list-item-title>
                           </v-list-item-content>
                           <v-list-item-action>
@@ -103,7 +130,11 @@
                         <v-list-item>
                           <v-list-item-content>
                             <v-list-item-title>
-                              Job Assistance
+                              {{
+                                getLang == "Romana"
+                                  ? "Asistare in obtinerea unui job"
+                                  : "Job Assistance"
+                              }}
                             </v-list-item-title>
                           </v-list-item-content>
                           <v-list-item-action>
@@ -125,7 +156,11 @@
                         <v-list-item v-if="camp.averageRating">
                           <v-list-item-content>
                             <v-list-item-title>
-                              Average Rating
+                              {{
+                                getLang == "Romana"
+                                  ? "Media recenziilor"
+                                  : "Average Rating"
+                              }}
                             </v-list-item-title>
                           </v-list-item-content>
                           <v-list-item-action
@@ -158,7 +193,19 @@
                     </v-card-text>
                     <v-row align="center" justify="end"> </v-row>
                     <v-card-actions class="pa-5">
-                      <v-btn outlined color="primary" text>Visit Website</v-btn>
+                      <v-btn
+                        v-if="camp.website"
+                        outlined
+                        color="primary"
+                        target="_blank"
+                        :href="camp.website"
+                        text
+                        >{{
+                          getLang == "Romana"
+                            ? "Vizitare Website"
+                            : "Vizit Website"
+                        }}</v-btn
+                      >
                       <v-btn
                         outlined
                         color="primary"
@@ -167,7 +214,9 @@
                           isAuthenticated && signed == false && !enrolledUser
                         "
                         :loading="sendingMail"
-                        >Sing up</v-btn
+                        >{{
+                          getLang == "Romana" ? "Inscriere" : "Enroll"
+                        }}</v-btn
                       >
                       <span v-else-if="isAuthenticated == false" class="ml-5">
                         Login or register to enroll in this bootcamp
@@ -176,13 +225,13 @@
                   </v-card>
                 </v-tab-item>
                 <v-tab>
-                  Courses
+                  {{ getLang == "Romana" ? "Cursuri" : "Courses" }}
                 </v-tab>
                 <v-tab-item>
                   <Course :courses="courses" />
                 </v-tab-item>
                 <v-tab>
-                  Reviews
+                  {{ getLang == "Romana" ? "Recenzii" : "Reviews" }}
                 </v-tab>
                 <v-tab-item>
                   <Reviews @updatedStats="updatedStats" />
@@ -199,7 +248,7 @@
             class="mb-5"
           >
             <v-card-title>
-              Camp Dashboard
+              {{ getLang == "Romana" ? "Panou de Control" : "Dashboard" }}
             </v-card-title>
             <v-card-text>
               <CreateCourse @newCourse="updatedStats" />
@@ -214,7 +263,9 @@
           </v-card>
           <v-card v-if="camp.enrolledUsers" outlined elevation="0">
             <v-card-title>
-              Enrolled Students
+              {{
+                getLang == "Romana" ? "Studenti inscrisi" : "Enrolled Students"
+              }}
             </v-card-title>
             <v-card-text>
               <v-list-item-group>
@@ -249,6 +300,7 @@ import Course from "./Course";
 import DeleteCamp from "./DeleteCamp";
 import UploadImage from "./UploadImage";
 import Map from "./Map";
+import router from "../../router/index";
 
 export default {
   data() {
@@ -315,6 +367,9 @@ export default {
       if (emailsArr.includes(this.loggedInUser)) return true;
       return false;
     },
+    getLang() {
+      return this.$store.getters.getLang;
+    },
   },
   methods: {
     async updatedStats() {
@@ -342,6 +397,7 @@ export default {
         this.sendingMail = false;
         this.snackbar = true;
         this.signed = true;
+        this.updatedStats();
       }
     },
   },
@@ -360,6 +416,7 @@ export default {
       this.user = data.user;
     } catch (error) {
       console.log(error);
+      router.replace("/");
     }
   },
 };

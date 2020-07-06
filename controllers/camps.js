@@ -213,11 +213,11 @@ exports.uploadImage = async (req, res, next) => {
 exports.signUp = async (req, res, next) => {
   try {
     let camp = await Camp.findById(req.params.id);
-    console.log(req.params.id);
-    console.log(req.body);
     const user = await User.findOne({
       email: req.body.email,
     });
+
+    console.log(user);
 
     if (!user || !camp) {
       return next(
@@ -228,10 +228,10 @@ exports.signUp = async (req, res, next) => {
     }
 
     await Camp.findByIdAndUpdate(req.params.id, {
-      enrolledUsers: {
-        $push: {
-          name: req.body.name,
-          email: req.body.email,
+      $push: {
+        enrolledUsers: {
+          name: user.name,
+          email: user.email,
         },
       },
     });

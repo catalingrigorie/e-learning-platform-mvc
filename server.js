@@ -10,7 +10,6 @@ const PORT = process.env.PORT || 5000;
 const dbConnection = require("./config/db");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
-const cookieParser = require("cookie-parser");
 const path = require("path");
 dotenv.config({ path: "./config/config.env" });
 const app = express();
@@ -18,7 +17,6 @@ app.use(express.static(path.join(__dirname, "uploads")));
 
 app.use(express.json());
 app.use(fileUpload());
-app.use(cookieParser());
 app.use(cors());
 
 dbConnection();

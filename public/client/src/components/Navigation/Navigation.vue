@@ -189,7 +189,10 @@
               </v-toolbar>
 
               <v-list>
-                <v-list-group v-for="(item, index) in items" :key="index">
+                <v-list-group
+                  v-for="(item, index) in items[getLang]"
+                  :key="index"
+                >
                   <template v-slot:activator>
                     <v-list-item-icon>
                       <v-icon>mdi-laptop-windows</v-icon>

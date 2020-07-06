@@ -4,7 +4,7 @@ const {
   getCourse,
   createCourse,
   updateCourse,
-  deleteCourse
+  deleteCourse,
 } = require("../controllers/courses");
 const router = express.Router({ mergeParams: true });
 const Course = require("../models/Course");
@@ -16,8 +16,8 @@ router
   .route("/")
   .get(
     customResults(Course, {
-      path: "camp",
-      select: "name description"
+      path: "camp user",
+      select: "name description",
     }),
     getCourses
   )
